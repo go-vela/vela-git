@@ -6,6 +6,6 @@ FROM alpine:latest
 
 RUN apk add --update --no-cache ca-certificates git
 
-COPY release/git-plugin /bin/git-plugin
+COPY release/vela-git /bin/vela-git
 
-ENTRYPOINT [ "/bin/git-plugin" ]
+ENTRYPOINT [ "/bin/vela-git" ]
