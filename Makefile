@@ -2,11 +2,11 @@
 #
 # Use of this source code is governed by the LICENSE file in this repository.
 
-build: binary-build docker-build
+build: binary-build
 
-run: build docker-run
+run: build docker-build docker-run
 
-test: build docker-example
+test: build docker-build docker-example
 
 #################################
 ######      Go clean       ######
