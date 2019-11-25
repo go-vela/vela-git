@@ -82,7 +82,7 @@ func (p Plugin) Exec() error {
 	executeCommand(exec.Command("git", "remote", "add", "origin", p.Remote))
 	executeCommand(exec.Command("git", "remote", "--verbose"))
 
-	if p.Tags == true {
+	if p.Tags {
 		executeCommand(exec.Command("git", "fetch", "--tags", "origin", p.CommitRef))
 	} else {
 		executeCommand(exec.Command("git", "fetch", "--no-tags", "origin", p.CommitRef))
