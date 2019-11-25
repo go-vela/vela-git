@@ -38,6 +38,11 @@ func main() {
 			Usage:  "git commit ref",
 			EnvVar: "PARAMETER_REF,BUILD_REF",
 		},
+		cli.BoolFlag{
+			Name:   "tags",
+			Usage:  "git fetch tags",
+			EnvVar: "PARAMETER_TAGS",
+		},
 		cli.StringFlag{
 			Name:   "netrc-machine",
 			Usage:  "netrc machine",
@@ -67,6 +72,7 @@ func run(c *cli.Context) error {
 		Path:          c.String("path"),
 		CommitSha:     c.String("commit"),
 		CommitRef:     c.String("ref"),
+		Tags:          c.Bool("tags"),
 		NetrcMachine:  c.String("netrc-machine"),
 		NetrcUsername: c.String("netrc-username"),
 		NetrcPassword: c.String("netrc-password"),
