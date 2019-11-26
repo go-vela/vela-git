@@ -21,6 +21,7 @@ type Plugin struct {
 	Path          string // local path to clone repository too
 	CommitSha     string // specific sha to checkout to in repository
 	CommitRef     string // specific ref generated for commit
+	Tags          bool   // allow fetching of tags
 	NetrcMachine  string // netrc machine used for authentication
 	NetrcUsername string // netrc username used for authentication
 	NetrcPassword string // netrc password used for authentication
@@ -80,7 +81,13 @@ func (p Plugin) Exec() error {
 	executeCommand(exec.Command("git", "init"))
 	executeCommand(exec.Command("git", "remote", "add", "origin", p.Remote))
 	executeCommand(exec.Command("git", "remote", "--verbose"))
-	executeCommand(exec.Command("git", "fetch", "--no-tags", "origin", p.CommitRef))
+
+	if p.Tags {
+		executeCommand(exec.Command("git", "fetch", "--tags", "origin", p.CommitRef))
+	} else {
+		executeCommand(exec.Command("git", "fetch", "--no-tags", "origin", p.CommitRef))
+	}
+
 	executeCommand(exec.Command("git", "reset", "--hard", p.CommitSha))
 
 	return nil

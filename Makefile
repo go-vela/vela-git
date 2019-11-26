@@ -43,6 +43,7 @@ docker-run:
 		-e PARAMETER_PATH \
 		-e PARAMETER_COMMIT \
 		-e PARAMETER_REF \
+		-e PARAMETER_TAGS \
 		-e VELA_NETRC_MACHINE \
 		-e VELA_NETRC_USERNAME \
 		-e VELA_NETRC_PASSWORD \
@@ -55,6 +56,7 @@ docker-example:
 		-e PARAMETER_PATH=home/octocat_hello-world_1 \
 		-e PARAMETER_COMMIT=7fd1a60b01f91b314f59955a4e4d4e80d8edf11d \
 		-e PARAMETER_REF=refs/heads/master \
+		-e PARAMETER_TAGS \
 		-e VELA_NETRC_MACHINE \
 		-e VELA_NETRC_USERNAME \
 		-e VELA_NETRC_PASSWORD \
