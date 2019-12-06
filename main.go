@@ -43,6 +43,11 @@ func main() {
 			Usage:  "git fetch tags",
 			EnvVar: "PARAMETER_TAGS",
 		},
+		cli.BoolFlag{
+			Name:   "submodules",
+			Usage:  "git update submodules",
+			EnvVar: "PARAMETER_SUBMODULES",
+		},
 		cli.StringFlag{
 			Name:   "netrc-machine",
 			Usage:  "netrc machine",
@@ -73,6 +78,7 @@ func run(c *cli.Context) error {
 		CommitSha:     c.String("commit"),
 		CommitRef:     c.String("ref"),
 		Tags:          c.Bool("tags"),
+		Submodules:    c.Bool("submodules"),
 		NetrcMachine:  c.String("netrc-machine"),
 		NetrcUsername: c.String("netrc-username"),
 		NetrcPassword: c.String("netrc-password"),

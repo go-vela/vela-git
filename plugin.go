@@ -22,6 +22,7 @@ type Plugin struct {
 	CommitSha     string // specific sha to checkout to in repository
 	CommitRef     string // specific ref generated for commit
 	Tags          bool   // allow fetching of tags
+	Submodules    bool   // allow fetching of first level submodules
 	NetrcMachine  string // netrc machine used for authentication
 	NetrcUsername string // netrc username used for authentication
 	NetrcPassword string // netrc password used for authentication
@@ -78,17 +79,31 @@ func (p Plugin) Exec() error {
 		return err
 	}
 
-	executeCommand(exec.Command("git", "init"))
-	executeCommand(exec.Command("git", "remote", "add", "origin", p.Remote))
-	executeCommand(exec.Command("git", "remote", "--verbose"))
+	if p.Submodules {
+		if p.Tags {
+			executeCommand(exec.Command("git", "fetch", "--tags", "origin", p.CommitRef))
+		} else {
+			executeCommand(exec.Command("git", "fetch", "--no-tags", "origin", p.CommitRef))
+		}
 
-	if p.Tags {
-		executeCommand(exec.Command("git", "fetch", "--tags", "origin", p.CommitRef))
+		executeCommand(exec.Command("git", "submodule", "update", "--init"))
+		executeCommand(exec.Command("git", "submodule"))
+
 	} else {
-		executeCommand(exec.Command("git", "fetch", "--no-tags", "origin", p.CommitRef))
-	}
+		executeCommand(exec.Command("git", "init"))
+		executeCommand(exec.Command("git", "remote", "add", "origin", p.Remote))
 
-	executeCommand(exec.Command("git", "reset", "--hard", p.CommitSha))
+		executeCommand(exec.Command("git", "remote", "--verbose"))
+
+		if p.Tags {
+			executeCommand(exec.Command("git", "fetch", "--tags", "origin", p.CommitRef))
+		} else {
+			executeCommand(exec.Command("git", "fetch", "--no-tags", "origin", p.CommitRef))
+		}
+
+		executeCommand(exec.Command("git", "reset", "--hard", p.CommitSha))
+
+	}
 
 	return nil
 }
