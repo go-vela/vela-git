@@ -63,10 +63,12 @@ func writeNetrc(machine, login, password string) error {
 	}
 	path := filepath.Join(home, ".netrc")
 	return ioutil.WriteFile(path, []byte(out), 0600)
+
 }
 
 // Exec formats the commands for cloning a git repository
 func (p Plugin) Exec() error {
+
 	if p.Path != "" {
 		err := os.MkdirAll(p.Path, 0777)
 		if err != nil {
@@ -79,30 +81,25 @@ func (p Plugin) Exec() error {
 		return err
 	}
 
-	if p.Submodules {
-		if p.Tags {
-			executeCommand(exec.Command("git", "fetch", "--tags", "origin", p.CommitRef))
-		} else {
-			executeCommand(exec.Command("git", "fetch", "--no-tags", "origin", p.CommitRef))
-		}
+	os.Mkdir(p.Path, 0777)
+	os.Chdir(p.Path)
 
-		executeCommand(exec.Command("git", "submodule", "update", "--init"))
-		executeCommand(exec.Command("git", "submodule"))
+	executeCommand(exec.Command("git", "init"))
 
+	executeCommand(exec.Command("git", "remote", "add", "origin", p.Remote))
+
+	executeCommand(exec.Command("git", "remote", "--verbose"))
+
+	if p.Tags {
+		executeCommand(exec.Command("git", "fetch", "--tags", "origin", p.CommitRef))
 	} else {
-		executeCommand(exec.Command("git", "init"))
-		executeCommand(exec.Command("git", "remote", "add", "origin", p.Remote))
+		executeCommand(exec.Command("git", "fetch", "--no-tags", "origin", p.CommitRef))
+	}
 
-		executeCommand(exec.Command("git", "remote", "--verbose"))
+	executeCommand(exec.Command("git", "reset", "--hard", p.CommitSha))
 
-		if p.Tags {
-			executeCommand(exec.Command("git", "fetch", "--tags", "origin", p.CommitRef))
-		} else {
-			executeCommand(exec.Command("git", "fetch", "--no-tags", "origin", p.CommitRef))
-		}
-
-		executeCommand(exec.Command("git", "reset", "--hard", p.CommitSha))
-
+	if p.Submodules {
+		executeCommand(exec.Command("git", "submodule", "update", "--init"))
 	}
 
 	return nil
