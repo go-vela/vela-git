@@ -81,8 +81,10 @@ func (p Plugin) Exec() error {
 		return err
 	}
 
-	os.Mkdir(p.Path, 0777)
-	os.Chdir(p.Path)
+	err = os.Chdir(p.Path)
+	if err != nil {
+		return err
+	}
 
 	executeCommand(exec.Command("git", "init"))
 
