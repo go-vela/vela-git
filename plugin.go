@@ -22,6 +22,7 @@ type Plugin struct {
 	CommitSha     string // specific sha to checkout to in repository
 	CommitRef     string // specific ref generated for commit
 	Tags          bool   // allow fetching of tags
+	Submodules    bool   // allow fetching of first level submodules
 	NetrcMachine  string // netrc machine used for authentication
 	NetrcUsername string // netrc username used for authentication
 	NetrcPassword string // netrc password used for authentication
@@ -62,10 +63,12 @@ func writeNetrc(machine, login, password string) error {
 	}
 	path := filepath.Join(home, ".netrc")
 	return ioutil.WriteFile(path, []byte(out), 0600)
+
 }
 
 // Exec formats the commands for cloning a git repository
 func (p Plugin) Exec() error {
+
 	if p.Path != "" {
 		err := os.MkdirAll(p.Path, 0777)
 		if err != nil {
@@ -78,8 +81,15 @@ func (p Plugin) Exec() error {
 		return err
 	}
 
+	err = os.Chdir(p.Path)
+	if err != nil {
+		return err
+	}
+
 	executeCommand(exec.Command("git", "init"))
+
 	executeCommand(exec.Command("git", "remote", "add", "origin", p.Remote))
+
 	executeCommand(exec.Command("git", "remote", "--verbose"))
 
 	if p.Tags {
@@ -89,6 +99,10 @@ func (p Plugin) Exec() error {
 	}
 
 	executeCommand(exec.Command("git", "reset", "--hard", p.CommitSha))
+
+	if p.Submodules {
+		executeCommand(exec.Command("git", "submodule", "update", "--init"))
+	}
 
 	return nil
 }
