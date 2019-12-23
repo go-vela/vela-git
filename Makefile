@@ -23,14 +23,14 @@ clean:
 #################################
 binary-build:
 
-	GOOS=linux CGO_ENABLED=0 go build -o release/git-plugin github.com/go-vela/vela-git
+	GOOS=linux CGO_ENABLED=0 go build -o release/vela-git github.com/go-vela/vela-git
 
 #################################
 ######    Docker Build     ######
 #################################
 docker-build:
 
-	docker build --no-cache -t git-plugin:local .
+	docker build --no-cache -t vela-git:local .
 
 #################################
 ######     Docker Run      ######
@@ -48,7 +48,7 @@ docker-run:
 		-e VELA_NETRC_MACHINE \
 		-e VELA_NETRC_USERNAME \
 		-e VELA_NETRC_PASSWORD \
-		git-plugin:local
+		vela-git:local
 
 docker-example:
 
@@ -62,4 +62,4 @@ docker-example:
 		-e VELA_NETRC_MACHINE \
 		-e VELA_NETRC_USERNAME \
 		-e VELA_NETRC_PASSWORD \
-		git-plugin:local
+		vela-git:local
