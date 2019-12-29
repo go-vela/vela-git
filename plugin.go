@@ -15,17 +15,46 @@ import (
 	"strings"
 )
 
-// Plugin represents a one to one mapping of the CLI flags.
+// Default represents the CLI flags provided by default from Vela.
+type Default struct {
+	// path to clone repository to
+	Path string
+	// commit ref generated for commit
+	Ref string
+	// remote url for repository
+	Remote string
+	// commit sha to checkout to in repository
+	Sha string
+}
+
+// Netrc represents the CLI flags used for creating the .netrc file.
+//
+// https://www.gnu.org/software/inetutils/manual/html_node/The-_002enetrc-file.html
+type Netrc struct {
+	// remote machine name to communicate with
+	Machine string
+	// user name for communication with the remote machine
+	Username string
+	// password for communication with the remote machine
+	Password string
+}
+
+// Optional represents the CLI flags to enable extra plugin functionality.
+type Optional struct {
+	// enable fetching of submodules
+	Submodules bool
+	// enable fetching of tags
+	Tags bool
+}
+
+// Plugin represents the CLI flags loaded for the plugin.
 type Plugin struct {
-	Remote        string // remote url for repository
-	Path          string // local path to clone repository too
-	CommitSha     string // specific sha to checkout to in repository
-	CommitRef     string // specific ref generated for commit
-	Tags          bool   // allow fetching of tags
-	Submodules    bool   // allow fetching of first level submodules
-	NetrcMachine  string // netrc machine used for authentication
-	NetrcUsername string // netrc username used for authentication
-	NetrcPassword string // netrc password used for authentication
+	// default arguments loaded for the plugin
+	Default *Default
+	// netrc arguments loaded for the plugin
+	Netrc *Netrc
+	// optional arguments loaded for the plugin
+	Optional *Optional
 }
 
 // executeCommand runs the provided command and sanitizes the output.
@@ -69,38 +98,38 @@ func writeNetrc(machine, login, password string) error {
 // Exec formats the commands for cloning a git repository
 func (p Plugin) Exec() error {
 
-	if p.Path != "" {
-		err := os.MkdirAll(p.Path, 0777)
+	if len(p.Default.Path) == 0 {
+		err := os.MkdirAll(p.Default.Path, 0777)
 		if err != nil {
 			return err
 		}
 	}
 
-	err := writeNetrc(p.NetrcMachine, p.NetrcUsername, p.NetrcPassword)
+	err := writeNetrc(p.Netrc.Machine, p.Netrc.Username, p.Netrc.Password)
 	if err != nil {
 		return err
 	}
 
-	err = os.Chdir(p.Path)
+	err = os.Chdir(p.Default.Path)
 	if err != nil {
 		return err
 	}
 
 	executeCommand(exec.Command("git", "init"))
 
-	executeCommand(exec.Command("git", "remote", "add", "origin", p.Remote))
+	executeCommand(exec.Command("git", "remote", "add", "origin", p.Default.Remote))
 
 	executeCommand(exec.Command("git", "remote", "--verbose"))
 
-	if p.Tags {
-		executeCommand(exec.Command("git", "fetch", "--tags", "origin", p.CommitRef))
+	if p.Optional.Tags {
+		executeCommand(exec.Command("git", "fetch", "--tags", "origin", p.Default.Ref))
 	} else {
-		executeCommand(exec.Command("git", "fetch", "--no-tags", "origin", p.CommitRef))
+		executeCommand(exec.Command("git", "fetch", "--no-tags", "origin", p.Default.Ref))
 	}
 
-	executeCommand(exec.Command("git", "reset", "--hard", p.CommitSha))
+	executeCommand(exec.Command("git", "reset", "--hard", p.Default.Sha))
 
-	if p.Submodules {
+	if p.Optional.Submodules {
 		executeCommand(exec.Command("git", "submodule", "update", "--init"))
 	}
 
