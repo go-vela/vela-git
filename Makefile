@@ -23,7 +23,7 @@ clean:
 #################################
 binary-build:
 
-	GOOS=linux CGO_ENABLED=0 go build -o release/vela-git github.com/go-vela/vela-git
+	GOOS=linux CGO_ENABLED=0 go build -o release/vela-git github.com/go-vela/vela-git/cmd/vela-git
 
 #################################
 ######    Docker Build     ######
