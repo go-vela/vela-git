@@ -86,6 +86,12 @@ func main() {
 
 		// Optional Flags
 
+		cli.StringFlag{
+			EnvVar: "PARAMETER_LOG_LEVEL,VELA_LOG_LEVEL,GIT_LOG_LEVEL",
+			Name:   "log.level",
+			Usage:  "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
+			Value:  "info",
+		},
 		cli.BoolFlag{
 			EnvVar: "PARAMETER_SUBMODULES",
 			Name:   "submodules",
@@ -105,6 +111,26 @@ func main() {
 
 // run executes the plugin based off the configuration provided.
 func run(c *cli.Context) error {
+	// set the log level for the plugin
+	switch c.String("log.level") {
+	case "t", "trace", "Trace", "TRACE":
+		logrus.SetLevel(logrus.TraceLevel)
+	case "d", "debug", "Debug", "DEBUG":
+		logrus.SetLevel(logrus.DebugLevel)
+	case "w", "warn", "Warn", "WARN":
+		logrus.SetLevel(logrus.WarnLevel)
+	case "e", "error", "Error", "ERROR":
+		logrus.SetLevel(logrus.ErrorLevel)
+	case "f", "fatal", "Fatal", "FATAL":
+		logrus.SetLevel(logrus.FatalLevel)
+	case "p", "panic", "Panic", "PANIC":
+		logrus.SetLevel(logrus.PanicLevel)
+	case "i", "info", "Info", "INFO":
+		fallthrough
+	default:
+		logrus.SetLevel(logrus.InfoLevel)
+	}
+
 	// validate the CLI configuration
 	err := validate(c)
 	if err != nil {
