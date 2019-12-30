@@ -6,82 +6,124 @@ package main
 
 import (
 	"os"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
+
+	_ "github.com/joho/godotenv/autoload"
 )
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "git"
-	app.Usage = "Git plugin for cloning repositories"
+
+	// Plugin Information
+
+	app.Name = "vela-git"
+	app.HelpName = "vela-git"
+	app.Usage = "Vela Git plugin for cloning repositories"
+	app.Copyright = "Copyright (c) 2019 Target Brands, Inc. All rights reserved."
+	app.Authors = []cli.Author{
+		{
+			Name:  "Vela Admins",
+			Email: "vela@target.com",
+		},
+	}
+
+	// Plugin Metadata
+
+	app.Compiled = time.Now()
 	app.Action = run
+
+	// Plugin Flags
+
 	app.Flags = []cli.Flag{
+
+		// Default Flags
+
 		cli.StringFlag{
-			Name:   "remote",
-			Usage:  "git remote url",
-			EnvVar: "PARAMETER_REMOTE,REPOSITORY_CLONE",
-		},
-		cli.StringFlag{
-			Name:   "path",
-			Usage:  "git clone path",
-			EnvVar: "PARAMETER_PATH,BUILD_WORKSPACE",
-		},
-		cli.StringFlag{
+			EnvVar: "PARAMETER_COMMIT,BUILD_COMMIT",
 			Name:   "commit",
 			Usage:  "git commit sha",
-			EnvVar: "PARAMETER_COMMIT,BUILD_COMMIT",
 		},
 		cli.StringFlag{
-			Name:   "ref",
-			Value:  "refs/heads/master",
-			Usage:  "git commit ref",
+			EnvVar: "PARAMETER_PATH,BUILD_WORKSPACE",
+			Name:   "path",
+			Usage:  "git clone path",
+		},
+		cli.StringFlag{
 			EnvVar: "PARAMETER_REF,BUILD_REF",
+			Name:   "ref",
+			Usage:  "git commit ref",
+			Value:  "refs/heads/master",
 		},
-		cli.BoolFlag{
-			Name:   "tags",
-			Usage:  "git fetch tags",
-			EnvVar: "PARAMETER_TAGS",
+		cli.StringFlag{
+			EnvVar: "PARAMETER_REMOTE,REPOSITORY_CLONE",
+			Name:   "remote",
+			Usage:  "git remote url",
 		},
+
+		// Netrc Flags
+		//
+		// https://www.gnu.org/software/inetutils/manual/html_node/The-_002enetrc-file.html
+
+		cli.StringFlag{
+			EnvVar: "PARAMETER_NETRC_MACHINE,VELA_NETRC_MACHINE",
+			Name:   "netrc.machine",
+			Usage:  "remote machine name to communicate with",
+			Value:  "github.com",
+		},
+		cli.StringFlag{
+			EnvVar: "PARAMETER_NETRC_USERNAME,VELA_NETRC_USERNAME",
+			Name:   "netrc.username",
+			Usage:  "user name for communication with the remote machine",
+		},
+		cli.StringFlag{
+			EnvVar: "PARAMETER_NETRC_PASSWORD,VELA_NETRC_PASSWORD",
+			Name:   "netrc.password",
+			Usage:  "password for communication with the remote machine",
+		},
+
+		// Optional Flags
+
 		cli.BoolFlag{
+			EnvVar: "PARAMETER_SUBMODULES",
 			Name:   "submodules",
 			Usage:  "git update submodules",
-			EnvVar: "PARAMETER_SUBMODULES",
 		},
-		cli.StringFlag{
-			Name:   "netrc-machine",
-			Usage:  "netrc machine",
-			EnvVar: "VELA_NETRC_MACHINE",
-		},
-		cli.StringFlag{
-			Name:   "netrc-username",
-			Usage:  "netrc username",
-			EnvVar: "VELA_NETRC_USERNAME",
-		},
-		cli.StringFlag{
-			Name:   "netrc-password",
-			Usage:  "netrc password",
-			EnvVar: "VELA_NETRC_PASSWORD",
+		cli.BoolFlag{
+			EnvVar: "PARAMETER_TAGS",
+			Name:   "tags",
+			Usage:  "git fetch tags",
 		},
 	}
 
 	if err := app.Run(os.Args); err != nil {
 		logrus.Fatal(err)
 	}
-
 }
 
+// run executes the CLI
 func run(c *cli.Context) error {
 	plugin := Plugin{
-		Remote:        c.String("remote"),
-		Path:          c.String("path"),
-		CommitSha:     c.String("commit"),
-		CommitRef:     c.String("ref"),
-		Tags:          c.Bool("tags"),
-		Submodules:    c.Bool("submodules"),
-		NetrcMachine:  c.String("netrc-machine"),
-		NetrcUsername: c.String("netrc-username"),
-		NetrcPassword: c.String("netrc-password"),
+		// default arguments
+		Default: &Default{
+			Path:   c.String("path"),
+			Ref:    c.String("ref"),
+			Remote: c.String("remote"),
+			Sha:    c.String("commit"),
+		},
+		// netrc arguments
+		Netrc: &Netrc{
+			Machine:  c.String("netrc.machine"),
+			Username: c.String("netrc.username"),
+			Password: c.String("netrc.password"),
+		},
+		// optional arguments
+		Optional: &Optional{
+			Submodules: c.Bool("submodules"),
+			Tags:       c.Bool("tags"),
+		},
 	}
 
 	return plugin.Exec()
