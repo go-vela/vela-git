@@ -15,7 +15,7 @@ import (
 	"strings"
 )
 
-// Default represents the CLI flags provided by default from Vela.
+// Default represents the CLI configuration provided by default from Vela.
 type Default struct {
 	// path to clone repository to
 	Path string
@@ -27,7 +27,7 @@ type Default struct {
 	Sha string
 }
 
-// Netrc represents the CLI flags used for creating the .netrc file.
+// Netrc represents the CLI configuration used for creating the .netrc file.
 //
 // https://www.gnu.org/software/inetutils/manual/html_node/The-_002enetrc-file.html
 type Netrc struct {
@@ -39,7 +39,7 @@ type Netrc struct {
 	Password string
 }
 
-// Optional represents the CLI flags to enable extra plugin functionality.
+// Optional represents the CLI configuration to enable extra plugin functionality.
 type Optional struct {
 	// enable fetching of submodules
 	Submodules bool
@@ -47,7 +47,7 @@ type Optional struct {
 	Tags bool
 }
 
-// Plugin represents the CLI flags loaded for the plugin.
+// Plugin represents the CLI configuration loaded for the plugin.
 type Plugin struct {
 	// default arguments loaded for the plugin
 	Default *Default
