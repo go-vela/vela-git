@@ -103,9 +103,16 @@ func main() {
 	}
 }
 
-// run executes the CLI
+// run executes the plugin based off the configuration provided.
 func run(c *cli.Context) error {
-	plugin := Plugin{
+	// validate the CLI configuration
+	err := validate(c)
+	if err != nil {
+		return err
+	}
+
+	// create the plugin object
+	p := Plugin{
 		// default arguments
 		Default: &Default{
 			Path:   c.String("path"),
@@ -126,5 +133,6 @@ func run(c *cli.Context) error {
 		},
 	}
 
-	return plugin.Exec()
+	// execute the plugin
+	return p.Exec()
 }
