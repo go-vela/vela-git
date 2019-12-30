@@ -39,28 +39,30 @@ func main() {
 
 	app.Flags = []cli.Flag{
 
-		// Default Flags
+		cli.StringFlag{
+			EnvVar: "PARAMETER_LOG_LEVEL,VELA_LOG_LEVEL,GIT_LOG_LEVEL",
+			Name:   "log.level",
+			Usage:  "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
+			Value:  "info",
+		},
+
+		// Build Flags
 
 		cli.StringFlag{
-			EnvVar: "PARAMETER_COMMIT,BUILD_COMMIT",
-			Name:   "commit",
+			EnvVar: "PARAMETER_SHA,BUILD_COMMIT",
+			Name:   "build.sha",
 			Usage:  "git commit sha",
 		},
 		cli.StringFlag{
 			EnvVar: "PARAMETER_PATH,BUILD_WORKSPACE",
-			Name:   "path",
+			Name:   "build.path",
 			Usage:  "git clone path",
 		},
 		cli.StringFlag{
 			EnvVar: "PARAMETER_REF,BUILD_REF",
-			Name:   "ref",
+			Name:   "build.ref",
 			Usage:  "git commit ref",
 			Value:  "refs/heads/master",
-		},
-		cli.StringFlag{
-			EnvVar: "PARAMETER_REMOTE,REPOSITORY_CLONE",
-			Name:   "remote",
-			Usage:  "git remote url",
 		},
 
 		// Netrc Flags
@@ -84,27 +86,27 @@ func main() {
 			Usage:  "password for communication with the remote machine",
 		},
 
-		// Optional Flags
+		// Repo Flags
 
 		cli.StringFlag{
-			EnvVar: "PARAMETER_LOG_LEVEL,VELA_LOG_LEVEL,GIT_LOG_LEVEL",
-			Name:   "log.level",
-			Usage:  "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
-			Value:  "info",
+			EnvVar: "PARAMETER_REMOTE,REPOSITORY_CLONE",
+			Name:   "repo.remote",
+			Usage:  "git remote url",
 		},
 		cli.BoolFlag{
 			EnvVar: "PARAMETER_SUBMODULES",
-			Name:   "submodules",
+			Name:   "repo.submodules",
 			Usage:  "git update submodules",
 		},
 		cli.BoolFlag{
 			EnvVar: "PARAMETER_TAGS",
-			Name:   "tags",
+			Name:   "repo.tags",
 			Usage:  "git fetch tags",
 		},
 	}
 
-	if err := app.Run(os.Args); err != nil {
+	err := app.Run(os.Args)
+	if err != nil {
 		logrus.Fatal(err)
 	}
 }
@@ -139,12 +141,11 @@ func run(c *cli.Context) error {
 
 	// create the plugin object
 	p := Plugin{
-		// default arguments
-		Default: &Default{
-			Path:   c.String("path"),
-			Ref:    c.String("ref"),
-			Remote: c.String("remote"),
-			Sha:    c.String("commit"),
+		// build configuration
+		Build: &Build{
+			Path: c.String("build.path"),
+			Ref:  c.String("build.ref"),
+			Sha:  c.String("build.sha"),
 		},
 		// netrc arguments
 		Netrc: &Netrc{
@@ -152,10 +153,10 @@ func run(c *cli.Context) error {
 			Username: c.String("netrc.username"),
 			Password: c.String("netrc.password"),
 		},
-		// optional arguments
-		Optional: &Optional{
-			Submodules: c.Bool("submodules"),
-			Tags:       c.Bool("tags"),
+		Repo: &Repo{
+			Remote:     c.String("repo.remote"),
+			Submodules: c.Bool("repo.submodules"),
+			Tags:       c.Bool("repo.tags"),
 		},
 	}
 

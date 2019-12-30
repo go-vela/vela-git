@@ -15,15 +15,13 @@ import (
 	"strings"
 )
 
-// Default represents the CLI configuration provided by default from Vela.
-type Default struct {
-	// path to clone repository to
+// Build represents the CLI configuration for build information.
+type Build struct {
+	// full path to workspace
 	Path string
-	// commit ref generated for commit
+	// reference generated for commit
 	Ref string
-	// remote url for repository
-	Remote string
-	// commit sha to checkout to in repository
+	// SHA-1 hash generated for commit
 	Sha string
 }
 
@@ -39,8 +37,10 @@ type Netrc struct {
 	Password string
 }
 
-// Optional represents the CLI configuration to enable extra plugin functionality.
-type Optional struct {
+// Repo represents the CLI configuration for repo information.
+type Repo struct {
+	// full remote url for cloning
+	Remote string
 	// enable fetching of submodules
 	Submodules bool
 	// enable fetching of tags
@@ -49,12 +49,12 @@ type Optional struct {
 
 // Plugin represents the CLI configuration loaded for the plugin.
 type Plugin struct {
-	// default arguments loaded for the plugin
-	Default *Default
+	// build arguments loaded for the plugin
+	Build *Build
 	// netrc arguments loaded for the plugin
 	Netrc *Netrc
-	// optional arguments loaded for the plugin
-	Optional *Optional
+	// repo arguments loaded for the plugin
+	Repo *Repo
 }
 
 // executeCommand runs the provided command and sanitizes the output.
@@ -98,8 +98,8 @@ func writeNetrc(machine, login, password string) error {
 // Exec formats the commands for cloning a git repository
 func (p Plugin) Exec() error {
 
-	if len(p.Default.Path) == 0 {
-		err := os.MkdirAll(p.Default.Path, 0777)
+	if len(p.Build.Path) == 0 {
+		err := os.MkdirAll(p.Build.Path, 0777)
 		if err != nil {
 			return err
 		}
@@ -110,26 +110,26 @@ func (p Plugin) Exec() error {
 		return err
 	}
 
-	err = os.Chdir(p.Default.Path)
+	err = os.Chdir(p.Build.Path)
 	if err != nil {
 		return err
 	}
 
 	executeCommand(exec.Command("git", "init"))
 
-	executeCommand(exec.Command("git", "remote", "add", "origin", p.Default.Remote))
+	executeCommand(exec.Command("git", "remote", "add", "origin", p.Repo.Remote))
 
 	executeCommand(exec.Command("git", "remote", "--verbose"))
 
-	if p.Optional.Tags {
-		executeCommand(exec.Command("git", "fetch", "--tags", "origin", p.Default.Ref))
+	if p.Repo.Tags {
+		executeCommand(exec.Command("git", "fetch", "--tags", "origin", p.Build.Ref))
 	} else {
-		executeCommand(exec.Command("git", "fetch", "--no-tags", "origin", p.Default.Ref))
+		executeCommand(exec.Command("git", "fetch", "--no-tags", "origin", p.Build.Ref))
 	}
 
-	executeCommand(exec.Command("git", "reset", "--hard", p.Default.Sha))
+	executeCommand(exec.Command("git", "reset", "--hard", p.Build.Sha))
 
-	if p.Optional.Submodules {
+	if p.Repo.Submodules {
 		executeCommand(exec.Command("git", "submodule", "update", "--init"))
 	}
 
