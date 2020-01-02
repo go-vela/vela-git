@@ -7,12 +7,9 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
-	"os/exec"
 	"os/user"
 	"path/filepath"
-	"strings"
 )
 
 // Default represents the CLI configuration provided by default from Vela.
@@ -57,17 +54,6 @@ type Plugin struct {
 	Optional *Optional
 }
 
-// executeCommand runs the provided command and sanitizes the output.
-func executeCommand(e *exec.Cmd) {
-	e.Stdout = os.Stdout
-	e.Stderr = os.Stderr
-	fmt.Println("$", strings.Join(e.Args, " "))
-	err := e.Run()
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
 const netrcFile = `
 machine %s
 login %s
@@ -79,25 +65,28 @@ func writeNetrc(machine, login, password string) error {
 	if len(machine) == 0 || len(login) == 0 || len(password) == 0 {
 		return nil
 	}
+
 	out := fmt.Sprintf(
 		netrcFile,
 		machine,
 		login,
 		password,
 	)
+
 	home := "/root"
+
 	u, err := user.Current()
 	if err == nil {
 		home = u.HomeDir
 	}
-	path := filepath.Join(home, ".netrc")
-	return ioutil.WriteFile(path, []byte(out), 0600)
 
+	path := filepath.Join(home, ".netrc")
+
+	return ioutil.WriteFile(path, []byte(out), 0600)
 }
 
 // Exec formats the commands for cloning a git repository
 func (p Plugin) Exec() error {
-
 	if len(p.Default.Path) == 0 {
 		err := os.MkdirAll(p.Default.Path, 0777)
 		if err != nil {
@@ -115,22 +104,43 @@ func (p Plugin) Exec() error {
 		return err
 	}
 
-	executeCommand(exec.Command("git", "init"))
-
-	executeCommand(exec.Command("git", "remote", "add", "origin", p.Default.Remote))
-
-	executeCommand(exec.Command("git", "remote", "--verbose"))
-
-	if p.Optional.Tags {
-		executeCommand(exec.Command("git", "fetch", "--tags", "origin", p.Default.Ref))
-	} else {
-		executeCommand(exec.Command("git", "fetch", "--no-tags", "origin", p.Default.Ref))
+	err = execCmd(initCmd())
+	if err != nil {
+		return err
 	}
 
-	executeCommand(exec.Command("git", "reset", "--hard", p.Default.Sha))
+	err = execCmd(remoteAddCmd(p.Default.Remote))
+	if err != nil {
+		return err
+	}
+
+	err = execCmd(remoteVerboseCmd())
+	if err != nil {
+		return err
+	}
+
+	if p.Optional.Tags {
+		err = execCmd(fetchTagsCmd(p.Default.Ref))
+		if err != nil {
+			return err
+		}
+	} else {
+		err = execCmd(fetchNoTagsCmd(p.Default.Ref))
+		if err != nil {
+			return err
+		}
+	}
+
+	err = execCmd(resetCmd(p.Default.Sha))
+	if err != nil {
+		return err
+	}
 
 	if p.Optional.Submodules {
-		executeCommand(exec.Command("git", "submodule", "update", "--init"))
+		err = execCmd(submoduleCmd())
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
