@@ -15,8 +15,8 @@ import (
 func validate(c *cli.Context) error {
 	logrus.Debug("validating CLI configuration")
 
-	// validate default configuration
-	err := validateDefault(c)
+	// validate build configuration
+	err := validateBuild(c)
 	if err != nil {
 		return err
 	}
@@ -27,33 +27,35 @@ func validate(c *cli.Context) error {
 		return err
 	}
 
-	return nil
-}
-
-// helper function to validate the default CLI configuration.
-func validateDefault(c *cli.Context) error {
-	logrus.Trace("validating default CLI configuration")
-
-	if len(c.String("commit")) == 0 {
-		return fmt.Errorf("commit (PARAMETER_COMMIT or BUILD_COMMIT) flag is not set")
-	}
-
-	if len(c.String("path")) == 0 {
-		return fmt.Errorf("path (PARAMETER_PATH or BUILD_WORKSPACE) flag is not set")
-	}
-
-	if len(c.String("ref")) == 0 {
-		return fmt.Errorf("ref (PARAMETER_REF or BUILD_REF) flag is not set")
-	}
-
-	if len(c.String("remote")) == 0 {
-		return fmt.Errorf("remote (PARAMETER_REMOTE or REPOSITORY_CLONE) flag is not set")
+	// validate repo configuration
+	err = validateRepo(c)
+	if err != nil {
+		return err
 	}
 
 	return nil
 }
 
-// helper function to validate the netrc CLI configuration.
+// validateBuild is a helper function to validate the build CLI configuration.
+func validateBuild(c *cli.Context) error {
+	logrus.Trace("validating build CLI configuration")
+
+	if len(c.String("build.sha")) == 0 {
+		return fmt.Errorf("build.sha (PARAMETER_SHA or BUILD_COMMIT) flag is not set")
+	}
+
+	if len(c.String("build.path")) == 0 {
+		return fmt.Errorf("build.path (PARAMETER_PATH or BUILD_WORKSPACE) flag is not set")
+	}
+
+	if len(c.String("build.ref")) == 0 {
+		return fmt.Errorf("build.ref (PARAMETER_REF or BUILD_REF) flag is not set")
+	}
+
+	return nil
+}
+
+// validateNetrc is a helper function to validate the netrc CLI configuration.
 func validateNetrc(c *cli.Context) error {
 	logrus.Trace("validating netrc CLI configuration")
 
@@ -67,6 +69,17 @@ func validateNetrc(c *cli.Context) error {
 
 	if len(c.String("netrc.password")) == 0 {
 		return fmt.Errorf("netrc.password (PARAMETER_NETRC_PASSWORD or VELA_NETRC_PASSWORD) flag is not set")
+	}
+
+	return nil
+}
+
+// validateRepo is a helper function to validate the repo CLI configuration.
+func validateRepo(c *cli.Context) error {
+	logrus.Trace("validating repo CLI configuration")
+
+	if len(c.String("repo.remote")) == 0 {
+		return fmt.Errorf("repo.remote (PARAMETER_REMOTE or REPOSITORY_CLONE) flag is not set")
 	}
 
 	return nil

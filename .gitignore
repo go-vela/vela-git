@@ -1,6 +1,7 @@
 # Created by https://www.gitignore.io/api/go
 
 ### Go ###
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -15,10 +16,20 @@
 *.out
 
 ### Go Patch ###
+
 /vendor/
 /Godeps/
 
-
 # End of https://www.gitignore.io/api/go
 
+# Binary release folder
 release/
+
+# IntelliJ project folder
+.idea/
+
+# IntelliJ project files
+*.iml
+*.ipr
+*.iws
+*.xml
