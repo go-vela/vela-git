@@ -8,27 +8,26 @@ import (
 	"fmt"
 
 	"github.com/sirupsen/logrus"
-	"github.com/urfave/cli"
 )
 
-// validate is a helper function to validate the CLI configuration.
-func validate(c *cli.Context) error {
-	logrus.Debug("validating CLI configuration")
+// Validate verifies the plugin is properly configured.
+func (p *Plugin) Validate() error {
+	logrus.Debug("validating plugin configuration")
 
 	// validate build configuration
-	err := validateBuild(c)
+	err := validateBuild(p.Build)
 	if err != nil {
 		return err
 	}
 
 	// validate netrc configuration
-	err = validateNetrc(c)
+	err = validateNetrc(p.Netrc)
 	if err != nil {
 		return err
 	}
 
 	// validate repo configuration
-	err = validateRepo(c)
+	err = validateRepo(p.Repo)
 	if err != nil {
 		return err
 	}
@@ -36,50 +35,50 @@ func validate(c *cli.Context) error {
 	return nil
 }
 
-// validateBuild is a helper function to validate the build CLI configuration.
-func validateBuild(c *cli.Context) error {
-	logrus.Trace("validating build CLI configuration")
+// validateBuild is a helper function to verify the build plugin configuration.
+func validateBuild(b *Build) error {
+	logrus.Trace("validating build plugin configuration")
 
-	if len(c.String("build.sha")) == 0 {
-		return fmt.Errorf("build.sha (PARAMETER_SHA or BUILD_COMMIT) flag is not set")
+	if len(b.Path) == 0 {
+		return fmt.Errorf("no build path provided")
 	}
 
-	if len(c.String("build.path")) == 0 {
-		return fmt.Errorf("build.path (PARAMETER_PATH or BUILD_WORKSPACE) flag is not set")
+	if len(b.Sha) == 0 {
+		return fmt.Errorf("no build sha provided")
 	}
 
-	if len(c.String("build.ref")) == 0 {
-		return fmt.Errorf("build.ref (PARAMETER_REF or BUILD_REF) flag is not set")
-	}
-
-	return nil
-}
-
-// validateNetrc is a helper function to validate the netrc CLI configuration.
-func validateNetrc(c *cli.Context) error {
-	logrus.Trace("validating netrc CLI configuration")
-
-	if len(c.String("netrc.machine")) == 0 {
-		return fmt.Errorf("netrc.machine (PARAMETER_NETRC_MACHINE or VELA_NETRC_MACHINE) flag is not set")
-	}
-
-	if len(c.String("netrc.username")) == 0 {
-		return fmt.Errorf("netrc.username (PARAMETER_NETRC_USERNAME or VELA_NETRC_USERNAME) flag is not set")
-	}
-
-	if len(c.String("netrc.password")) == 0 {
-		return fmt.Errorf("netrc.password (PARAMETER_NETRC_PASSWORD or VELA_NETRC_PASSWORD) flag is not set")
+	if len(b.Ref) == 0 {
+		return fmt.Errorf("no build ref provided")
 	}
 
 	return nil
 }
 
-// validateRepo is a helper function to validate the repo CLI configuration.
-func validateRepo(c *cli.Context) error {
+// validateNetrc is a helper function to verify the netrc CLI configuration.
+func validateNetrc(n *Netrc) error {
+	logrus.Trace("validating netrc plugin configuration")
+
+	if len(n.Machine) == 0 {
+		return fmt.Errorf("no netrc machine provided")
+	}
+
+	if len(n.Username) == 0 {
+		return fmt.Errorf("no netrc username provided")
+	}
+
+	if len(n.Password) == 0 {
+		return fmt.Errorf("no netrc password provided")
+	}
+
+	return nil
+}
+
+// validateRepo is a helper function to verify the repo CLI configuration.
+func validateRepo(r *Repo) error {
 	logrus.Trace("validating repo CLI configuration")
 
-	if len(c.String("repo.remote")) == 0 {
-		return fmt.Errorf("repo.remote (PARAMETER_REMOTE or REPOSITORY_CLONE) flag is not set")
+	if len(r.Remote) == 0 {
+		return fmt.Errorf("no repo remote provided")
 	}
 
 	return nil

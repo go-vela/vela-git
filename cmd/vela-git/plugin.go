@@ -86,7 +86,7 @@ func writeNetrc(machine, login, password string) error {
 }
 
 // Exec formats the commands for cloning a git repository
-func (p Plugin) Exec() error {
+func (p *Plugin) Exec() error {
 	if len(p.Build.Path) == 0 {
 		err := os.MkdirAll(p.Build.Path, 0777)
 		if err != nil {
