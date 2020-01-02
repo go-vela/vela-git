@@ -12,19 +12,17 @@ import (
 	"path/filepath"
 )
 
-// Default represents the CLI configuration provided by default from Vela.
-type Default struct {
-	// path to clone repository to
+// Build represents the CLI configuration for build information.
+type Build struct {
+	// full path to workspace
 	Path string
-	// commit ref generated for commit
+	// reference generated for commit
 	Ref string
-	// remote url for repository
-	Remote string
-	// commit sha to checkout to in repository
+	// SHA-1 hash generated for commit
 	Sha string
 }
 
-// Netrc represents the CLI configuration used for creating the .netrc file.
+// Netrc represents the CLI configuration for netrc information used for creating the .netrc file.
 //
 // https://www.gnu.org/software/inetutils/manual/html_node/The-_002enetrc-file.html
 type Netrc struct {
@@ -36,8 +34,10 @@ type Netrc struct {
 	Password string
 }
 
-// Optional represents the CLI configuration to enable extra plugin functionality.
-type Optional struct {
+// Repo represents the CLI configuration for repo information.
+type Repo struct {
+	// full remote url for cloning
+	Remote string
 	// enable fetching of submodules
 	Submodules bool
 	// enable fetching of tags
@@ -46,12 +46,12 @@ type Optional struct {
 
 // Plugin represents the CLI configuration loaded for the plugin.
 type Plugin struct {
-	// default arguments loaded for the plugin
-	Default *Default
+	// build arguments loaded for the plugin
+	Build *Build
 	// netrc arguments loaded for the plugin
 	Netrc *Netrc
-	// optional arguments loaded for the plugin
-	Optional *Optional
+	// repo arguments loaded for the plugin
+	Repo *Repo
 }
 
 const netrcFile = `
@@ -87,8 +87,8 @@ func writeNetrc(machine, login, password string) error {
 
 // Exec formats the commands for cloning a git repository
 func (p Plugin) Exec() error {
-	if len(p.Default.Path) == 0 {
-		err := os.MkdirAll(p.Default.Path, 0777)
+	if len(p.Build.Path) == 0 {
+		err := os.MkdirAll(p.Build.Path, 0777)
 		if err != nil {
 			return err
 		}
@@ -99,7 +99,7 @@ func (p Plugin) Exec() error {
 		return err
 	}
 
-	err = os.Chdir(p.Default.Path)
+	err = os.Chdir(p.Build.Path)
 	if err != nil {
 		return err
 	}
@@ -109,7 +109,7 @@ func (p Plugin) Exec() error {
 		return err
 	}
 
-	err = execCmd(remoteAddCmd(p.Default.Remote))
+	err = execCmd(remoteAddCmd(p.Repo.Remote))
 	if err != nil {
 		return err
 	}
@@ -119,24 +119,24 @@ func (p Plugin) Exec() error {
 		return err
 	}
 
-	if p.Optional.Tags {
-		err = execCmd(fetchTagsCmd(p.Default.Ref))
+	if p.Repo.Tags {
+		err = execCmd(fetchTagsCmd(p.Build.Ref))
 		if err != nil {
 			return err
 		}
 	} else {
-		err = execCmd(fetchNoTagsCmd(p.Default.Ref))
+		err = execCmd(fetchNoTagsCmd(p.Build.Ref))
 		if err != nil {
 			return err
 		}
 	}
 
-	err = execCmd(resetCmd(p.Default.Sha))
+	err = execCmd(resetCmd(p.Build.Sha))
 	if err != nil {
 		return err
 	}
 
-	if p.Optional.Submodules {
+	if p.Repo.Submodules {
 		err = execCmd(submoduleCmd())
 		if err != nil {
 			return err
