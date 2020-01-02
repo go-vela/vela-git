@@ -131,14 +131,8 @@ func run(c *cli.Context) error {
 		logrus.SetLevel(logrus.InfoLevel)
 	}
 
-	// validate the CLI configuration
-	err := validate(c)
-	if err != nil {
-		return err
-	}
-
 	// create the plugin object
-	p := Plugin{
+	p := &Plugin{
 		// build configuration
 		Build: &Build{
 			Path: c.String("build.path"),
@@ -157,6 +151,12 @@ func run(c *cli.Context) error {
 			Submodules: c.Bool("repo.submodules"),
 			Tags:       c.Bool("repo.tags"),
 		},
+	}
+
+	// validate the plugin configuration
+	err := p.Validate()
+	if err != nil {
+		return err
 	}
 
 	// execute the plugin
