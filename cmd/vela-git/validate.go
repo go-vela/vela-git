@@ -43,12 +43,12 @@ func validateBuild(b *Build) error {
 		return fmt.Errorf("no build path provided")
 	}
 
-	if len(b.Sha) == 0 {
-		return fmt.Errorf("no build sha provided")
-	}
-
 	if len(b.Ref) == 0 {
 		return fmt.Errorf("no build ref provided")
+	}
+
+	if len(b.Sha) == 0 {
+		return fmt.Errorf("no build sha provided")
 	}
 
 	return nil
@@ -75,7 +75,7 @@ func validateNetrc(n *Netrc) error {
 
 // validateRepo is a helper function to verify the repo CLI configuration.
 func validateRepo(r *Repo) error {
-	logrus.Trace("validating repo CLI configuration")
+	logrus.Trace("validating repo plugin configuration")
 
 	if len(r.Remote) == 0 {
 		return fmt.Errorf("no repo remote provided")
