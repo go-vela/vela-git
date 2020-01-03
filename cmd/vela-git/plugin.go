@@ -15,18 +15,6 @@ import (
 
 var appFS = afero.NewOsFs()
 
-// Netrc represents the CLI configuration for netrc information used for creating the .netrc file.
-//
-// https://www.gnu.org/software/inetutils/manual/html_node/The-_002enetrc-file.html
-type Netrc struct {
-	// remote machine name to communicate with
-	Machine string
-	// user name for communication with the remote machine
-	Username string
-	// password for communication with the remote machine
-	Password string
-}
-
 // Plugin represents the CLI configuration loaded for the plugin.
 type Plugin struct {
 	// build arguments loaded for the plugin

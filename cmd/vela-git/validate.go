@@ -5,8 +5,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/sirupsen/logrus"
 )
 
@@ -21,7 +19,7 @@ func (p *Plugin) Validate() error {
 	}
 
 	// validate netrc configuration
-	err = validateNetrc(p.Netrc)
+	err = p.Netrc.Validate()
 	if err != nil {
 		return err
 	}
@@ -30,25 +28,6 @@ func (p *Plugin) Validate() error {
 	err = p.Repo.Validate()
 	if err != nil {
 		return err
-	}
-
-	return nil
-}
-
-// validateNetrc is a helper function to verify the netrc CLI configuration.
-func validateNetrc(n *Netrc) error {
-	logrus.Trace("validating netrc plugin configuration")
-
-	if len(n.Machine) == 0 {
-		return fmt.Errorf("no netrc machine provided")
-	}
-
-	if len(n.Username) == 0 {
-		return fmt.Errorf("no netrc username provided")
-	}
-
-	if len(n.Password) == 0 {
-		return fmt.Errorf("no netrc password provided")
 	}
 
 	return nil
