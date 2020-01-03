@@ -6,11 +6,14 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/user"
 	"path/filepath"
+
+	"github.com/spf13/afero"
 )
+
+var appFS = afero.NewOsFs()
 
 // Build represents the CLI configuration for build information.
 type Build struct {
@@ -62,6 +65,10 @@ password %s
 
 // writeNetrc creates a netrc file and returns the file.
 func writeNetrc(machine, login, password string) error {
+	a := &afero.Afero{
+		Fs: appFS,
+	}
+
 	if len(machine) == 0 || len(login) == 0 || len(password) == 0 {
 		return nil
 	}
@@ -82,7 +89,7 @@ func writeNetrc(machine, login, password string) error {
 
 	path := filepath.Join(home, ".netrc")
 
-	return ioutil.WriteFile(path, []byte(out), 0600)
+	return a.WriteFile(path, []byte(out), 0600)
 }
 
 // Exec formats the commands for cloning a git repository
