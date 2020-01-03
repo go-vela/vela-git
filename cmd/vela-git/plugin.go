@@ -5,47 +5,14 @@
 package main
 
 import (
-	"fmt"
 	"os"
-	"os/user"
-	"path/filepath"
+
+	"github.com/sirupsen/logrus"
 
 	"github.com/spf13/afero"
 )
 
 var appFS = afero.NewOsFs()
-
-// Build represents the CLI configuration for build information.
-type Build struct {
-	// full path to workspace
-	Path string
-	// reference generated for commit
-	Ref string
-	// SHA-1 hash generated for commit
-	Sha string
-}
-
-// Netrc represents the CLI configuration for netrc information used for creating the .netrc file.
-//
-// https://www.gnu.org/software/inetutils/manual/html_node/The-_002enetrc-file.html
-type Netrc struct {
-	// remote machine name to communicate with
-	Machine string
-	// user name for communication with the remote machine
-	Username string
-	// password for communication with the remote machine
-	Password string
-}
-
-// Repo represents the CLI configuration for repo information.
-type Repo struct {
-	// full remote url for cloning
-	Remote string
-	// enable fetching of submodules
-	Submodules bool
-	// enable fetching of tags
-	Tags bool
-}
 
 // Plugin represents the CLI configuration loaded for the plugin.
 type Plugin struct {
@@ -57,41 +24,6 @@ type Plugin struct {
 	Repo *Repo
 }
 
-const netrcFile = `
-machine %s
-login %s
-password %s
-`
-
-// writeNetrc creates a netrc file and returns the file.
-func writeNetrc(machine, login, password string) error {
-	a := &afero.Afero{
-		Fs: appFS,
-	}
-
-	if len(machine) == 0 || len(login) == 0 || len(password) == 0 {
-		return nil
-	}
-
-	out := fmt.Sprintf(
-		netrcFile,
-		machine,
-		login,
-		password,
-	)
-
-	home := "/root"
-
-	u, err := user.Current()
-	if err == nil {
-		home = u.HomeDir
-	}
-
-	path := filepath.Join(home, ".netrc")
-
-	return a.WriteFile(path, []byte(out), 0600)
-}
-
 // Exec formats the commands for cloning a git repository
 func (p *Plugin) Exec() error {
 	if len(p.Build.Path) == 0 {
@@ -101,7 +33,7 @@ func (p *Plugin) Exec() error {
 		}
 	}
 
-	err := writeNetrc(p.Netrc.Machine, p.Netrc.Username, p.Netrc.Password)
+	err := p.Netrc.Write()
 	if err != nil {
 		return err
 	}
@@ -148,6 +80,31 @@ func (p *Plugin) Exec() error {
 		if err != nil {
 			return err
 		}
+	}
+
+	return nil
+}
+
+// Validate verifies the plugin is properly configured.
+func (p *Plugin) Validate() error {
+	logrus.Debug("validating plugin configuration")
+
+	// validate build configuration
+	err := p.Build.Validate()
+	if err != nil {
+		return err
+	}
+
+	// validate netrc configuration
+	err = p.Netrc.Validate()
+	if err != nil {
+		return err
+	}
+
+	// validate repo configuration
+	err = p.Repo.Validate()
+	if err != nil {
+		return err
 	}
 
 	return nil
