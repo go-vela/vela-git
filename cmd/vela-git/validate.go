@@ -15,7 +15,8 @@ func (p *Plugin) Validate() error {
 	logrus.Debug("validating plugin configuration")
 
 	// validate build configuration
-	err := validateBuild(p.Build)
+
+	err := p.Build.Validate()
 	if err != nil {
 		return err
 	}
@@ -30,25 +31,6 @@ func (p *Plugin) Validate() error {
 	err = validateRepo(p.Repo)
 	if err != nil {
 		return err
-	}
-
-	return nil
-}
-
-// validateBuild is a helper function to verify the build plugin configuration.
-func validateBuild(b *Build) error {
-	logrus.Trace("validating build plugin configuration")
-
-	if len(b.Path) == 0 {
-		return fmt.Errorf("no build path provided")
-	}
-
-	if len(b.Ref) == 0 {
-		return fmt.Errorf("no build ref provided")
-	}
-
-	if len(b.Sha) == 0 {
-		return fmt.Errorf("no build sha provided")
 	}
 
 	return nil

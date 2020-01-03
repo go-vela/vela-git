@@ -15,16 +15,6 @@ import (
 
 var appFS = afero.NewOsFs()
 
-// Build represents the CLI configuration for build information.
-type Build struct {
-	// full path to workspace
-	Path string
-	// reference generated for commit
-	Ref string
-	// SHA-1 hash generated for commit
-	Sha string
-}
-
 // Netrc represents the CLI configuration for netrc information used for creating the .netrc file.
 //
 // https://www.gnu.org/software/inetutils/manual/html_node/The-_002enetrc-file.html
