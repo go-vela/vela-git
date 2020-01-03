@@ -5,10 +5,7 @@
 package main
 
 import (
-	"fmt"
 	"os"
-	"os/user"
-	"path/filepath"
 
 	"github.com/spf13/afero"
 )
@@ -25,41 +22,6 @@ type Plugin struct {
 	Repo *Repo
 }
 
-const netrcFile = `
-machine %s
-login %s
-password %s
-`
-
-// writeNetrc creates a netrc file and returns the file.
-func writeNetrc(machine, login, password string) error {
-	a := &afero.Afero{
-		Fs: appFS,
-	}
-
-	if len(machine) == 0 || len(login) == 0 || len(password) == 0 {
-		return nil
-	}
-
-	out := fmt.Sprintf(
-		netrcFile,
-		machine,
-		login,
-		password,
-	)
-
-	home := "/root"
-
-	u, err := user.Current()
-	if err == nil {
-		home = u.HomeDir
-	}
-
-	path := filepath.Join(home, ".netrc")
-
-	return a.WriteFile(path, []byte(out), 0600)
-}
-
 // Exec formats the commands for cloning a git repository
 func (p *Plugin) Exec() error {
 	if len(p.Build.Path) == 0 {
@@ -69,7 +31,7 @@ func (p *Plugin) Exec() error {
 		}
 	}
 
-	err := writeNetrc(p.Netrc.Machine, p.Netrc.Username, p.Netrc.Password)
+	err := p.Netrc.Write()
 	if err != nil {
 		return err
 	}

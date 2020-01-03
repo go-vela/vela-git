@@ -2,9 +2,19 @@ package main
 
 import (
 	"fmt"
+	"os/user"
+	"path/filepath"
+
+	"github.com/spf13/afero"
 
 	"github.com/sirupsen/logrus"
 )
+
+const netrcFile = `
+machine %s
+login %s
+password %s
+`
 
 // Netrc represents the netrc configuration used for creating the .netrc file.
 //
@@ -35,4 +45,33 @@ func (n *Netrc) Validate() error {
 	}
 
 	return nil
+}
+
+// Write creates a .netrc file in the home directory of the current user.
+func (n *Netrc) Write() error {
+	a := &afero.Afero{
+		Fs: appFS,
+	}
+
+	if len(n.Machine) == 0 || len(n.Username) == 0 || len(n.Password) == 0 {
+		return nil
+	}
+
+	out := fmt.Sprintf(
+		netrcFile,
+		n.Machine,
+		n.Username,
+		n.Password,
+	)
+
+	home := "/root"
+
+	u, err := user.Current()
+	if err == nil {
+		home = u.HomeDir
+	}
+
+	path := filepath.Join(home, ".netrc")
+
+	return a.WriteFile(path, []byte(out), 0600)
 }
