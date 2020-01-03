@@ -15,7 +15,6 @@ func (p *Plugin) Validate() error {
 	logrus.Debug("validating plugin configuration")
 
 	// validate build configuration
-
 	err := p.Build.Validate()
 	if err != nil {
 		return err
@@ -28,7 +27,7 @@ func (p *Plugin) Validate() error {
 	}
 
 	// validate repo configuration
-	err = validateRepo(p.Repo)
+	err = p.Repo.Validate()
 	if err != nil {
 		return err
 	}
@@ -50,17 +49,6 @@ func validateNetrc(n *Netrc) error {
 
 	if len(n.Password) == 0 {
 		return fmt.Errorf("no netrc password provided")
-	}
-
-	return nil
-}
-
-// validateRepo is a helper function to verify the repo CLI configuration.
-func validateRepo(r *Repo) error {
-	logrus.Trace("validating repo plugin configuration")
-
-	if len(r.Remote) == 0 {
-		return fmt.Errorf("no repo remote provided")
 	}
 
 	return nil

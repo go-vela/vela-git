@@ -27,16 +27,6 @@ type Netrc struct {
 	Password string
 }
 
-// Repo represents the CLI configuration for repo information.
-type Repo struct {
-	// full remote url for cloning
-	Remote string
-	// enable fetching of submodules
-	Submodules bool
-	// enable fetching of tags
-	Tags bool
-}
-
 // Plugin represents the CLI configuration loaded for the plugin.
 type Plugin struct {
 	// build arguments loaded for the plugin
