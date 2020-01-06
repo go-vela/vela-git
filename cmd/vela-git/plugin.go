@@ -14,7 +14,7 @@ import (
 
 var appFS = afero.NewOsFs()
 
-// Plugin represents the CLI configuration loaded for the plugin.
+// Plugin represents the configuration loaded for the plugin.
 type Plugin struct {
 	// build arguments loaded for the plugin
 	Build *Build
@@ -24,8 +24,10 @@ type Plugin struct {
 	Repo *Repo
 }
 
-// Exec formats the commands for cloning a git repository
+// Exec formats and runs the commands for cloning a git repository.
 func (p *Plugin) Exec() error {
+	logrus.Debug("running plugin with provided configuration")
+
 	if len(p.Build.Path) > 0 {
 		err := os.MkdirAll(p.Build.Path, 0777)
 		if err != nil {
