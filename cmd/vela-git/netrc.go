@@ -53,6 +53,8 @@ func (n *Netrc) Validate() error {
 
 // Write creates a .netrc file in the home directory of the current user.
 func (n *Netrc) Write() error {
+	logrus.Trace("writing netrc configuration file")
+
 	a := &afero.Afero{
 		Fs: appFS,
 	}

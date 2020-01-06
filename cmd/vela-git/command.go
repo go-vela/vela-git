@@ -9,11 +9,15 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/sirupsen/logrus"
 )
 
 // execCmd is a helper function to
 // run the provided command.
 func execCmd(e *exec.Cmd) error {
+	logrus.Tracef("executing cmd %s", strings.Join(e.Args, " "))
+
 	e.Stdout = os.Stdout
 	e.Stderr = os.Stderr
 
@@ -26,6 +30,8 @@ func execCmd(e *exec.Cmd) error {
 // download all objects, including tags,
 // from the ref for a git repo.
 func fetchTagsCmd(ref string) *exec.Cmd {
+	logrus.Trace("returning fetchTagsCmd")
+
 	return exec.Command(
 		"git",
 		"fetch",
@@ -39,6 +45,8 @@ func fetchTagsCmd(ref string) *exec.Cmd {
 // download all objects, excluding tags,
 // from the ref for a git repo.
 func fetchNoTagsCmd(ref string) *exec.Cmd {
+	logrus.Trace("returning fetchNoTagsCmd")
+
 	return exec.Command(
 		"git",
 		"fetch",
@@ -52,6 +60,8 @@ func fetchNoTagsCmd(ref string) *exec.Cmd {
 // create an empty or reinitialize
 // an existing git repo.
 func initCmd() *exec.Cmd {
+	logrus.Trace("returning initCmd")
+
 	return exec.Command(
 		"git",
 		"init",
@@ -61,6 +71,8 @@ func initCmd() *exec.Cmd {
 // remoteAddCmd is a helper function to
 // add a remote for a git repo.
 func remoteAddCmd(remote string) *exec.Cmd {
+	logrus.Trace("returning remoteAddCmd")
+
 	return exec.Command(
 		"git",
 		"remote",
@@ -73,6 +85,8 @@ func remoteAddCmd(remote string) *exec.Cmd {
 // remoteVerboseCmd is a helper function to
 // output al remotes for a git repo.
 func remoteVerboseCmd() *exec.Cmd {
+	logrus.Trace("returning remoteVerboseCmd")
+
 	return exec.Command(
 		"git",
 		"remote",
@@ -84,6 +98,8 @@ func remoteVerboseCmd() *exec.Cmd {
 // hard reset the current HEAD to
 // the sha for a git repo.
 func resetCmd(sha string) *exec.Cmd {
+	logrus.Trace("returning resetCmd")
+
 	return exec.Command(
 		"git",
 		"reset",
@@ -96,6 +112,8 @@ func resetCmd(sha string) *exec.Cmd {
 // update the registered submodules to
 // the expected states for a git repo.
 func submoduleCmd() *exec.Cmd {
+	logrus.Trace("returning submoduleCmd")
+
 	return exec.Command(
 		"git",
 		"submodule",

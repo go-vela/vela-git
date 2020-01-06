@@ -131,7 +131,7 @@ func run(c *cli.Context) error {
 		logrus.SetLevel(logrus.InfoLevel)
 	}
 
-	// create the plugin object
+	// create the plugin
 	p := &Plugin{
 		// build configuration
 		Build: &Build{
@@ -153,7 +153,7 @@ func run(c *cli.Context) error {
 		},
 	}
 
-	// validate the plugin configuration
+	// validate the plugin
 	err := p.Validate()
 	if err != nil {
 		return err
