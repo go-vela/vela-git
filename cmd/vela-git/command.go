@@ -18,9 +18,12 @@ import (
 func execCmd(e *exec.Cmd) error {
 	logrus.Tracef("executing cmd %s", strings.Join(e.Args, " "))
 
+	// set command stdout to OS stdout
 	e.Stdout = os.Stdout
+	// set command stderr to OS stderr
 	e.Stderr = os.Stderr
 
+	// output "trace" string for command
 	fmt.Println("$", strings.Join(e.Args, " "))
 
 	return e.Run()

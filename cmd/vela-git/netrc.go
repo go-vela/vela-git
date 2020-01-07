@@ -36,14 +36,17 @@ type Netrc struct {
 func (n *Netrc) Validate() error {
 	logrus.Trace("validating netrc plugin configuration")
 
+	// verify machine is provided
 	if len(n.Machine) == 0 {
 		return fmt.Errorf("no netrc machine provided")
 	}
 
+	// verify username is provided
 	if len(n.Username) == 0 {
 		return fmt.Errorf("no netrc username provided")
 	}
 
+	// verify password is provided
 	if len(n.Password) == 0 {
 		return fmt.Errorf("no netrc password provided")
 	}
@@ -55,14 +58,17 @@ func (n *Netrc) Validate() error {
 func (n *Netrc) Write() error {
 	logrus.Trace("writing netrc configuration file")
 
+	// use custom filesystem which enables us to test
 	a := &afero.Afero{
 		Fs: appFS,
 	}
 
+	// check if machine, username and password are provided
 	if len(n.Machine) == 0 || len(n.Username) == 0 || len(n.Password) == 0 {
 		return nil
 	}
 
+	// create output string for .netrc file
 	out := fmt.Sprintf(
 		netrcFile,
 		n.Machine,
@@ -70,13 +76,17 @@ func (n *Netrc) Write() error {
 		n.Password,
 	)
 
+	// set default home directory for root user
 	home := "/root"
 
+	// capture current user running commands
 	u, err := user.Current()
 	if err == nil {
+		// set home directory to current user
 		home = u.HomeDir
 	}
 
+	// create full path for .netrc file
 	path := filepath.Join(home, ".netrc")
 
 	return a.WriteFile(path, []byte(out), 0600)

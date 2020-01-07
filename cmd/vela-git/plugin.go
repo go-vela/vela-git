@@ -28,56 +28,69 @@ type Plugin struct {
 func (p *Plugin) Exec() error {
 	logrus.Debug("running plugin with provided configuration")
 
+	// check if a build path is provided
 	if len(p.Build.Path) > 0 {
+		// send OS call to create path to build directory
 		err := os.MkdirAll(p.Build.Path, 0777)
 		if err != nil {
 			return err
 		}
 	}
 
+	// create .netrc file for authentication
 	err := p.Netrc.Write()
 	if err != nil {
 		return err
 	}
 
+	// send OS call to change working directory to build directory
 	err = os.Chdir(p.Build.Path)
 	if err != nil {
 		return err
 	}
 
+	// initialize git repo
 	err = execCmd(initCmd())
 	if err != nil {
 		return err
 	}
 
+	// add remote to git repo
 	err = execCmd(remoteAddCmd(p.Repo.Remote))
 	if err != nil {
 		return err
 	}
 
+	// output remotes for git repo
 	err = execCmd(remoteVerboseCmd())
 	if err != nil {
 		return err
 	}
 
+	// check if repo tags are enabled
 	if p.Repo.Tags {
+		// fetch repo state with tags
 		err = execCmd(fetchTagsCmd(p.Build.Ref))
 		if err != nil {
 			return err
 		}
 	} else {
+		// fetch repo state without tags
 		err = execCmd(fetchNoTagsCmd(p.Build.Ref))
 		if err != nil {
 			return err
 		}
 	}
 
+	// hard reset current state to build commit
 	err = execCmd(resetCmd(p.Build.Sha))
 	if err != nil {
 		return err
 	}
 
+	// check if repo submodules are enabled
 	if p.Repo.Submodules {
+		// update submodules to expected state
 		err = execCmd(submoduleCmd())
 		if err != nil {
 			return err

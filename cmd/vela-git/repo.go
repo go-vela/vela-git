@@ -24,6 +24,7 @@ type Repo struct {
 func (r *Repo) Validate() error {
 	logrus.Trace("validating repo plugin configuration")
 
+	// verify remote is provided
 	if len(r.Remote) == 0 {
 		return fmt.Errorf("no repo remote provided")
 	}
