@@ -24,14 +24,17 @@ type Build struct {
 func (b *Build) Validate() error {
 	logrus.Trace("validating build plugin configuration")
 
+	// verify path is provided
 	if len(b.Path) == 0 {
 		return fmt.Errorf("no build path provided")
 	}
 
+	// verify reference is provided
 	if len(b.Ref) == 0 {
 		return fmt.Errorf("no build ref provided")
 	}
 
+	// verify sha is provided
 	if len(b.Sha) == 0 {
 		return fmt.Errorf("no build sha provided")
 	}
