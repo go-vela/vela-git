@@ -59,7 +59,7 @@ docker-example:
 		-e PARAMETER_SHA=7fd1a60b01f91b314f59955a4e4d4e80d8edf11d \
 		-e PARAMETER_TAGS \
 		-e PARAMETER_SUBMODULES \
-		-e VELA_NETRC_MACHINE \
-		-e VELA_NETRC_USERNAME \
-		-e VELA_NETRC_PASSWORD \
+		-e VELA_NETRC_MACHINE=github.com \
+		-e VELA_NETRC_USERNAME=octocat \
+		-e VELA_NETRC_PASSWORD=superSecretPassword \
 		vela-git:local
