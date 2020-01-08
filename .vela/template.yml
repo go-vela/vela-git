@@ -1,0 +1,41 @@
+# Copyright (c) 2019 Target Brands, Inc. All rights reserved.
+#
+# Use of this source code is governed by the LICENSE file in this repository.
+
+## Template Variables
+# - .image      (default: "target/vela-git:latest")
+# - .pull       (default: true)
+# - .log_level  (default: "info")
+# - .path       (default: "")
+# - .ref        (default: "refs/heads/master")
+# - .remote     (default: "")
+# - .sha        (default: "")
+# - .submodules (default: false)
+# - .tags       (default: false)
+
+## Set Default Template Variables
+{{ default "target/vela-git:latest" .image }}
+{{ default "true" .pull }}
+{{ default "info" .log_level }}
+{{ default "" .path }}
+{{ default "refs/heads/master" .ref }}
+{{ default "" .remote }}
+{{ default "" .sha }}
+{{ default "false" .submodules }}
+{{ default "false" .tags }}
+
+metadata:
+  template: true
+
+steps:
+  - name: git_plugin
+    image: {{ .image }}
+    pull: {{ .pull }}
+    parameters:
+      log_level: {{ .log_level }}
+      path: {{ .path }}
+      ref: {{ .ref }}
+      sha: {{ .sha }}
+      remote: {{ .remote }}
+      submodules: {{ .submodules }}
+      tags: {{ .tags }}
