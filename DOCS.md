@@ -5,6 +5,7 @@
 This plugin enables you to clone repositories in a Vela pipeline to your build workspace.
 
 Source Code: https://github.com/go-vela/vela-git
+
 Registry: https://hub.docker.com/r/target/vela-git
 
 ## Usage
@@ -74,15 +75,17 @@ steps:
 
 ## Parameters
 
+**NOTE: Vela injects several variables, by default, that this plugin can load in automatically.**
+
 The following parameters are used to configure the image:
 
 | Name         | Description                       | Required | Default             |
 | ------------ | --------------------------------- | -------- | ------------------- |
 | `log_level`  | set the log level for the plugin  | `true`   | `info`              |
-| `path`       | local path to clone repository to | `true`   | `N/A`               |
+| `path`       | local path to clone repository to | `true`   | **set by Vela**     |
 | `ref`        | reference generated for commit    | `true`   | `refs/heads/master` |
-| `remote`     | full url for cloning repository   | `true`   | `N/A`               |
-| `sha`        | SHA-1 hash generated for commit   | `true`   | `N/A`               |
+| `remote`     | full url for cloning repository   | `true`   | **set by Vela**     |
+| `sha`        | SHA-1 hash generated for commit   | `true`   | **set by Vela**     |
 | `submodules` | enables fetching of submodules    | `false`  | `N/A`               |
 | `tags`       | enables fetching of tags          | `false`  | `N/A`               |
 
