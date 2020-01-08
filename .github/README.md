@@ -4,7 +4,9 @@
 [![Go Report Card](https://goreportcard.com/badge/go-vela/vela-git)](https://goreportcard.com/report/go-vela/vela-git)
 [![codecov](https://codecov.io/gh/go-vela/vela-git/branch/master/graph/badge.svg)](https://codecov.io/gh/go-vela/vela-git)
 
-Vela plugin designed for cloning repositories. Internally, the plugin is a wrapper around the [git](https://git-scm.com/) CLI.
+A Vela plugin designed for cloning repositories into your workspace.
+
+Internally, the plugin is a wrapper around the [git](https://git-scm.com/) CLI.
 
 ## Documentation
 
