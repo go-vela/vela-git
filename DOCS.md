@@ -16,8 +16,9 @@ Sample of cloning a repository:
 
 ```yaml
 steps:
-  - name: clone_helloworld
+  - name: clone_hello-world
     image: target/vela-git:v0.3.0
+    pull: true
     parameters:
       path: hello-world
       ref: refs/heads/master
@@ -29,8 +30,9 @@ Sample of cloning a repository with submodules:
 
 ```diff
 steps:
-  - name: clone_helloworld
+  - name: clone_hello-world
     image: target/vela-git:v0.3.0
+    pull: true
     parameters:
       path: hello-world
       ref: refs/heads/master
@@ -43,8 +45,9 @@ Sample of cloning a repository with tags:
 
 ```diff
 steps:
-  - name: clone_helloworld
+  - name: clone_hello-world
     image: target/vela-git:v0.3.0
+    pull: true
     parameters:
       path: hello-world
       ref: refs/heads/master
@@ -61,9 +64,10 @@ You can use Vela secrets to substitute sensitive values at runtime:
 
 ```diff
 steps:
-  - name: clone_helloworld
+  - name: clone_hello-world
     image: target/vela-git:v0.3.0
-+   secrets: [ vela_netrc_username, vela_netrc_password ]
+    pull: true
++   secrets: [ git_username, git_password ]
     parameters:
 -     netrc_username: octocat
 -     netrc_password: superSecretPassword
@@ -79,15 +83,18 @@ steps:
 
 The following parameters are used to configure the image:
 
-| Name         | Description                       | Required | Default             |
-| ------------ | --------------------------------- | -------- | ------------------- |
-| `log_level`  | set the log level for the plugin  | `true`   | `info`              |
-| `path`       | local path to clone repository to | `true`   | **set by Vela**     |
-| `ref`        | reference generated for commit    | `true`   | `refs/heads/master` |
-| `remote`     | full url for cloning repository   | `true`   | **set by Vela**     |
-| `sha`        | SHA-1 hash generated for commit   | `true`   | **set by Vela**     |
-| `submodules` | enables fetching of submodules    | `false`  | `N/A`               |
-| `tags`       | enables fetching of tags          | `false`  | `N/A`               |
+| Name             | Description                       | Required | Default             |
+| ---------------- | --------------------------------- | -------- | ------------------- |
+| `log_level`      | set the log level for the plugin  | `true`   | `info`              |
+| `netrc_machine`  | machine name to communicate with  | `true`   | `github.com`        |
+| `netrc_password` | password for authentication       | `true`   | **set by Vela**     |
+| `netrc_username` | user name for authentication      | `true`   | **set by Vela**     |
+| `path`           | local path to clone repository to | `true`   | **set by Vela**     |
+| `ref`            | reference generated for commit    | `true`   | `refs/heads/master` |
+| `remote`         | full url for cloning repository   | `true`   | **set by Vela**     |
+| `sha`            | SHA-1 hash generated for commit   | `true`   | **set by Vela**     |
+| `submodules`     | enables fetching of submodules    | `false`  | `false`             |
+| `tags`           | enables fetching of tags          | `false`  | `false`             |
 
 ## Template
 
