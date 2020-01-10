@@ -74,12 +74,12 @@ func main() {
 			Value:  "github.com",
 		},
 		cli.StringFlag{
-			EnvVar: "PARAMETER_NETRC_USERNAME,VELA_NETRC_USERNAME",
+			EnvVar: "PARAMETER_NETRC_USERNAME,VELA_NETRC_USERNAME,GIT_USERNAME",
 			Name:   "netrc.username",
 			Usage:  "user name for communication with the remote machine",
 		},
 		cli.StringFlag{
-			EnvVar: "PARAMETER_NETRC_PASSWORD,VELA_NETRC_PASSWORD",
+			EnvVar: "PARAMETER_NETRC_PASSWORD,VELA_NETRC_PASSWORD,GIT_PASSWORD",
 			Name:   "netrc.password",
 			Usage:  "password for communication with the remote machine",
 		},

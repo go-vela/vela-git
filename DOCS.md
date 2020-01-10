@@ -16,7 +16,7 @@ Sample of cloning a repository:
 
 ```yaml
 steps:
-  - name: clone_helloworld
+  - name: clone_hello-world
     image: target/vela-git:v0.3.0
     pull: true
     parameters:
@@ -30,7 +30,7 @@ Sample of cloning a repository with submodules:
 
 ```diff
 steps:
-  - name: clone_helloworld
+  - name: clone_hello-world
     image: target/vela-git:v0.3.0
     pull: true
     parameters:
@@ -45,7 +45,7 @@ Sample of cloning a repository with tags:
 
 ```diff
 steps:
-  - name: clone_helloworld
+  - name: clone_hello-world
     image: target/vela-git:v0.3.0
     pull: true
     parameters:
@@ -64,10 +64,10 @@ You can use Vela secrets to substitute sensitive values at runtime:
 
 ```diff
 steps:
-  - name: clone_helloworld
+  - name: clone_hello-world
     image: target/vela-git:v0.3.0
     pull: true
-+   secrets: [ vela_netrc_username, vela_netrc_password ]
++   secrets: [ git_username, git_password ]
     parameters:
 -     netrc_username: octocat
 -     netrc_password: superSecretPassword
