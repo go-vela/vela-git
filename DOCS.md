@@ -93,8 +93,8 @@ The following parameters are used to configure the image:
 | `ref`            | reference generated for commit    | `true`   | `refs/heads/master` |
 | `remote`         | full url for cloning repository   | `true`   | **set by Vela**     |
 | `sha`            | SHA-1 hash generated for commit   | `true`   | **set by Vela**     |
-| `submodules`     | enables fetching of submodules    | `false`  | `N/A`               |
-| `tags`           | enables fetching of tags          | `false`  | `N/A`               |
+| `submodules`     | enables fetching of submodules    | `false`  | `false`             |
+| `tags`           | enables fetching of tags          | `false`  | `false`             |
 
 ## Template
 
