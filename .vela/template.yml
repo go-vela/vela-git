@@ -13,29 +13,18 @@
 # - .submodules (default: false)
 # - .tags       (default: false)
 
-## Set Default Template Variables
-{{ default "target/vela-git:latest" .image }}
-{{ default "true" .pull }}
-{{ default "info" .log_level }}
-{{ default "" .path }}
-{{ default "refs/heads/master" .ref }}
-{{ default "" .remote }}
-{{ default "" .sha }}
-{{ default "false" .submodules }}
-{{ default "false" .tags }}
-
 metadata:
   template: true
 
 steps:
-  - name: git_plugin
-    image: {{ .image }}
-    pull: {{ .pull }}
+  - name: git_plugin_template
+    image: {{ default "target/vela-git:latest" .image }}
+    pull: {{ default "true" .pull }}
     parameters:
-      log_level: {{ .log_level }}
-      path: {{ .path }}
-      ref: {{ .ref }}
-      sha: {{ .sha }}
-      remote: {{ .remote }}
-      submodules: {{ .submodules }}
-      tags: {{ .tags }}
+      log_level: {{ default "info" .log_level }}
+      path: {{ default "" .path }}
+      ref: {{ default "refs/heads/master" .ref }}
+      sha: {{ default "" .sha }}
+      remote: {{ default "" .sha }}
+      submodules: {{ default "false" .submodules }}
+      tags: {{ default "false" .tags }}
