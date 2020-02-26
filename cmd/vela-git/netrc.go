@@ -89,5 +89,11 @@ func (n *Netrc) Write() error {
 	// create full path for .netrc file
 	path := filepath.Join(home, ".netrc")
 
+	// send Filesystem call to create directory path for .netrc file
+	err = a.Fs.MkdirAll(filepath.Dir(path), 0777)
+	if err != nil {
+		return err
+	}
+
 	return a.WriteFile(path, []byte(out), 0600)
 }

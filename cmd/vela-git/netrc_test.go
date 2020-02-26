@@ -80,6 +80,23 @@ func TestGit_Netrc_Write(t *testing.T) {
 	}
 }
 
+func TestGit_Netrc_Write_Error(t *testing.T) {
+	// setup filesystem
+	appFS = afero.NewReadOnlyFs(afero.NewMemMapFs())
+
+	// setup types
+	n := &Netrc{
+		Machine:  "github.com",
+		Username: "octocat",
+		Password: "superSecretPassword",
+	}
+
+	err := n.Write()
+	if err == nil {
+		t.Errorf("Write should have returned err")
+	}
+}
+
 func TestGit_Netrc_Write_NoMachine(t *testing.T) {
 	// setup filesystem
 	appFS = afero.NewMemMapFs()
