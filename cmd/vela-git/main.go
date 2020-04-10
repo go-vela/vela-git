@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -23,7 +23,7 @@ func main() {
 	app.HelpName = "vela-git"
 	app.Usage = "Vela Git plugin for cloning repositories"
 	app.Copyright = "Copyright (c) 2020 Target Brands, Inc. All rights reserved."
-	app.Authors = []cli.Author{
+	app.Authors = []*cli.Author{
 		{
 			Name:  "Vela Admins",
 			Email: "vela@target.com",
@@ -39,67 +39,67 @@ func main() {
 
 	app.Flags = []cli.Flag{
 
-		cli.StringFlag{
-			EnvVar: "PARAMETER_LOG_LEVEL,VELA_LOG_LEVEL,GIT_LOG_LEVEL",
-			Name:   "log.level",
-			Usage:  "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
-			Value:  "info",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_LOG_LEVEL", "VELA_LOG_LEVEL", "GIT_LOG_LEVEL"},
+			Name:    "log.level",
+			Usage:   "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
+			Value:   "info",
 		},
 
 		// Build Flags
 
-		cli.StringFlag{
-			EnvVar: "PARAMETER_SHA,BUILD_COMMIT",
-			Name:   "build.sha",
-			Usage:  "git commit sha",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_SHA", "BUILD_COMMIT"},
+			Name:    "build.sha",
+			Usage:   "git commit sha",
 		},
-		cli.StringFlag{
-			EnvVar: "PARAMETER_PATH,BUILD_WORKSPACE",
-			Name:   "build.path",
-			Usage:  "git clone path",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_PATH", "BUILD_WORKSPACE"},
+			Name:    "build.path",
+			Usage:   "git clone path",
 		},
-		cli.StringFlag{
-			EnvVar: "PARAMETER_REF,BUILD_REF",
-			Name:   "build.ref",
-			Usage:  "git commit ref",
-			Value:  "refs/heads/master",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_REF", "BUILD_REF"},
+			Name:    "build.ref",
+			Usage:   "git commit ref",
+			Value:   "refs/heads/master",
 		},
 
 		// Netrc Flags
 
-		cli.StringFlag{
-			EnvVar: "PARAMETER_NETRC_MACHINE,VELA_NETRC_MACHINE",
-			Name:   "netrc.machine",
-			Usage:  "remote machine name to communicate with",
-			Value:  "github.com",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_NETRC_MACHINE", "VELA_NETRC_MACHINE"},
+			Name:    "netrc.machine",
+			Usage:   "remote machine name to communicate with",
+			Value:   "github.com",
 		},
-		cli.StringFlag{
-			EnvVar: "PARAMETER_NETRC_USERNAME,VELA_NETRC_USERNAME,GIT_USERNAME",
-			Name:   "netrc.username",
-			Usage:  "user name for communication with the remote machine",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_NETRC_USERNAME", "VELA_NETRC_USERNAME", "GIT_USERNAME"},
+			Name:    "netrc.username",
+			Usage:   "user name for communication with the remote machine",
 		},
-		cli.StringFlag{
-			EnvVar: "PARAMETER_NETRC_PASSWORD,VELA_NETRC_PASSWORD,GIT_PASSWORD",
-			Name:   "netrc.password",
-			Usage:  "password for communication with the remote machine",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_NETRC_PASSWORD", "VELA_NETRC_PASSWORD", "GIT_PASSWORD"},
+			Name:    "netrc.password",
+			Usage:   "password for communication with the remote machine",
 		},
 
 		// Repo Flags
 
-		cli.StringFlag{
-			EnvVar: "PARAMETER_REMOTE,REPOSITORY_CLONE",
-			Name:   "repo.remote",
-			Usage:  "git remote url",
+		&cli.StringFlag{
+			EnvVars: []string{"PARAMETER_REMOTE", "REPOSITORY_CLONE"},
+			Name:    "repo.remote",
+			Usage:   "git remote url",
 		},
-		cli.BoolFlag{
-			EnvVar: "PARAMETER_SUBMODULES",
-			Name:   "repo.submodules",
-			Usage:  "git update submodules",
+		&cli.BoolFlag{
+			EnvVars: []string{"PARAMETER_SUBMODULES"},
+			Name:    "repo.submodules",
+			Usage:   "git update submodules",
 		},
-		cli.BoolFlag{
-			EnvVar: "PARAMETER_TAGS",
-			Name:   "repo.tags",
-			Usage:  "git fetch tags",
+		&cli.BoolFlag{
+			EnvVars: []string{"PARAMETER_TAGS"},
+			Name:    "repo.tags",
+			Usage:   "git fetch tags",
 		},
 	}
 
