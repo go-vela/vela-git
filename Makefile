@@ -2,15 +2,20 @@
 #
 # Use of this source code is governed by the LICENSE file in this repository.
 
+.PHONY: build
 build: binary-build
 
+.PHONY: run
 run: build docker-build docker-run
 
+.PHONY: test
 test: build docker-build docker-example
 
 #################################
 ######      Go clean       ######
 #################################
+
+.PHONY: clean
 clean:
 
 	@go mod tidy
@@ -21,6 +26,8 @@ clean:
 #################################
 ######    Build Binary     ######
 #################################
+
+.PHONY: binary-build
 binary-build:
 
 	GOOS=linux CGO_ENABLED=0 go build -o release/vela-git github.com/go-vela/vela-git/cmd/vela-git
@@ -28,6 +35,8 @@ binary-build:
 #################################
 ######    Docker Build     ######
 #################################
+
+.PHONY: docker-build
 docker-build:
 
 	docker build --no-cache -t vela-git:local .
@@ -36,6 +45,7 @@ docker-build:
 ######     Docker Run      ######
 #################################
 
+.PHONY: docker-run
 docker-run:
 
 	docker run --rm \
@@ -50,6 +60,7 @@ docker-run:
 		-e VELA_NETRC_PASSWORD \
 		vela-git:local
 
+.PHONY: docker-example
 docker-example:
 
 	docker run --rm \
