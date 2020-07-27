@@ -10,6 +10,8 @@ Registry: https://hub.docker.com/r/target/vela-git
 
 ## Usage
 
+_The plugin supports reading all parameters via environment variables or files. Values set as a file take precedence over default values set from the environment._
+
 **NOTE: This plugin is automatically injected into your pipeline for the source repository.**
 
 Sample of cloning a repository:
