@@ -20,7 +20,7 @@ Sample of cloning a repository:
 steps:
   - name: clone_hello-world
     image: target/vela-git:v0.3.0
-    pull: true
+    pull: always
     parameters:
       path: hello-world
       ref: refs/heads/master
@@ -34,7 +34,7 @@ Sample of cloning a repository with submodules:
 steps:
   - name: clone_hello-world
     image: target/vela-git:v0.3.0
-    pull: true
+    pull: always
     parameters:
       path: hello-world
       ref: refs/heads/master
@@ -49,7 +49,7 @@ Sample of cloning a repository with tags:
 steps:
   - name: clone_hello-world
     image: target/vela-git:v0.3.0
-    pull: true
+    pull: always
     parameters:
       path: hello-world
       ref: refs/heads/master
@@ -68,7 +68,7 @@ You can use Vela secrets to substitute sensitive values at runtime:
 steps:
   - name: clone_hello-world
     image: target/vela-git:v0.3.0
-    pull: true
+    pull: always
 +   secrets: [ git_username, git_password ]
     parameters:
 -     netrc_username: octocat
