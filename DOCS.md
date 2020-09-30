@@ -10,17 +10,15 @@ Registry: https://hub.docker.com/r/target/vela-git
 
 ## Usage
 
-_The plugin supports reading all parameters via environment variables or files. Values set as a file take precedence over default values set from the environment._
-
-**NOTE: This plugin is automatically injected into your pipeline for the source repository.**
+**NOTE: It is not recommended to use `latest` as the tag for the Docker image. Users should use a semantically versioned tag instead.**
 
 Sample of cloning a repository:
 
 ```yaml
 steps:
   - name: clone_hello-world
-    image: target/vela-git:v0.3.0
-    pull: true
+    image: target/vela-git:latest
+    pull: always
     parameters:
       path: hello-world
       ref: refs/heads/master
@@ -33,8 +31,8 @@ Sample of cloning a repository with submodules:
 ```diff
 steps:
   - name: clone_hello-world
-    image: target/vela-git:v0.3.0
-    pull: true
+    image: target/vela-git:latest
+    pull: always
     parameters:
       path: hello-world
       ref: refs/heads/master
@@ -48,8 +46,8 @@ Sample of cloning a repository with tags:
 ```diff
 steps:
   - name: clone_hello-world
-    image: target/vela-git:v0.3.0
-    pull: true
+    image: target/vela-git:latest
+    pull: always
     parameters:
       path: hello-world
       ref: refs/heads/master
@@ -67,8 +65,8 @@ You can use Vela secrets to substitute sensitive values at runtime:
 ```diff
 steps:
   - name: clone_hello-world
-    image: target/vela-git:v0.3.0
-    pull: true
+    image: target/vela-git:latest
+    pull: always
 +   secrets: [ git_username, git_password ]
     parameters:
 -     netrc_username: octocat
@@ -81,7 +79,10 @@ steps:
 
 ## Parameters
 
-**NOTE: Vela injects several variables, by default, that this plugin can load in automatically.**
+**NOTE:**
+
+* the plugin supports reading all parameters via environment variables or files
+* values set from a file take precedence over values set from the environment
 
 The following parameters are used to configure the image:
 
