@@ -50,19 +50,19 @@ func main() {
 		// Build Flags
 
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_SHA", "BUILD_COMMIT"},
+			EnvVars:  []string{"PARAMETER_SHA", "VELA_BUILD_COMMIT", "GIT_SHA"},
 			FilePath: string("/vela/parameters/git/build/sha,/vela/secrets/git/build/sha"),
 			Name:     "build.sha",
 			Usage:    "git commit sha",
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_PATH", "BUILD_WORKSPACE"},
+			EnvVars:  []string{"PARAMETER_PATH", "VELA_BUILD_WORKSPACE", "GIT_PATH"},
 			FilePath: string("/vela/parameters/git/build/path,/vela/secrets/git/build/path"),
 			Name:     "build.path",
 			Usage:    "git clone path",
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_REF", "BUILD_REF"},
+			EnvVars:  []string{"PARAMETER_REF", "VELA_BUILD_REF", "GIT_REF"},
 			FilePath: string("/vela/parameters/git/build/ref,/vela/secrets/git/build/ref"),
 			Name:     "build.ref",
 			Usage:    "git commit ref",
@@ -72,7 +72,7 @@ func main() {
 		// Netrc Flags
 
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_NETRC_MACHINE", "VELA_NETRC_MACHINE"},
+			EnvVars:  []string{"PARAMETER_NETRC_MACHINE", "VELA_NETRC_MACHINE", "GIT_MACHINE"},
 			FilePath: string("/vela/parameters/git/netrc/machine,/vela/secrets/git/netrc/machine"),
 			Name:     "netrc.machine",
 			Usage:    "remote machine name to communicate with",
@@ -94,19 +94,19 @@ func main() {
 		// Repo Flags
 
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_REMOTE", "REPOSITORY_CLONE"},
+			EnvVars:  []string{"PARAMETER_REMOTE", "VELA_REPO_CLONE", "GIT_REMOTE"},
 			FilePath: string("/vela/parameters/git/repo/remote,/vela/secrets/git/repo/remote"),
 			Name:     "repo.remote",
 			Usage:    "git remote url",
 		},
 		&cli.BoolFlag{
-			EnvVars:  []string{"PARAMETER_SUBMODULES"},
+			EnvVars:  []string{"PARAMETER_SUBMODULES", "GIT_SUBMODULES"},
 			FilePath: string("/vela/parameters/git/repo/submodules,/vela/secrets/git/repo/submodules"),
 			Name:     "repo.submodules",
 			Usage:    "git update submodules",
 		},
 		&cli.BoolFlag{
-			EnvVars:  []string{"PARAMETER_TAGS"},
+			EnvVars:  []string{"PARAMETER_TAGS", "GIT_TAGS"},
 			FilePath: string("/vela/parameters/git/repo/tags,/vela/secrets/git/repo/tags"),
 			Name:     "repo.tags",
 			Usage:    "git fetch tags",
