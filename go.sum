@@ -12,12 +12,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/ghodss/yaml v1.0.0 h1:wQHKEahhL6wmXdzwWG11gIVCkOv05bNOh+Rxn0yngAk=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
-github.com/go-vela/types v0.6.0 h1:82/+Y3EGnnr37HeaJ5qhz/PGMvLkJfYvblEw1kFwxb4=
 github.com/go-vela/types v0.6.1-0.20201019123446-226d0cc72538 h1:ck0Ylos/ExUCluEqQgVxKrTZ21nsup0VZT31sWqTU4Y=
 github.com/go-vela/types v0.6.1-0.20201019123446-226d0cc72538/go.mod h1:6r6mWIPrTANBpHwAFAIii64VKtzlAzVagbm/wX5bHHk=
-github.com/go-vela/vela-artifactory v0.3.0 h1:+Xmede6Ug5zQCShn7w3qwHArDzWTpzDRtf0OosnjHpc=
-github.com/go-vela/vela-docker v0.3.0 h1:gmJ0JSoFZG+ku+SPLhbdDxTz21afXdoBrEsn3EWf964=
-github.com/go-vela/vela-docker v0.3.0/go.mod h1:Y8l2OmPpwijI99RnX+JYunq1YrNWsQQ6v/lKDCz8s5I=
 github.com/joho/godotenv v1.3.0 h1:Zjp+RcGpHhGlrMbJzXTrZZPrWj+1vfm90La1wgB6Bhc=
 github.com/joho/godotenv v1.3.0/go.mod h1:7hK45KPybAkOC6peb+G5yklZfMxEjkZhHbwpqxOKXbg=
 github.com/konsorten/go-windows-terminal-sequences v1.0.3 h1:CE8S1cTafDpPvMhIxNJKvHsGVBgn1xWYf1NbHQhywc8=
