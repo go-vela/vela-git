@@ -45,8 +45,8 @@ func main() {
 	app.Flags = []cli.Flag{
 
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_LOG_LEVEL", "VELA_LOG_LEVEL", "GIT_LOG_LEVEL"},
-			FilePath: string("/vela/parameters/git/log_level,/vela/secrets/git/log_level"),
+			EnvVars:  []string{"PARAMETER_LOG_LEVEL", "GIT_LOG_LEVEL"},
+			FilePath: "/vela/parameters/git/log_level,/vela/secrets/git/log_level",
 			Name:     "log.level",
 			Usage:    "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
 			Value:    "info",
@@ -55,43 +55,43 @@ func main() {
 		// Build Flags
 
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_SHA", "BUILD_COMMIT"},
-			FilePath: string("/vela/parameters/git/build/sha,/vela/secrets/git/build/sha"),
+			EnvVars:  []string{"PARAMETER_SHA", "GIT_SHA", "VELA_BUILD_COMMIT"},
+			FilePath: "/vela/parameters/git/sha,/vela/secrets/git/sha",
 			Name:     "build.sha",
-			Usage:    "git commit sha",
+			Usage:    "commit sha to clone from the repo",
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_PATH", "BUILD_WORKSPACE"},
-			FilePath: string("/vela/parameters/git/build/path,/vela/secrets/git/build/path"),
+			EnvVars:  []string{"PARAMETER_PATH", "GIT_PATH", "VELA_BUILD_WORKSPACE"},
+			FilePath: "/vela/parameters/git/path,/vela/secrets/git/path",
 			Name:     "build.path",
-			Usage:    "git clone path",
+			Usage:    "local path to clone the repo to",
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_REF", "BUILD_REF"},
-			FilePath: string("/vela/parameters/git/build/ref,/vela/secrets/git/build/ref"),
+			EnvVars:  []string{"PARAMETER_REF", "GIT_REF", "VELA_BUILD_REF"},
+			FilePath: "/vela/parameters/git/ref,/vela/secrets/git/ref",
 			Name:     "build.ref",
-			Usage:    "git commit ref",
+			Usage:    "commit reference to clone from the repo",
 			Value:    "refs/heads/master",
 		},
 
 		// Netrc Flags
 
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_NETRC_MACHINE", "VELA_NETRC_MACHINE"},
-			FilePath: string("/vela/parameters/git/netrc/machine,/vela/secrets/git/netrc/machine"),
+			EnvVars:  []string{"PARAMETER_MACHINE", "GIT_MACHINE", "VELA_NETRC_MACHINE"},
+			FilePath: "/vela/parameters/git/machine,/vela/secrets/git/machine",
 			Name:     "netrc.machine",
 			Usage:    "remote machine name to communicate with",
 			Value:    "github.com",
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_NETRC_USERNAME", "VELA_NETRC_USERNAME", "GIT_USERNAME"},
-			FilePath: string("/vela/parameters/git/netrc/username,/vela/secrets/git/netrc/username"),
+			EnvVars:  []string{"PARAMETER_USERNAME", "GIT_USERNAME", "VELA_NETRC_USERNAME"},
+			FilePath: "/vela/parameters/git/username,/vela/secrets/git/username",
 			Name:     "netrc.username",
 			Usage:    "user name for communication with the remote machine",
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_NETRC_PASSWORD", "VELA_NETRC_PASSWORD", "GIT_PASSWORD"},
-			FilePath: string("/vela/parameters/git/netrc/password,/vela/secrets/git/netrc/password"),
+			EnvVars:  []string{"PARAMETER_PASSWORD", "GIT_PASSWORD", "VELA_NETRC_PASSWORD"},
+			FilePath: "/vela/parameters/git/password,/vela/secrets/git/password",
 			Name:     "netrc.password",
 			Usage:    "password for communication with the remote machine",
 		},
@@ -99,22 +99,22 @@ func main() {
 		// Repo Flags
 
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_REMOTE", "REPOSITORY_CLONE"},
-			FilePath: string("/vela/parameters/git/repo/remote,/vela/secrets/git/repo/remote"),
+			EnvVars:  []string{"PARAMETER_REMOTE", "GIT_REMOTE", "VELA_REPO_CLONE"},
+			FilePath: "/vela/parameters/git/remote,/vela/secrets/git/remote",
 			Name:     "repo.remote",
-			Usage:    "git remote url",
+			Usage:    "the remote (clone URL) for the repo being cloned",
 		},
 		&cli.BoolFlag{
-			EnvVars:  []string{"PARAMETER_SUBMODULES"},
-			FilePath: string("/vela/parameters/git/repo/submodules,/vela/secrets/git/repo/submodules"),
+			EnvVars:  []string{"PARAMETER_SUBMODULES", "GIT_SUBMODULES"},
+			FilePath: "/vela/parameters/git/submodules,/vela/secrets/git/submodules",
 			Name:     "repo.submodules",
-			Usage:    "git update submodules",
+			Usage:    "enables fetching submodules for the repo being cloned",
 		},
 		&cli.BoolFlag{
-			EnvVars:  []string{"PARAMETER_TAGS"},
-			FilePath: string("/vela/parameters/git/repo/tags,/vela/secrets/git/repo/tags"),
+			EnvVars:  []string{"PARAMETER_TAGS", "GIT_TAGS"},
+			FilePath: "/vela/parameters/git/tags,/vela/secrets/git/tags",
 			Name:     "repo.tags",
-			Usage:    "git fetch tags",
+			Usage:    "enables fetching tags for the repo being cloned",
 		},
 	}
 
