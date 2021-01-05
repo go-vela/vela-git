@@ -73,6 +73,12 @@ func main() {
 			Usage:    "commit reference to clone from the repo",
 			Value:    "refs/heads/master",
 		},
+		&cli.StringFlag{
+			EnvVars:  []string{"PARAMETER_DEPTH", "GIT_DEPTH"},
+			FilePath: "/vela/parameters/git/depth,/vela/secrets/git/depth",
+			Name:     "build.depth",
+			Usage:    "enables fetching the repository with the specified depth",
+		},
 
 		// Netrc Flags
 
@@ -165,9 +171,10 @@ func run(c *cli.Context) error {
 	p := &Plugin{
 		// build configuration
 		Build: &Build{
-			Path: c.String("build.path"),
-			Ref:  c.String("build.ref"),
-			Sha:  c.String("build.sha"),
+			Path:  c.String("build.path"),
+			Ref:   c.String("build.ref"),
+			Sha:   c.String("build.sha"),
+			Depth: c.String("build.depth"),
 		},
 		// netrc configuration
 		Netrc: &Netrc{

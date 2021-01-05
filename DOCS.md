@@ -137,6 +137,7 @@ The following parameters are used to configure the image:
 | `sha`        | SHA-1 hash generated for commit   | `true`   | **set by Vela**     | `PARAMETER_SHA`<br>`GIT_SHA`<br>`VELA_BUILD_COMMIT`             |
 | `submodules` | enables fetching of submodules    | `false`  | `false`             | `PARAMETER_SUBMODULES`<br>`GIT_SUBMODULES`                      |
 | `tags`       | enables fetching of tags          | `false`  | `false`             | `PARAMETER_TAGS`<br>`GIT_TAGS`                                  |
+| `depth`       | enables fetching with a specific depth          | `false`  | Not set             | `PARAMETER_DEPTH`<br>`GIT_DEPTH`                                  |
 
 ## Template
 
