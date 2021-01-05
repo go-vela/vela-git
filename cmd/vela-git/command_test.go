@@ -28,9 +28,11 @@ func TestGit_fetchTagsCmd(t *testing.T) {
 		"--tags",
 		"origin",
 		"refs/heads/master",
+		"--depth",
+		"10",
 	)
 
-	got := fetchTagsCmd("refs/heads/master", "")
+	got := fetchTagsCmd("refs/heads/master", "10")
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("fetchTagsCmd is %v, want %v", got, want)
