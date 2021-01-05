@@ -2,7 +2,12 @@
   "extends": [
     "config:base"
   ],
+  "postUpdateOptions": [
+    "gomodTidy"
+  ],
   "postUpgradeTasks": {
-    "commands": [ "make clean" ] 
+    "commands": [
+      "make clean"
+    ] 
   }
 }
