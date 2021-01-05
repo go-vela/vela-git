@@ -18,6 +18,8 @@ type Build struct {
 	Ref string
 	// SHA-1 hash generated for commit
 	Sha string
+	// depth at which to fetch with
+	Depth string
 }
 
 // Validate verifies the Build is properly configured.

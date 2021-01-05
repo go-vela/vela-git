@@ -70,13 +70,13 @@ func (p *Plugin) Exec() error {
 	// check if repo tags are enabled
 	if p.Repo.Tags {
 		// fetch repo state with tags
-		err = execCmd(fetchTagsCmd(p.Build.Ref))
+		err = execCmd(fetchTagsCmd(p.Build.Ref, p.Build.Depth))
 		if err != nil {
 			return err
 		}
 	} else {
 		// fetch repo state without tags
-		err = execCmd(fetchNoTagsCmd(p.Build.Ref))
+		err = execCmd(fetchNoTagsCmd(p.Build.Ref, p.Build.Depth))
 		if err != nil {
 			return err
 		}
