@@ -10,8 +10,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/drone/envsubst v1.0.2/go.mod h1:bkZbnc/2vh1M12Ecn7EYScpI4YGYU0etwLJICOWi8Z0=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
-github.com/go-vela/types v0.7.3 h1:q0gUtl/IKBCxjfHkRSHbYcKBF7FMGVi6m7RAE4ZGGzk=
-github.com/go-vela/types v0.7.3/go.mod h1:/IsyxCijlz8BArRxBfrfRv7BBe/hmJGtVWegkS3ooJU=
+github.com/go-vela/types v0.7.4 h1:iVz1kDS/uvkOoridyyt0bTZ5tG2j3QYx25rbyFdu35M=
+github.com/go-vela/types v0.7.4/go.mod h1:/IsyxCijlz8BArRxBfrfRv7BBe/hmJGtVWegkS3ooJU=
 github.com/google/go-cmp v0.2.0/go.mod h1:oXzfMopK8JAjlY9xF4vHSVASa0yLyX7SntLO5aqRK0M=
 github.com/joho/godotenv v1.3.0 h1:Zjp+RcGpHhGlrMbJzXTrZZPrWj+1vfm90La1wgB6Bhc=
 github.com/joho/godotenv v1.3.0/go.mod h1:7hK45KPybAkOC6peb+G5yklZfMxEjkZhHbwpqxOKXbg=
