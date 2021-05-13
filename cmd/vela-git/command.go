@@ -140,3 +140,17 @@ func submoduleCmd() *exec.Cmd {
 		"--init",
 	)
 }
+
+// versionCmd is a helper function to output
+// the client version information.
+func versionCmd() *exec.Cmd {
+	logrus.Trace("creating git version command")
+
+	// variable to store flags for command
+	var flags []string
+
+	// add flag for version git command
+	flags = append(flags, "version")
+
+	return exec.Command("git", flags...)
+}
