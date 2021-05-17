@@ -49,6 +49,12 @@ func (p *Plugin) Exec() error {
 		return err
 	}
 
+	// output the git version for troubleshooting
+	err = execCmd(versionCmd())
+	if err != nil {
+		return err
+	}
+
 	// initialize git repo
 	err = execCmd(initCmd())
 	if err != nil {
