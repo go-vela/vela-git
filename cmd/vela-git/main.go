@@ -124,6 +124,11 @@ func main() {
 			Name:     "repo.remote",
 			Usage:    "the remote (clone URL) for the repo being cloned",
 		},
+		&cli.StringFlag{
+			EnvVars:  []string{"VELA_PULL_REQUEST_TARGET"},
+			Name:     "repo.pr_target",
+			Usage:    "the pull request target branch",
+		},
 		&cli.BoolFlag{
 			EnvVars:  []string{"PARAMETER_SUBMODULES", "GIT_SUBMODULES"},
 			FilePath: "/vela/parameters/git/submodules,/vela/secrets/git/submodules",
@@ -192,6 +197,7 @@ func run(c *cli.Context) error {
 			Remote:     c.String("repo.remote"),
 			Submodules: c.Bool("repo.submodules"),
 			Tags:       c.Bool("repo.tags"),
+			PrTargetBranch: c.String("repo.pr_target"),
 		},
 	}
 

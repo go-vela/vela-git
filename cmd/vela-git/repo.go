@@ -18,6 +18,8 @@ type Repo struct {
 	Submodules bool
 	// enable fetching of tags
 	Tags bool
+	// target branch for pull request
+	PrTargetBranch string
 }
 
 // Validate verifies the Repo is properly configured.

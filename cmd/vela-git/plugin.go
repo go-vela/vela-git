@@ -88,6 +88,20 @@ func (p *Plugin) Exec() error {
 		}
 	}
 
+	// check if it's a pull request
+	if p.Repo.PrTargetBranch != "" {
+		// fetch target branch state
+		err = execCmd(fetchNoTagsCmd(p.Repo.PrTargetBranch, p.Build.Depth))
+		if err != nil {
+			return err
+		}
+		// create a reference branch to the target branch
+		err = execCmd(createTargetBranchCmd(p.Repo.PrTargetBranch))
+		if err != nil {
+			return err
+		}
+	}
+
 	// hard reset current state to build commit
 	err = execCmd(resetCmd(p.Build.Sha))
 	if err != nil {

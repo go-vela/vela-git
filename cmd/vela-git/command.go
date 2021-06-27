@@ -127,6 +127,21 @@ func resetCmd(sha string) *exec.Cmd {
 	)
 }
 
+// createTargetBranchCmd is a helper function to
+// create a branch reference to the target branch
+// for this pull request.
+func createTargetBranchCmd(prTargetBranch string) *exec.Cmd {
+	logrus.Trace("returning idkCmd")
+
+	return exec.Command(
+		"git",
+		"branch",
+		"-f",
+		prTargetBranch,
+		"origin/"+prTargetBranch,
+	)
+}
+
 // submoduleCmd is a helper function to
 // update the registered submodules to
 // the expected states for a git repo.
