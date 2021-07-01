@@ -131,7 +131,7 @@ func resetCmd(sha string) *exec.Cmd {
 // create a branch reference to the target branch
 // for this pull request.
 func createTargetBranchCmd(prTargetBranch string) *exec.Cmd {
-	logrus.Trace("returning idkCmd")
+	logrus.Trace("returning createTargetBranchCmd")
 
 	return exec.Command(
 		"git",
