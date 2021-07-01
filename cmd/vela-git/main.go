@@ -125,7 +125,7 @@ func main() {
 			Usage:    "the remote (clone URL) for the repo being cloned",
 		},
 		&cli.StringFlag{
-			EnvVars: []string{"VELA_PULL_REQUEST_TARGET"},
+			EnvVars: []string{"PARAMETER_PULL_REQUEST_TARGET", "GIT_PULL_REQUEST_TARGET", "VELA_PULL_REQUEST_TARGET"},
 			Name:    "repo.pr_target",
 			Usage:   "the pull request target branch",
 		},
