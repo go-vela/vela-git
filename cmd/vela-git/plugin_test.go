@@ -132,6 +132,53 @@ func TestGit_Plugin_Exec_Tags(t *testing.T) {
 	}
 }
 
+func TestGit_Plugin_Exec_Pull_Request(t *testing.T) {
+	// setup directory
+	dir, err := ioutil.TempDir("/tmp", "vela_git_plugin_")
+	if err != nil {
+		t.Errorf("unable to create temp directory: %v", err)
+	}
+
+	// defer cleanup of directory
+	defer func() {
+		err := os.RemoveAll(dir)
+		if err != nil {
+			logrus.Fatalf("unable to remove temp directory %s: %v", dir, err)
+		}
+	}()
+
+	// setup types
+	p := &Plugin{
+		Build: &Build{
+			Path: dir,
+			Ref:  "refs/heads/test",
+			Sha:  "b3cbd5bbd7e81436d2eee04537ea2b4c0cad4cdf",
+		},
+		Netrc: &Netrc{
+			Machine:  "github.com",
+			Username: "octocat",
+			Password: "superSecretPassword",
+		},
+		Repo: &Repo{
+			Remote:         "https://github.com/octocat/hello-world.git",
+			Submodules:     false,
+			Tags:           false,
+			PrTargetBranch: "master",
+		},
+	}
+
+	err = p.Exec()
+	if err != nil {
+		t.Errorf("Exec returned err: %v", err)
+	}
+
+	masterBranchRef := dir + "/.git/refs/heads/master"
+	_, err = os.Stat(masterBranchRef)
+	if err != nil {
+		t.Errorf("Stat '%s' returned err: %v", masterBranchRef, err)
+	}
+}
+
 func TestGit_Plugin_Validate(t *testing.T) {
 	// setup types
 	p := &Plugin{

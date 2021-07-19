@@ -120,6 +120,23 @@ func TestGit_resetCmd(t *testing.T) {
 	}
 }
 
+func TestGit_createTargetBranchCmd(t *testing.T) {
+	// setup types
+	want := exec.Command(
+		"git",
+		"branch",
+		"-f",
+		"main",
+		"origin/main",
+	)
+
+	got := createTargetBranchCmd("main")
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("createTargetBranchCmd is %v, want %v", got, want)
+	}
+}
+
 func TestGit_submoduleCmd(t *testing.T) {
 	// setup types
 	want := exec.Command(
