@@ -29,45 +29,27 @@ func execCmd(e *exec.Cmd) error {
 	return e.Run()
 }
 
-// fetchTagsCmd is a helper function to
+// fetchCmd is a helper function to
 // download all objects, including tags,
 // from the ref for a git repo.
-func fetchTagsCmd(ref string, depth string) *exec.Cmd {
-	logrus.Trace("returning fetchTagsCmd")
+func fetchCmd(ref string, includeTags bool, depth string) *exec.Cmd {
+	logrus.Trace("returning fetchCmd")
 
-	args := []string{
-		"fetch",
-		"--tags",
-		"origin",
-		ref,
+	args := []string{"fetch"}
+
+	if includeTags {
+		args = append(args, "--tags")
+	} else {
+		args = append(args, "--no-tags")
 	}
 
 	if depth != "" {
-		args = append(args, []string{"--depth", depth}...)
+		args = append(args, "--depth", depth)
+	} else {
+		args = append(args, "--depth", "1")
 	}
 
-	return exec.Command(
-		"git",
-		args...,
-	)
-}
-
-// fetchNoTagsCmd is a helper function to
-// download all objects, excluding tags,
-// from the ref for a git repo.
-func fetchNoTagsCmd(ref string, depth string) *exec.Cmd {
-	logrus.Trace("returning fetchNoTagsCmd")
-
-	args := []string{
-		"fetch",
-		"--no-tags",
-		"origin",
-		ref,
-	}
-
-	if depth != "" {
-		args = append(args, []string{"--depth", depth}...)
-	}
+	args = append(args, "origin", ref)
 
 	return exec.Command(
 		"git",
