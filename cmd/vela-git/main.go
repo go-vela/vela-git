@@ -92,6 +92,7 @@ func main() {
 			FilePath: "/vela/parameters/git/depth,/vela/secrets/git/depth",
 			Name:     "build.depth",
 			Usage:    "enables fetching the repository with the specified depth",
+			Value:    "1",
 		},
 
 		// Netrc Flags

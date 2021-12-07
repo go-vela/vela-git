@@ -20,38 +20,38 @@ func TestGit_execCmd(t *testing.T) {
 	}
 }
 
-func TestGit_fetchTagsCmd(t *testing.T) {
+func TestGit_fetchCmdWithTags(t *testing.T) {
 	// setup types
 	want := exec.Command(
 		"git",
 		"fetch",
 		"--tags",
-		"origin",
-		"refs/heads/master",
 		"--depth",
 		"10",
+		"origin",
+		"refs/heads/master",
 	)
 
-	got := fetchTagsCmd("refs/heads/master", "10")
+	got := fetchCmd("refs/heads/master", true, "10")
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("fetchTagsCmd is %v, want %v", got, want)
 	}
 }
 
-func TestGit_fetchNoTagsCmd(t *testing.T) {
+func TestGit_fetchCmdNoTags(t *testing.T) {
 	// setup types
 	want := exec.Command(
 		"git",
 		"fetch",
 		"--no-tags",
+		"--depth",
+		"1",
 		"origin",
 		"refs/heads/master",
-		"--depth",
-		"10",
 	)
 
-	got := fetchNoTagsCmd("refs/heads/master", "10")
+	got := fetchCmd("refs/heads/master", false, "")
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("fetchNoTagsCmd is %v, want %v", got, want)
