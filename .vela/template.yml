@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Target Brands, Inc. All rights reserved.
+# Copyright (c) 2022 Target Brands, Inc. All rights reserved.
 #
 # Use of this source code is governed by the LICENSE file in this repository.
 
@@ -18,13 +18,13 @@ metadata:
 
 steps:
   - name: git_plugin_template
-    image: {{ default "target/vela-git:latest" .image }}
-    pull: {{ default "true" .pull }}
+    image: { { default "target/vela-git:latest" .image } }
+    pull: { { default "true" .pull } }
     parameters:
-      log_level: {{ default "info" .log_level }}
-      path: {{ default "" .path }}
-      ref: {{ default "refs/heads/master" .ref }}
-      sha: {{ default "" .sha }}
-      remote: {{ default "" .sha }}
-      submodules: {{ default "false" .submodules }}
-      tags: {{ default "false" .tags }}
+      log_level: { { default "info" .log_level } }
+      path: { { default "" .path } }
+      ref: { { default "refs/heads/master" .ref } }
+      sha: { { default "" .sha } }
+      remote: { { default "" .sha } }
+      submodules: { { default "false" .submodules } }
+      tags: { { default "false" .tags } }
