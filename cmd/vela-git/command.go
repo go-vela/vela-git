@@ -46,7 +46,7 @@ func fetchCmd(ref string, includeTags bool, depth string) *exec.Cmd {
 	if depth != "" {
 		args = append(args, "--depth", depth)
 	} else {
-		args = append(args, "--depth", "1")
+		args = append(args, "--depth", "100")
 	}
 
 	args = append(args, "origin", ref)
