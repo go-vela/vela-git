@@ -46,7 +46,7 @@ func TestGit_fetchCmdNoTags(t *testing.T) {
 		"fetch",
 		"--no-tags",
 		"--depth",
-		"1",
+		"100",
 		"origin",
 		"refs/heads/master",
 	)
