@@ -1,29 +1,15 @@
 # Contributing
 
-We'd love to accept your contributions to this project! There are just a few guidelines you need to follow.
-
-## Bugs
-
-Bug reports should be opened up as [issues](https://help.github.com/en/github/managing-your-work-on-github/about-issues) on the [go-vela/community](https://github.com/go-vela/community) repository!
-
-## Feature Requests
-
-Feature Requests should be opened up as [issues](https://help.github.com/en/github/managing-your-work-on-github/about-issues) on the [go-vela/community](https://github.com/go-vela/community) repository!
-
-## Pull Requests
-
-**NOTE: We recommend you start by opening a new issue describing the bug or feature you're intending to fix. Even if you think it's relatively minor, it's helpful to know what people are working on.**
-
-We are always open to new PRs! You can follow the below guide for learning how you can contribute to the project!
-
 ## Getting Started
+
+We'd love to accept your contributions to this project! If you are a first time contributor, please review our [Contributing Guidelines](https://go-vela.github.io/docs/community/contributing_guidelines/) before proceeding.
 
 ### Prerequisites
 
 * [Review the commit guide we follow](https://chris.beams.io/posts/git-commit/#seven-rules) - ensure your commits follow our standards
+* Review our [style guide](https://go-vela.github.io/docs/community/contributing_guidelines/#style-guide) to ensure your code is clean and consistent.
 * [Docker](https://docs.docker.com/install/) - building block for local development
 * [Docker Compose](https://docs.docker.com/compose/install/) - start up local development
-* [Golang](https://golang.org/dl/) - for source code and [dependency management](https://github.com/golang/go/wiki/Modules)
 * [Make](https://www.gnu.org/software/make/) - start up local development
 
 ### Setup
@@ -76,4 +62,46 @@ make run
 
 ### Development
 
-coming soon!
+
+**Please review the [local development documentation](../DOCS.md) for more information.**
+
+* Navigate to the repository code:
+
+```bash
+# change into the cloned project directory
+cd $HOME/go-vela/vela-git
+```
+
+* Write your code and tests to implement the changes you desire.
+
+* Run the repository code (ensures your changes perform as you desire):
+
+```bash
+# execute the `up` target with `make`
+make up
+```
+
+* Test the repository code (ensures your changes don't break existing functionality):
+
+```bash
+# execute the `test` target with `make`
+make test
+```
+
+* Clean the repository code (ensures your code meets the project standards):
+
+```bash
+# execute the `clean` target with `make`
+make clean
+```
+
+* Push to your fork:
+
+```bash
+# push your code up to your fork
+git push fork master
+```
+
+* Make sure to follow our [PR process](https://go-vela.github.io/docs/community/contributing_guidelines/#development-workflow) when opening a pull request
+
+Thank you for your contribution!
