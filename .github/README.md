@@ -3,7 +3,7 @@
 [![license](https://img.shields.io/crates/l/gl.svg)](../LICENSE)
 [![GoDoc](https://godoc.org/github.com/go-vela/vela-git?status.svg)](https://godoc.org/github.com/go-vela/vela-git)
 [![Go Report Card](https://goreportcard.com/badge/go-vela/vela-git)](https://goreportcard.com/report/go-vela/vela-git)
-[![codecov](https://codecov.io/gh/go-vela/vela-git/branch/master/graph/badge.svg)](https://codecov.io/gh/go-vela/vela-git)
+[![codecov](https://codecov.io/gh/go-vela/vela-git/branch/main/graph/badge.svg)](https://codecov.io/gh/go-vela/vela-git)
 
 A Vela plugin designed for cloning repositories into your workspace.
 
