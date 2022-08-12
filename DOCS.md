@@ -125,19 +125,20 @@ steps:
 
 The following parameters are used to configure the image:
 
-| Name         | Description                       | Required | Default            | Environment Variables                                           |
-| ------------ | --------------------------------- | -------- |--------------------| --------------------------------------------------------------- |
-| `log_level`  | set the log level for the plugin  | `true`   | `info`             | `PARAMETER_LOG_LEVEL`<br>`GIT_LOG_LEVEL`                        |
-| `machine`    | machine name to communicate with  | `true`   | `github.com`       | `PARAMETER_MACHINE`<br>`GIT_MACHINE`<br>`VELA_NETRC_MACHINE`    |
-| `password`   | password for authentication       | `true`   | **set by Vela**    | `PARAMETER_PASSWORD`<br>`GIT_PASSWORD`<br>`VELA_NETRC_PASSWORD` |
-| `username`   | user name for authentication      | `true`   | **set by Vela**    | `PARAMETER_USERNAME`<br>`GIT_USERNAME`<br>`VELA_NETRC_USERNAME` |
-| `path`       | local path to clone repository to | `true`   | **set by Vela**    | `PARAMETER_PATH`<br>`GIT_PATH`<br>`VELA_BUILD_WORKSPACE`        |
-| `ref`        | reference generated for commit    | `true`   | `refs/heads/master` | `PARAMETER_REF`<br>`GIT_REF`<br>`VELA_BUILD_REF`                |
-| `remote`     | full url for cloning repository   | `true`   | **set by Vela**    | `PARAMETER_REMOTE`<br>`GIT_REMOTE`<br>`VELA_REPO_CLONE`         |
-| `sha`        | SHA-1 hash generated for commit   | `true`   | **set by Vela**    | `PARAMETER_SHA`<br>`GIT_SHA`<br>`VELA_BUILD_COMMIT`             |
-| `submodules` | enables fetching of submodules    | `false`  | `false`            | `PARAMETER_SUBMODULES`<br>`GIT_SUBMODULES`                      |
-| `tags`       | enables fetching of tags          | `false`  | `false`            | `PARAMETER_TAGS`<br>`GIT_TAGS`                                  |
-| `depth`       | enables fetching with a specific depth          | `false`  | `100`                | `PARAMETER_DEPTH`<br>`GIT_DEPTH`                                  |
+| Name             | Description                            | Required | Default             | Environment Variables                                                    |
+| ---------------- | -------------------------------------- | -------- |-------------------  | ------------------------------------------------------------------------ |
+| `default_branch` | default branch of the repository       | `true`   | **set by Vela**     | `PARAMETER_DEFAULT_BRANCH`<br>`GIT_DEFAULT_BRANCH`<br>`VELA_REPO_BRANCH` |
+| `log_level`      | set the log level for the plugin       | `true`   | `info`              | `PARAMETER_LOG_LEVEL`<br>`GIT_LOG_LEVEL`                                 |
+| `machine`        | machine name to communicate with       | `true`   | `github.com`        | `PARAMETER_MACHINE`<br>`GIT_MACHINE`<br>`VELA_NETRC_MACHINE`             |
+| `password`       | password for authentication            | `true`   | **set by Vela**     | `PARAMETER_PASSWORD`<br>`GIT_PASSWORD`<br>`VELA_NETRC_PASSWORD`          |
+| `username`       | user name for authentication           | `true`   | **set by Vela**     | `PARAMETER_USERNAME`<br>`GIT_USERNAME`<br>`VELA_NETRC_USERNAME`          |
+| `path`           | local path to clone repository to      | `true`   | **set by Vela**     | `PARAMETER_PATH`<br>`GIT_PATH`<br>`VELA_BUILD_WORKSPACE`                 |
+| `ref`            | reference generated for commit         | `true`   | `refs/heads/master` | `PARAMETER_REF`<br>`GIT_REF`<br>`VELA_BUILD_REF`                         |
+| `remote`         | full url for cloning repository        | `true`   | **set by Vela**     | `PARAMETER_REMOTE`<br>`GIT_REMOTE`<br>`VELA_REPO_CLONE`                  |
+| `sha`            | SHA-1 hash generated for commit        | `true`   | **set by Vela**     | `PARAMETER_SHA`<br>`GIT_SHA`<br>`VELA_BUILD_COMMIT`                      |
+| `submodules`     | enables fetching of submodules         | `false`  | `false`             | `PARAMETER_SUBMODULES`<br>`GIT_SUBMODULES`                               |
+| `tags`           | enables fetching of tags               | `false`  | `false`             | `PARAMETER_TAGS`<br>`GIT_TAGS`                                           |
+| `depth`          | enables fetching with a specific depth | `false`  | `100`               | `PARAMETER_DEPTH`<br>`GIT_DEPTH`                                         |
 
 ## Template
 
