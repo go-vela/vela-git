@@ -55,6 +55,12 @@ func (p *Plugin) Exec() error {
 		return err
 	}
 
+	// configure default branch for init
+	err = execCmd(defaultBranchCmd(p.Repo.DefaultBranch))
+	if err != nil {
+		return err
+	}
+
 	// initialize git repo
 	err = execCmd(initCmd())
 	if err != nil {

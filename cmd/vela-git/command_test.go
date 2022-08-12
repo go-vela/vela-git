@@ -72,6 +72,23 @@ func TestGit_initCmd(t *testing.T) {
 	}
 }
 
+func TestGit_defaultBranchCmd(t *testing.T) {
+	// setup types
+	want := exec.Command(
+		"git",
+		"config",
+		"--global",
+		"init.defaultBranch",
+		"main",
+	)
+
+	got := defaultBranchCmd("main")
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("defaultBranchCmd is %v, want %v", got, want)
+	}
+}
+
 func TestGit_remoteAddCmd(t *testing.T) {
 	// setup types
 	want := exec.Command(

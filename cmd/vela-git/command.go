@@ -95,6 +95,22 @@ func remoteVerboseCmd() *exec.Cmd {
 	)
 }
 
+// defaultBranchCmd is a helper function
+// to set init.defaultBranch in git
+// available to override default branch
+// name when initializing a new repo.
+func defaultBranchCmd(branch string) *exec.Cmd {
+	logrus.Trace("returning defaultBranchCmd")
+
+	return exec.Command(
+		"git",
+		"config",
+		"--global",
+		"init.defaultBranch",
+		branch,
+	)
+}
+
 // resetCmd is a helper function to
 // hard reset the current HEAD to
 // the sha for a git repo.

@@ -12,6 +12,8 @@ import (
 
 // Repo represents the plugin configuration for repo information.
 type Repo struct {
+	// default branch of the Repo
+	DefaultBranch string
 	// full remote url for cloning
 	Remote string
 	// enable fetching of submodules
@@ -23,6 +25,11 @@ type Repo struct {
 // Validate verifies the Repo is properly configured.
 func (r *Repo) Validate() error {
 	logrus.Trace("validating repo plugin configuration")
+
+	// verify default branch is provided
+	if len(r.DefaultBranch) == 0 {
+		return fmt.Errorf("no repo default branch provided")
+	}
 
 	// verify remote is provided
 	if len(r.Remote) == 0 {

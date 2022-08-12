@@ -40,9 +40,10 @@ func TestGit_Plugin_Exec(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
-			Submodules: false,
-			Tags:       false,
+			DefaultBranch: "main",
+			Remote:        "https://github.com/octocat/hello-world.git",
+			Submodules:    false,
+			Tags:          false,
 		},
 	}
 
@@ -80,9 +81,10 @@ func TestGit_Plugin_Exec_Submodules(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
-			Submodules: true,
-			Tags:       false,
+			DefaultBranch: "main",
+			Remote:        "https://github.com/octocat/hello-world.git",
+			Submodules:    true,
+			Tags:          false,
 		},
 	}
 
@@ -120,9 +122,10 @@ func TestGit_Plugin_Exec_Tags(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
-			Submodules: false,
-			Tags:       true,
+			DefaultBranch: "main",
+			Remote:        "https://github.com/octocat/hello-world.git",
+			Submodules:    false,
+			Tags:          true,
 		},
 	}
 
@@ -146,9 +149,10 @@ func TestGit_Plugin_Validate(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
-			Submodules: false,
-			Tags:       false,
+			DefaultBranch: "main",
+			Remote:        "https://github.com/octocat/hello-world.git",
+			Submodules:    false,
+			Tags:          false,
 		},
 	}
 
@@ -168,9 +172,10 @@ func TestGit_Plugin_Validate_NoBuild(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
-			Submodules: false,
-			Tags:       false,
+			DefaultBranch: "main",
+			Remote:        "https://github.com/octocat/hello-world.git",
+			Submodules:    false,
+			Tags:          false,
 		},
 	}
 
@@ -190,9 +195,10 @@ func TestGit_Plugin_Validate_NoNetrc(t *testing.T) {
 		},
 		Netrc: &Netrc{},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
-			Submodules: false,
-			Tags:       false,
+			DefaultBranch: "main",
+			Remote:        "https://github.com/octocat/hello-world.git",
+			Submodules:    false,
+			Tags:          false,
 		},
 	}
 
