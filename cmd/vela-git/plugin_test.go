@@ -4,28 +4,11 @@
 
 package main
 
-import (
-	"io/ioutil"
-	"os"
-	"testing"
-
-	"github.com/sirupsen/logrus"
-)
+import "testing"
 
 func TestGit_Plugin_Exec(t *testing.T) {
 	// setup directory
-	dir, err := ioutil.TempDir("/tmp", "vela_git_plugin_")
-	if err != nil {
-		t.Errorf("unable to create temp directory: %v", err)
-	}
-
-	// defer cleanup of directory
-	defer func() {
-		err := os.RemoveAll(dir)
-		if err != nil {
-			logrus.Fatalf("unable to remove temp directory %s: %v", dir, err)
-		}
-	}()
+	dir := t.TempDir()
 
 	// setup types
 	p := &Plugin{
@@ -47,7 +30,7 @@ func TestGit_Plugin_Exec(t *testing.T) {
 		},
 	}
 
-	err = p.Exec()
+	err := p.Exec()
 	if err != nil {
 		t.Errorf("Exec returned err: %v", err)
 	}
@@ -55,18 +38,7 @@ func TestGit_Plugin_Exec(t *testing.T) {
 
 func TestGit_Plugin_Exec_Submodules(t *testing.T) {
 	// setup directory
-	dir, err := ioutil.TempDir("/tmp", "vela_git_plugin_")
-	if err != nil {
-		t.Errorf("unable to create temp directory: %v", err)
-	}
-
-	// defer cleanup of directory
-	defer func() {
-		err := os.RemoveAll(dir)
-		if err != nil {
-			logrus.Fatalf("unable to remove temp directory %s: %v", dir, err)
-		}
-	}()
+	dir := t.TempDir()
 
 	// setup types
 	p := &Plugin{
@@ -88,7 +60,7 @@ func TestGit_Plugin_Exec_Submodules(t *testing.T) {
 		},
 	}
 
-	err = p.Exec()
+	err := p.Exec()
 	if err != nil {
 		t.Errorf("Exec returned err: %v", err)
 	}
@@ -96,18 +68,7 @@ func TestGit_Plugin_Exec_Submodules(t *testing.T) {
 
 func TestGit_Plugin_Exec_Tags(t *testing.T) {
 	// setup directory
-	dir, err := ioutil.TempDir("/tmp", "vela_git_plugin_")
-	if err != nil {
-		t.Errorf("unable to create temp directory: %v", err)
-	}
-
-	// defer cleanup of directory
-	defer func() {
-		err := os.RemoveAll(dir)
-		if err != nil {
-			logrus.Fatalf("unable to remove temp directory %s: %v", dir, err)
-		}
-	}()
+	dir := t.TempDir()
 
 	// setup types
 	p := &Plugin{
@@ -129,7 +90,7 @@ func TestGit_Plugin_Exec_Tags(t *testing.T) {
 		},
 	}
 
-	err = p.Exec()
+	err := p.Exec()
 	if err != nil {
 		t.Errorf("Exec returned err: %v", err)
 	}
