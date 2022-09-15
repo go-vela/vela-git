@@ -119,6 +119,12 @@ func main() {
 		// Repo Flags
 
 		&cli.StringFlag{
+			EnvVars:  []string{"PARAMETER_DEFAULT_BRANCH", "GIT_DEFAULT_BRANCH", "VELA_REPO_BRANCH"},
+			FilePath: "/vela/parameters/git/default_branch,/vela/secrets/git/default_branch",
+			Name:     "repo.default_branch",
+			Usage:    "the default branch of the repo used during git init",
+		},
+		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_REMOTE", "GIT_REMOTE", "VELA_REPO_CLONE"},
 			FilePath: "/vela/parameters/git/remote,/vela/secrets/git/remote",
 			Name:     "repo.remote",
@@ -189,9 +195,10 @@ func run(c *cli.Context) error {
 		},
 		// repo configuration
 		Repo: &Repo{
-			Remote:     c.String("repo.remote"),
-			Submodules: c.Bool("repo.submodules"),
-			Tags:       c.Bool("repo.tags"),
+			DefaultBranch: c.String("repo.default_branch"),
+			Remote:        c.String("repo.remote"),
+			Submodules:    c.Bool("repo.submodules"),
+			Tags:          c.Bool("repo.tags"),
 		},
 	}
 

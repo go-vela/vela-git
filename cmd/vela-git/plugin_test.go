@@ -4,28 +4,11 @@
 
 package main
 
-import (
-	"io/ioutil"
-	"os"
-	"testing"
-
-	"github.com/sirupsen/logrus"
-)
+import "testing"
 
 func TestGit_Plugin_Exec(t *testing.T) {
 	// setup directory
-	dir, err := ioutil.TempDir("/tmp", "vela_git_plugin_")
-	if err != nil {
-		t.Errorf("unable to create temp directory: %v", err)
-	}
-
-	// defer cleanup of directory
-	defer func() {
-		err := os.RemoveAll(dir)
-		if err != nil {
-			logrus.Fatalf("unable to remove temp directory %s: %v", dir, err)
-		}
-	}()
+	dir := t.TempDir()
 
 	// setup types
 	p := &Plugin{
@@ -40,13 +23,14 @@ func TestGit_Plugin_Exec(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
-			Submodules: false,
-			Tags:       false,
+			DefaultBranch: "main",
+			Remote:        "https://github.com/octocat/hello-world.git",
+			Submodules:    false,
+			Tags:          false,
 		},
 	}
 
-	err = p.Exec()
+	err := p.Exec()
 	if err != nil {
 		t.Errorf("Exec returned err: %v", err)
 	}
@@ -54,18 +38,7 @@ func TestGit_Plugin_Exec(t *testing.T) {
 
 func TestGit_Plugin_Exec_Submodules(t *testing.T) {
 	// setup directory
-	dir, err := ioutil.TempDir("/tmp", "vela_git_plugin_")
-	if err != nil {
-		t.Errorf("unable to create temp directory: %v", err)
-	}
-
-	// defer cleanup of directory
-	defer func() {
-		err := os.RemoveAll(dir)
-		if err != nil {
-			logrus.Fatalf("unable to remove temp directory %s: %v", dir, err)
-		}
-	}()
+	dir := t.TempDir()
 
 	// setup types
 	p := &Plugin{
@@ -80,13 +53,14 @@ func TestGit_Plugin_Exec_Submodules(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
-			Submodules: true,
-			Tags:       false,
+			DefaultBranch: "main",
+			Remote:        "https://github.com/octocat/hello-world.git",
+			Submodules:    true,
+			Tags:          false,
 		},
 	}
 
-	err = p.Exec()
+	err := p.Exec()
 	if err != nil {
 		t.Errorf("Exec returned err: %v", err)
 	}
@@ -94,18 +68,7 @@ func TestGit_Plugin_Exec_Submodules(t *testing.T) {
 
 func TestGit_Plugin_Exec_Tags(t *testing.T) {
 	// setup directory
-	dir, err := ioutil.TempDir("/tmp", "vela_git_plugin_")
-	if err != nil {
-		t.Errorf("unable to create temp directory: %v", err)
-	}
-
-	// defer cleanup of directory
-	defer func() {
-		err := os.RemoveAll(dir)
-		if err != nil {
-			logrus.Fatalf("unable to remove temp directory %s: %v", dir, err)
-		}
-	}()
+	dir := t.TempDir()
 
 	// setup types
 	p := &Plugin{
@@ -120,13 +83,14 @@ func TestGit_Plugin_Exec_Tags(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
-			Submodules: false,
-			Tags:       true,
+			DefaultBranch: "main",
+			Remote:        "https://github.com/octocat/hello-world.git",
+			Submodules:    false,
+			Tags:          true,
 		},
 	}
 
-	err = p.Exec()
+	err := p.Exec()
 	if err != nil {
 		t.Errorf("Exec returned err: %v", err)
 	}
@@ -146,9 +110,10 @@ func TestGit_Plugin_Validate(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
-			Submodules: false,
-			Tags:       false,
+			DefaultBranch: "main",
+			Remote:        "https://github.com/octocat/hello-world.git",
+			Submodules:    false,
+			Tags:          false,
 		},
 	}
 
@@ -168,9 +133,10 @@ func TestGit_Plugin_Validate_NoBuild(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
-			Submodules: false,
-			Tags:       false,
+			DefaultBranch: "main",
+			Remote:        "https://github.com/octocat/hello-world.git",
+			Submodules:    false,
+			Tags:          false,
 		},
 	}
 
@@ -190,9 +156,10 @@ func TestGit_Plugin_Validate_NoNetrc(t *testing.T) {
 		},
 		Netrc: &Netrc{},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
-			Submodules: false,
-			Tags:       false,
+			DefaultBranch: "main",
+			Remote:        "https://github.com/octocat/hello-world.git",
+			Submodules:    false,
+			Tags:          false,
 		},
 	}
 
