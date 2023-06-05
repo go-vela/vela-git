@@ -16,9 +16,10 @@ func TestGit_Build_Validate(t *testing.T) {
 			name:    "success",
 			failure: false,
 			build: &Build{
-				Path: "/home/octocat_hello-world_1",
-				Ref:  "refs/heads/master",
-				Sha:  "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+				Branch: "master",
+				Path:   "/home/octocat_hello-world_1",
+				Ref:    "refs/heads/master",
+				Sha:    "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
 			},
 		},
 		{
