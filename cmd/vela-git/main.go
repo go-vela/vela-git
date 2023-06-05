@@ -72,6 +72,7 @@ func main() {
 			FilePath: "/vela/parameters/git/branch,/vela/secrets/git/branch",
 			Name:     "build.branch",
 			Usage:    "the repo branch for the build used during git init",
+			Value:    "master",
 		},
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_SHA", "GIT_SHA", "VELA_BUILD_COMMIT"},
