@@ -13,9 +13,10 @@ func TestGit_Plugin_Exec(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Build: &Build{
-			Path: dir,
-			Ref:  "refs/heads/master",
-			Sha:  "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+			Branch: "master",
+			Path:   dir,
+			Ref:    "refs/heads/master",
+			Sha:    "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
 		},
 		Netrc: &Netrc{
 			Machine:  "github.com",
@@ -23,10 +24,9 @@ func TestGit_Plugin_Exec(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			DefaultBranch: "main",
-			Remote:        "https://github.com/octocat/hello-world.git",
-			Submodules:    false,
-			Tags:          false,
+			Remote:     "https://github.com/octocat/hello-world.git",
+			Submodules: false,
+			Tags:       false,
 		},
 	}
 
@@ -43,9 +43,10 @@ func TestGit_Plugin_Exec_Submodules(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Build: &Build{
-			Path: dir,
-			Ref:  "refs/heads/master",
-			Sha:  "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+			Branch: "master",
+			Path:   dir,
+			Ref:    "refs/heads/master",
+			Sha:    "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
 		},
 		Netrc: &Netrc{
 			Machine:  "github.com",
@@ -53,10 +54,9 @@ func TestGit_Plugin_Exec_Submodules(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			DefaultBranch: "main",
-			Remote:        "https://github.com/octocat/hello-world.git",
-			Submodules:    true,
-			Tags:          false,
+			Remote:     "https://github.com/octocat/hello-world.git",
+			Submodules: true,
+			Tags:       false,
 		},
 	}
 
@@ -73,9 +73,10 @@ func TestGit_Plugin_Exec_Tags(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Build: &Build{
-			Path: dir,
-			Ref:  "refs/heads/master",
-			Sha:  "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+			Branch: "master",
+			Path:   dir,
+			Ref:    "refs/heads/master",
+			Sha:    "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
 		},
 		Netrc: &Netrc{
 			Machine:  "github.com",
@@ -83,10 +84,9 @@ func TestGit_Plugin_Exec_Tags(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			DefaultBranch: "main",
-			Remote:        "https://github.com/octocat/hello-world.git",
-			Submodules:    false,
-			Tags:          true,
+			Remote:     "https://github.com/octocat/hello-world.git",
+			Submodules: false,
+			Tags:       true,
 		},
 	}
 
@@ -100,9 +100,10 @@ func TestGit_Plugin_Validate(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Build: &Build{
-			Path: "/home/octocat_hello-world_1",
-			Ref:  "refs/heads/master",
-			Sha:  "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+			Branch: "master",
+			Path:   "/home/octocat_hello-world_1",
+			Ref:    "refs/heads/master",
+			Sha:    "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
 		},
 		Netrc: &Netrc{
 			Machine:  "github.com",
@@ -110,10 +111,9 @@ func TestGit_Plugin_Validate(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			DefaultBranch: "main",
-			Remote:        "https://github.com/octocat/hello-world.git",
-			Submodules:    false,
-			Tags:          false,
+			Remote:     "https://github.com/octocat/hello-world.git",
+			Submodules: false,
+			Tags:       false,
 		},
 	}
 
@@ -133,10 +133,9 @@ func TestGit_Plugin_Validate_NoBuild(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			DefaultBranch: "main",
-			Remote:        "https://github.com/octocat/hello-world.git",
-			Submodules:    false,
-			Tags:          false,
+			Remote:     "https://github.com/octocat/hello-world.git",
+			Submodules: false,
+			Tags:       false,
 		},
 	}
 
@@ -156,10 +155,9 @@ func TestGit_Plugin_Validate_NoNetrc(t *testing.T) {
 		},
 		Netrc: &Netrc{},
 		Repo: &Repo{
-			DefaultBranch: "main",
-			Remote:        "https://github.com/octocat/hello-world.git",
-			Submodules:    false,
-			Tags:          false,
+			Remote:     "https://github.com/octocat/hello-world.git",
+			Submodules: false,
+			Tags:       false,
 		},
 	}
 

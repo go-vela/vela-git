@@ -56,7 +56,7 @@ func (p *Plugin) Exec() error {
 	}
 
 	// configure default branch for init
-	err = execCmd(defaultBranchCmd(p.Repo.DefaultBranch))
+	err = execCmd(defaultBranchCmd(p.Build.Branch))
 	if err != nil {
 		return err
 	}
