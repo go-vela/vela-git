@@ -7,54 +7,73 @@ package main
 import "testing"
 
 func TestGit_Build_Validate(t *testing.T) {
-	// setup types
-	b := &Build{
-		Path: "/home/octocat_hello-world_1",
-		Ref:  "refs/heads/master",
-		Sha:  "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+	tests := []struct {
+		name    string
+		failure bool
+		build   *Build
+	}{
+		{
+			name:    "success",
+			failure: false,
+			build: &Build{
+				Branch: "master",
+				Path:   "/home/octocat_hello-world_1",
+				Ref:    "refs/heads/master",
+				Sha:    "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+			},
+		},
+		{
+			name:    "failure with no branch",
+			failure: true,
+			build: &Build{
+				Path: "/home/octocat_hello-world_1",
+				Ref:  "refs/heads/master",
+				Sha:  "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+			},
+		},
+		{
+			name:    "failure with no path",
+			failure: true,
+			build: &Build{
+				Branch: "master",
+				Ref:    "refs/heads/master",
+				Sha:    "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+			},
+		},
+		{
+			name:    "failure with no ref",
+			failure: true,
+			build: &Build{
+				Branch: "master",
+				Path:   "/home/octocat_hello-world_1",
+				Sha:    "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+			},
+		},
+		{
+			name:    "failure with no sha",
+			failure: true,
+			build: &Build{
+				Branch: "master",
+				Path:   "/home/octocat_hello-world_1",
+				Ref:    "refs/heads/master",
+			},
+		},
 	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			err := test.build.Validate()
 
-	err := b.Validate()
-	if err != nil {
-		t.Errorf("Validate returned err: %v", err)
-	}
-}
+			if test.failure {
+				if err == nil {
+					t.Errorf("Validate for %s should have returned err", test.name)
+				}
 
-func TestGit_Build_Validate_NoPath(t *testing.T) {
-	// setup types
-	b := &Build{
-		Ref: "refs/heads/master",
-		Sha: "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
-	}
+				return
+			}
 
-	err := b.Validate()
-	if err == nil {
-		t.Errorf("Validate should have returned err")
-	}
-}
-
-func TestGit_Build_Validate_NoRef(t *testing.T) {
-	// setup types
-	b := &Build{
-		Path: "/home/octocat_hello-world_1",
-		Sha:  "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
-	}
-
-	err := b.Validate()
-	if err == nil {
-		t.Errorf("Validate should have returned err")
-	}
-}
-
-func TestGit_Build_Validate_NoSha(t *testing.T) {
-	// setup types
-	b := &Build{
-		Path: "/home/octocat_hello-world_1",
-		Ref:  "refs/heads/master",
-	}
-
-	err := b.Validate()
-	if err == nil {
-		t.Errorf("Validate should have returned err")
+			if err != nil {
+				t.Errorf("Validate for %s returned err: %v", test.name, err)
+			}
+		})
 	}
 }

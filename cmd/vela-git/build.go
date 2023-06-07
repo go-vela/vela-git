@@ -12,6 +12,8 @@ import (
 
 // Build represents the plugin configuration for build information.
 type Build struct {
+	// branch used for git init
+	Branch string
 	// full path to workspace
 	Path string
 	// reference generated for commit
@@ -25,6 +27,11 @@ type Build struct {
 // Validate verifies the Build is properly configured.
 func (b *Build) Validate() error {
 	logrus.Trace("validating build plugin configuration")
+
+	// verify branch is provided
+	if len(b.Branch) == 0 {
+		return fmt.Errorf("no build branch provided")
+	}
 
 	// verify path is provided
 	if len(b.Path) == 0 {

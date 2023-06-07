@@ -68,6 +68,13 @@ func main() {
 		// Build Flags
 
 		&cli.StringFlag{
+			EnvVars:  []string{"PARAMETER_BRANCH", "GIT_BRANCH", "VELA_PULL_REQUEST_SOURCE", "VELA_BUILD_BRANCH"},
+			FilePath: "/vela/parameters/git/branch,/vela/secrets/git/branch",
+			Name:     "build.branch",
+			Usage:    "the repo branch for the build used during git init",
+			Value:    "master",
+		},
+		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_SHA", "GIT_SHA", "VELA_BUILD_COMMIT"},
 			FilePath: "/vela/parameters/git/sha,/vela/secrets/git/sha",
 			Name:     "build.sha",
@@ -118,12 +125,6 @@ func main() {
 
 		// Repo Flags
 
-		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_DEFAULT_BRANCH", "GIT_DEFAULT_BRANCH", "VELA_REPO_BRANCH"},
-			FilePath: "/vela/parameters/git/default_branch,/vela/secrets/git/default_branch",
-			Name:     "repo.default_branch",
-			Usage:    "the default branch of the repo used during git init",
-		},
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_REMOTE", "GIT_REMOTE", "VELA_REPO_CLONE"},
 			FilePath: "/vela/parameters/git/remote,/vela/secrets/git/remote",
@@ -182,10 +183,11 @@ func run(c *cli.Context) error {
 	p := &Plugin{
 		// build configuration
 		Build: &Build{
-			Path:  c.String("build.path"),
-			Ref:   c.String("build.ref"),
-			Sha:   c.String("build.sha"),
-			Depth: c.String("build.depth"),
+			Branch: c.String("build.branch"),
+			Path:   c.String("build.path"),
+			Ref:    c.String("build.ref"),
+			Sha:    c.String("build.sha"),
+			Depth:  c.String("build.depth"),
 		},
 		// netrc configuration
 		Netrc: &Netrc{
@@ -195,10 +197,9 @@ func run(c *cli.Context) error {
 		},
 		// repo configuration
 		Repo: &Repo{
-			DefaultBranch: c.String("repo.default_branch"),
-			Remote:        c.String("repo.remote"),
-			Submodules:    c.Bool("repo.submodules"),
-			Tags:          c.Bool("repo.tags"),
+			Remote:     c.String("repo.remote"),
+			Submodules: c.Bool("repo.submodules"),
+			Tags:       c.Bool("repo.tags"),
 		},
 	}
 
