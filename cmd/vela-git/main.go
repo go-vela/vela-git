@@ -1,6 +1,4 @@
-// Copyright (c) 2023 Target Brands, Inc. All rights reserved.
-//
-// Use of this source code is governed by the LICENSE file in this repository.
+// SPDX-License-Identifier: Apache-2.0
 
 package main
 
@@ -39,7 +37,7 @@ func main() {
 	app.Name = "vela-git"
 	app.HelpName = "vela-git"
 	app.Usage = "Vela Git plugin for cloning repositories"
-	app.Copyright = "Copyright (c) 2023 Target Brands, Inc. All rights reserved."
+	app.Copyright = "Copyright 2019 Target Brands, Inc. All rights reserved."
 	app.Authors = []*cli.Author{
 		{
 			Name:  "Vela Admins",
