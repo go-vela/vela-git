@@ -40,7 +40,7 @@ jobs:
         make build-static-ci
 
     - name: publish
-      uses: elgohr/Publish-Docker-Github-Action@eb53b3ec07136a6ebaed78d8135806da64f7c7e2 # v5.0.2
+      uses: elgohr/Publish-Docker-Github-Action@eb53b3ec07136a6ebaed78d8135806da64f7c7e2 # v5
       with:
         name: target/vela-git
         cache: true
