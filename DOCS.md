@@ -60,6 +60,21 @@ steps:
 +     tags: true
 ```
 
+Sample of cloning a repository and resolving LFS objects:
+
+```diff
+steps:
+  - name: clone_hello-world
+    image: target/vela-git:latest
+    pull: always
+    parameters:
+      path: hello-world
+      ref: refs/heads/master
+      remote: https://github.com/octocat/hello-world.git
+      sha: 7fd1a60b01f91b314f59955a4e4d4e80d8edf11d
++     lfs: true
+```
+
 ## Secrets
 
 > **NOTE:** Users should refrain from configuring sensitive information in your pipeline in plain text.

@@ -127,6 +127,7 @@ func TestGit_resetCmd(t *testing.T) {
 		"--hard",
 		"7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
 	)
+	want.Env = append(want.Env, "GIT_LFS_SKIP_SMUDGE=1")
 
 	got := resetCmd("7fd1a60b01f91b314f59955a4e4d4e80d8edf11d")
 
@@ -148,5 +149,20 @@ func TestGit_submoduleCmd(t *testing.T) {
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("submoduleCmd is %v, want %v", got, want)
+	}
+}
+
+func TestGit_getLFSCmd(t *testing.T) {
+	// setup types
+	want := exec.Command(
+		"git",
+		"lfs",
+		"pull",
+	)
+
+	got := getLFSCmd()
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("getLFSCmd is %v, want %v", got, want)
 	}
 }

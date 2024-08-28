@@ -94,6 +94,37 @@ func TestGit_Plugin_Exec_Tags(t *testing.T) {
 	}
 }
 
+func TestGit_Plugin_Exec_LFS(t *testing.T) {
+	// setup directory
+	dir := t.TempDir()
+
+	// setup types
+	p := &Plugin{
+		Build: &Build{
+			Branch: "master",
+			Path:   dir,
+			Ref:    "refs/heads/main",
+			Sha:    "efd6f0c16e6593c5468037ae408c52b4980a2666",
+		},
+		Netrc: &Netrc{
+			Machine:  "github.com",
+			Username: "octocat",
+			Password: "superSecretPassword",
+		},
+		Repo: &Repo{
+			Remote:     "https://github.com/go-vela/community.git",
+			Submodules: false,
+			Tags:       true,
+			LFS:        true,
+		},
+	}
+
+	err := p.Exec()
+	if err != nil {
+		t.Errorf("Exec returned err: %v", err)
+	}
+}
+
 func TestGit_Plugin_Validate(t *testing.T) {
 	// setup types
 	p := &Plugin{

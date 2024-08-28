@@ -10,6 +10,7 @@ func TestGit_Repo_Validate(t *testing.T) {
 		Remote:     "https://github.com/octocat/hello-world.git",
 		Submodules: false,
 		Tags:       false,
+		LFS:        false,
 	}
 
 	err := r.Validate()
@@ -23,6 +24,7 @@ func TestGit_Repo_Validate_NoRemote(t *testing.T) {
 	r := &Repo{
 		Submodules: false,
 		Tags:       false,
+		LFS:        false,
 	}
 
 	err := r.Validate()

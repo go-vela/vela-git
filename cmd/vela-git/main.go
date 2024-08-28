@@ -140,6 +140,12 @@ func main() {
 			Name:     "repo.tags",
 			Usage:    "enables fetching tags for the repo being cloned",
 		},
+		&cli.BoolFlag{
+			EnvVars:  []string{"PARAMETER_LFS", "GIT_LFS"},
+			FilePath: "/vela/parameters/git/lfs,/vela/secrets/git/lfs",
+			Name:     "repo.lfs",
+			Usage:    "enables resolving LFS objects",
+		},
 	}
 
 	err = app.Run(os.Args)
@@ -197,6 +203,7 @@ func run(c *cli.Context) error {
 			Remote:     c.String("repo.remote"),
 			Submodules: c.Bool("repo.submodules"),
 			Tags:       c.Bool("repo.tags"),
+			LFS:        c.Bool("repo.lfs"),
 		},
 	}
 
