@@ -8,12 +8,12 @@ import (
 	"os"
 	"time"
 
-	"github.com/go-vela/vela-git/version"
-
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 
 	_ "github.com/joho/godotenv/autoload"
+
+	"github.com/go-vela/vela-git/version"
 )
 
 func main() {
@@ -54,7 +54,6 @@ func main() {
 	// Plugin Flags
 
 	app.Flags = []cli.Flag{
-
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_LOG_LEVEL", "GIT_LOG_LEVEL"},
 			FilePath: "/vela/parameters/git/log_level,/vela/secrets/git/log_level",

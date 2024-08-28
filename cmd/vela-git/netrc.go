@@ -7,9 +7,8 @@ import (
 	"os/user"
 	"path/filepath"
 
-	"github.com/spf13/afero"
-
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/afero"
 )
 
 const netrcFile = `
