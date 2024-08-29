@@ -69,7 +69,7 @@ func main() {
 			FilePath: "/vela/parameters/git/branch,/vela/secrets/git/branch",
 			Name:     "build.branch",
 			Usage:    "the repo branch for the build used during git init",
-			Value:    "master",
+			Value:    "main",
 		},
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_SHA", "GIT_SHA", "VELA_BUILD_COMMIT"},
@@ -88,7 +88,7 @@ func main() {
 			FilePath: "/vela/parameters/git/ref,/vela/secrets/git/ref",
 			Name:     "build.ref",
 			Usage:    "commit reference to clone from the repo",
-			Value:    "refs/heads/master",
+			Value:    "refs/heads/main",
 		},
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_DEPTH", "GIT_DEPTH"},

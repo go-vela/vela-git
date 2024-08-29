@@ -20,28 +20,28 @@ Sample of cloning a repository:
 
 ```yaml
 steps:
-  - name: clone_hello-world
+  - name: clone_vela-git-test
     image: target/vela-git:latest
     pull: always
     parameters:
-      path: hello-world
-      ref: refs/heads/master
-      remote: https://github.com/octocat/hello-world.git
-      sha: 7fd1a60b01f91b314f59955a4e4d4e80d8edf11d
+      path: vela-git-test
+      ref: refs/heads/main
+      remote: https://github.com/go-vela/vela-git-test.git
+      sha: ee1e671529ad86a11ed628a04b37829e71783682
 ```
 
 Sample of cloning a repository with submodules:
 
 ```diff
 steps:
-  - name: clone_hello-world
+  - name: clone_vela-git-test
     image: target/vela-git:latest
     pull: always
     parameters:
-      path: hello-world
-      ref: refs/heads/master
-      remote: https://github.com/octocat/hello-world.git
-      sha: 7fd1a60b01f91b314f59955a4e4d4e80d8edf11d
+      path: vela-git-test
+      ref: refs/heads/main
+      remote: https://github.com/go-vela/vela-git-test.git
+      sha: ee1e671529ad86a11ed628a04b37829e71783682
 +     submodules: true
 ```
 
@@ -49,14 +49,14 @@ Sample of cloning a repository with tags:
 
 ```diff
 steps:
-  - name: clone_hello-world
+  - name: clone_vela-git-test
     image: target/vela-git:latest
     pull: always
     parameters:
-      path: hello-world
-      ref: refs/heads/master
-      remote: https://github.com/octocat/hello-world.git
-      sha: 7fd1a60b01f91b314f59955a4e4d4e80d8edf11d
+      path: vela-git-test
+      ref: refs/heads/main
+      remote: https://github.com/go-vela/vela-git-test.git
+      sha: ee1e671529ad86a11ed628a04b37829e71783682
 +     tags: true
 ```
 
@@ -64,14 +64,14 @@ Sample of cloning a repository and resolving LFS objects:
 
 ```diff
 steps:
-  - name: clone_hello-world
+  - name: clone_vela-git-test
     image: target/vela-git:latest
     pull: always
     parameters:
-      path: hello-world
-      ref: refs/heads/master
-      remote: https://github.com/octocat/hello-world.git
-      sha: 7fd1a60b01f91b314f59955a4e4d4e80d8edf11d
+      path: vela-git-test
+      ref: refs/heads/main
+      remote: https://github.com/go-vela/vela-git-test.git
+      sha: ee1e671529ad86a11ed628a04b37829e71783682
 +     lfs: true
 ```
 
@@ -85,20 +85,20 @@ Users can use [Vela internal secrets](https://go-vela.github.io/docs/tour/secret
 
 ```diff
 steps:
-  - name: clone_hello-world
+  - name: clone_vela-git-test
     image: target/vela-git:latest
     pull: always
 +   secrets: [ git_username, git_password ]
     parameters:
 -     username: octocat
 -     password: superSecretPassword
-      path: /home/octocat_hello-world_1
+      path: /home/go-vela_vela-git-test_1
       ref: refs/heads/master
-      remote: https://github.com/octocat/hello-world.git
-      sha: 7fd1a60b01f91b314f59955a4e4d4e80d8edf11d
+      remote: https://github.com/go-vela/vela-git-test.git
+      sha: ee1e671529ad86a11ed628a04b37829e71783682
 ```
 
-> This example will add the secrets to the `clone_hello-world` step as environment variables:
+> This example will add the secrets to the `clone_vela-git-test` step as environment variables:
 >
 > * `GIT_USERNAME=<value>`
 > * `GIT_PASSWORD=<value>`
@@ -116,16 +116,16 @@ Users can use [Vela external secrets](https://go-vela.github.io/docs/concepts/pi
 
 ```diff
 steps:
-  - name: clone_hello-world
+  - name: clone_vela-git-test
     image: target/vela-git:latest
     pull: always
     parameters:
 -     username: octocat
 -     password: superSecretPassword
-      path: /home/octocat_hello-world_1
-      ref: refs/heads/master
-      remote: https://github.com/octocat/hello-world.git
-      sha: 7fd1a60b01f91b314f59955a4e4d4e80d8edf11d
+      path: /home/go-vela_vela-git-test_1
+      ref: refs/heads/main
+      remote: https://github.com/go-vela/vela-git-test.git
+      sha: ee1e671529ad86a11ed628a04b37829e71783682
 ```
 
 > This example will read the secret values in the volume stored at `/vela/secrets/`
@@ -165,15 +165,15 @@ You can start troubleshooting this plugin by tuning the level of logs being disp
 
 ```diff
 steps:
-  - name: clone_hello-world
+  - name: clone_vela-git-test
     image: target/vela-git:latest
     pull: always
     parameters:
 +     log_level: trace
-      path: hello-world
-      ref: refs/heads/master
-      remote: https://github.com/octocat/hello-world.git
-      sha: 7fd1a60b01f91b314f59955a4e4d4e80d8edf11d
+      path: vela-git-test
+      ref: refs/heads/main
+      remote: https://github.com/go-vela/vela-git-test.git
+      sha: ee1e671529ad86a11ed628a04b37829e71783682
 ```
 
 Below are a list of common problems and how to solve them:

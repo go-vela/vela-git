@@ -7,7 +7,7 @@ import "testing"
 func TestGit_Repo_Validate(t *testing.T) {
 	// setup types
 	r := &Repo{
-		Remote:     "https://github.com/octocat/hello-world.git",
+		Remote:     "https://github.com/go-vela/vela-git-test.git",
 		Submodules: false,
 		Tags:       false,
 		LFS:        false,

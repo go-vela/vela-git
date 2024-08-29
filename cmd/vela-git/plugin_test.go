@@ -2,7 +2,11 @@
 
 package main
 
-import "testing"
+import (
+	"os"
+	"path"
+	"testing"
+)
 
 func TestGit_Plugin_Exec(t *testing.T) {
 	// setup directory
@@ -11,10 +15,10 @@ func TestGit_Plugin_Exec(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Build: &Build{
-			Branch: "master",
+			Branch: "main",
 			Path:   dir,
-			Ref:    "refs/heads/master",
-			Sha:    "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+			Ref:    "refs/heads/main",
+			Sha:    "ee1e671529ad86a11ed628a04b37829e71783682",
 		},
 		Netrc: &Netrc{
 			Machine:  "github.com",
@@ -22,9 +26,10 @@ func TestGit_Plugin_Exec(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
+			Remote:     "https://github.com/go-vela/vela-git-test.git",
 			Submodules: false,
 			Tags:       false,
+			LFS:        false,
 		},
 	}
 
@@ -37,14 +42,16 @@ func TestGit_Plugin_Exec(t *testing.T) {
 func TestGit_Plugin_Exec_Submodules(t *testing.T) {
 	// setup directory
 	dir := t.TempDir()
+	// expected file for resolved LFS object is 100kb
+	wantFileSizeBytes := int64(100 * 1024)
 
 	// setup types
 	p := &Plugin{
 		Build: &Build{
-			Branch: "master",
+			Branch: "main",
 			Path:   dir,
-			Ref:    "refs/heads/master",
-			Sha:    "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+			Ref:    "refs/heads/main",
+			Sha:    "ee1e671529ad86a11ed628a04b37829e71783682",
 		},
 		Netrc: &Netrc{
 			Machine:  "github.com",
@@ -52,7 +59,7 @@ func TestGit_Plugin_Exec_Submodules(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
+			Remote:     "https://github.com/go-vela/vela-git-test.git",
 			Submodules: true,
 			Tags:       false,
 		},
@@ -61,6 +68,15 @@ func TestGit_Plugin_Exec_Submodules(t *testing.T) {
 	err := p.Exec()
 	if err != nil {
 		t.Errorf("Exec returned err: %v", err)
+	}
+
+	testFile, err := os.Stat(path.Join(dir, "100k-test.bin"))
+	if err != nil {
+		t.Errorf("Exec unable to get info on test file")
+	}
+
+	if testFile.Size() == wantFileSizeBytes {
+		t.Errorf("Exec resulted in unexpected file size in repo object - want %d, got %d", wantFileSizeBytes, testFile.Size())
 	}
 }
 
@@ -71,10 +87,10 @@ func TestGit_Plugin_Exec_Tags(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Build: &Build{
-			Branch: "master",
+			Branch: "main",
 			Path:   dir,
-			Ref:    "refs/heads/master",
-			Sha:    "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+			Ref:    "refs/heads/main",
+			Sha:    "ee1e671529ad86a11ed628a04b37829e71783682",
 		},
 		Netrc: &Netrc{
 			Machine:  "github.com",
@@ -82,7 +98,7 @@ func TestGit_Plugin_Exec_Tags(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
+			Remote:     "https://github.com/go-vela/vela-git-test.git",
 			Submodules: false,
 			Tags:       true,
 		},
@@ -97,14 +113,16 @@ func TestGit_Plugin_Exec_Tags(t *testing.T) {
 func TestGit_Plugin_Exec_LFS(t *testing.T) {
 	// setup directory
 	dir := t.TempDir()
+	// expected file for resolved LFS object is 100kb
+	wantFileSizeBytes := int64(100 * 1024)
 
 	// setup types
 	p := &Plugin{
 		Build: &Build{
-			Branch: "master",
+			Branch: "main",
 			Path:   dir,
 			Ref:    "refs/heads/main",
-			Sha:    "efd6f0c16e6593c5468037ae408c52b4980a2666",
+			Sha:    "ee1e671529ad86a11ed628a04b37829e71783682",
 		},
 		Netrc: &Netrc{
 			Machine:  "github.com",
@@ -112,7 +130,7 @@ func TestGit_Plugin_Exec_LFS(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			Remote:     "https://github.com/go-vela/community.git",
+			Remote:     "https://github.com/go-vela/vela-git-test.git",
 			Submodules: false,
 			Tags:       true,
 			LFS:        true,
@@ -123,16 +141,25 @@ func TestGit_Plugin_Exec_LFS(t *testing.T) {
 	if err != nil {
 		t.Errorf("Exec returned err: %v", err)
 	}
+
+	testFile, err := os.Stat(path.Join(dir, "100k-test.bin"))
+	if err != nil {
+		t.Errorf("Exec unable to get info on test file")
+	}
+
+	if testFile.Size() != wantFileSizeBytes {
+		t.Errorf("Exec resulted in unexpected file size in repo object - want %d, got %d", wantFileSizeBytes, testFile.Size())
+	}
 }
 
 func TestGit_Plugin_Validate(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Build: &Build{
-			Branch: "master",
-			Path:   "/home/octocat_hello-world_1",
-			Ref:    "refs/heads/master",
-			Sha:    "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+			Branch: "main",
+			Path:   "/home/go-vela_vela-git-test_1",
+			Ref:    "refs/heads/main",
+			Sha:    "ee1e671529ad86a11ed628a04b37829e71783682",
 		},
 		Netrc: &Netrc{
 			Machine:  "github.com",
@@ -140,7 +167,7 @@ func TestGit_Plugin_Validate(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
+			Remote:     "https://github.com/go-vela/vela-git-test.git",
 			Submodules: false,
 			Tags:       false,
 		},
@@ -162,7 +189,7 @@ func TestGit_Plugin_Validate_NoBuild(t *testing.T) {
 			Password: "superSecretPassword",
 		},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
+			Remote:     "https://github.com/go-vela/vela-git-test.git",
 			Submodules: false,
 			Tags:       false,
 		},
@@ -178,13 +205,13 @@ func TestGit_Plugin_Validate_NoNetrc(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Build: &Build{
-			Path: "/home/octocat_hello-world_1",
-			Ref:  "refs/heads/master",
-			Sha:  "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+			Path: "/home/go-vela_vela-git-test_1",
+			Ref:  "refs/heads/main",
+			Sha:  "ee1e671529ad86a11ed628a04b37829e71783682",
 		},
 		Netrc: &Netrc{},
 		Repo: &Repo{
-			Remote:     "https://github.com/octocat/hello-world.git",
+			Remote:     "https://github.com/go-vela/vela-git-test.git",
 			Submodules: false,
 			Tags:       false,
 		},
@@ -200,9 +227,9 @@ func TestGit_Plugin_Validate_NoRepo(t *testing.T) {
 	// setup types
 	p := &Plugin{
 		Build: &Build{
-			Path: "/home/octocat_hello-world_1",
-			Ref:  "refs/heads/master",
-			Sha:  "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+			Path: "/home/go-vela_vela-git-test_1",
+			Ref:  "refs/heads/main",
+			Sha:  "ee1e671529ad86a11ed628a04b37829e71783682",
 		},
 		Netrc: &Netrc{
 			Machine:  "github.com",
