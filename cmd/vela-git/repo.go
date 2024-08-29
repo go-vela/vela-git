@@ -16,6 +16,8 @@ type Repo struct {
 	Submodules bool
 	// enable fetching of tags
 	Tags bool
+	// enable fetching via LFS
+	LFS bool
 }
 
 // Validate verifies the Repo is properly configured.

@@ -115,11 +115,29 @@ func defaultBranchCmd(branch string) *exec.Cmd {
 func resetCmd(sha string) *exec.Cmd {
 	logrus.Trace("returning resetCmd")
 
-	return exec.Command(
+	cmd := exec.Command(
 		"git",
 		"reset",
 		"--hard",
 		sha,
+	)
+
+	// skip resolving LFS objects by default
+	// https://github.com/git-lfs/git-lfs/blob/main/docs/man/git-lfs-smudge.adoc
+	cmd.Env = append(cmd.Env, "GIT_LFS_SKIP_SMUDGE=1")
+
+	return cmd
+}
+
+// getLFSCmd is a helper function to
+// resolve LFS objects.
+func getLFSCmd() *exec.Cmd {
+	logrus.Trace("returning command to pull LFS objects")
+
+	return exec.Command(
+		"git",
+		"lfs",
+		"pull",
 	)
 }
 

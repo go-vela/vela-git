@@ -97,6 +97,14 @@ func (p *Plugin) Exec() error {
 		}
 	}
 
+	// if LFS is enabled, get/resolve the LFS objects
+	if p.Repo.LFS {
+		err = execCmd(getLFSCmd())
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 

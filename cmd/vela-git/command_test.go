@@ -27,10 +27,10 @@ func TestGit_fetchCmdWithTags(t *testing.T) {
 		"--depth",
 		"10",
 		"origin",
-		"refs/heads/master",
+		"refs/heads/main",
 	)
 
-	got := fetchCmd("refs/heads/master", true, "10")
+	got := fetchCmd("refs/heads/main", true, "10")
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("fetchTagsCmd is %v, want %v", got, want)
@@ -46,10 +46,10 @@ func TestGit_fetchCmdNoTags(t *testing.T) {
 		"--depth",
 		"100",
 		"origin",
-		"refs/heads/master",
+		"refs/heads/main",
 	)
 
-	got := fetchCmd("refs/heads/master", false, "")
+	got := fetchCmd("refs/heads/main", false, "")
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("fetchNoTagsCmd is %v, want %v", got, want)
@@ -94,10 +94,10 @@ func TestGit_remoteAddCmd(t *testing.T) {
 		"remote",
 		"add",
 		"origin",
-		"https://github.com/octocat/hello-world.git",
+		"https://github.com/go-vela/vela-git-test.git",
 	)
 
-	got := remoteAddCmd("https://github.com/octocat/hello-world.git")
+	got := remoteAddCmd("https://github.com/go-vela/vela-git-test.git")
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("remoteAddCmd is %v, want %v", got, want)
@@ -125,10 +125,11 @@ func TestGit_resetCmd(t *testing.T) {
 		"git",
 		"reset",
 		"--hard",
-		"7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+		"ee1e671529ad86a11ed628a04b37829e71783682",
 	)
+	want.Env = append(want.Env, "GIT_LFS_SKIP_SMUDGE=1")
 
-	got := resetCmd("7fd1a60b01f91b314f59955a4e4d4e80d8edf11d")
+	got := resetCmd("ee1e671529ad86a11ed628a04b37829e71783682")
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("resetCmd is %v, want %v", got, want)
@@ -148,5 +149,20 @@ func TestGit_submoduleCmd(t *testing.T) {
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("submoduleCmd is %v, want %v", got, want)
+	}
+}
+
+func TestGit_getLFSCmd(t *testing.T) {
+	// setup types
+	want := exec.Command(
+		"git",
+		"lfs",
+		"pull",
+	)
+
+	got := getLFSCmd()
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("getLFSCmd is %v, want %v", got, want)
 	}
 }
