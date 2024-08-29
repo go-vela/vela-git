@@ -93,7 +93,7 @@ steps:
 -     username: octocat
 -     password: superSecretPassword
       path: /home/go-vela_vela-git-test_1
-      ref: refs/heads/master
+      ref: refs/heads/main
       remote: https://github.com/go-vela/vela-git-test.git
       sha: ee1e671529ad86a11ed628a04b37829e71783682
 ```
@@ -142,13 +142,13 @@ The following parameters are used to configure the image:
 
 | Name         | Description                             | Required | Default             | Environment Variables                                                                   |
 |--------------|-----------------------------------------| -------- |---------------------|-----------------------------------------------------------------------------------------|
-| `branch`     | initial branch to clone from repository | `true`   | `main`              | `PARAMETER_BRANCH`<br>`GIT_BRANCH`<br>`VELA_PULL_REQUEST_SOURCE`<br>`VELA_BUILD_BRANCH` |
+| `branch`     | initial branch to clone from repository | `true`   | `master`            | `PARAMETER_BRANCH`<br>`GIT_BRANCH`<br>`VELA_PULL_REQUEST_SOURCE`<br>`VELA_BUILD_BRANCH` |
 | `log_level`  | set the log level for the plugin        | `true`   | `info`              | `PARAMETER_LOG_LEVEL`<br>`GIT_LOG_LEVEL`                                                |
 | `machine`    | machine name to communicate with        | `true`   | `github.com`        | `PARAMETER_MACHINE`<br>`GIT_MACHINE`<br>`VELA_NETRC_MACHINE`                            |
 | `password`   | password for authentication             | `true`   | **set by Vela**     | `PARAMETER_PASSWORD`<br>`GIT_PASSWORD`<br>`VELA_NETRC_PASSWORD`                         |
 | `username`   | user name for authentication            | `true`   | **set by Vela**     | `PARAMETER_USERNAME`<br>`GIT_USERNAME`<br>`VELA_NETRC_USERNAME`                         |
 | `path`       | local path to clone repository to       | `true`   | **set by Vela**     | `PARAMETER_PATH`<br>`GIT_PATH`<br>`VELA_BUILD_WORKSPACE`                                |
-| `ref`        | reference generated for commit          | `true`   | `refs/heads/main`   | `PARAMETER_REF`<br>`GIT_REF`<br>`VELA_BUILD_REF`                                        |
+| `ref`        | reference generated for commit          | `true`   | `refs/heads/master` | `PARAMETER_REF`<br>`GIT_REF`<br>`VELA_BUILD_REF`                                        |
 | `remote`     | full url for cloning repository         | `true`   | **set by Vela**     | `PARAMETER_REMOTE`<br>`GIT_REMOTE`<br>`VELA_REPO_CLONE`                                 |
 | `sha`        | SHA-1 hash generated for commit         | `true`   | **set by Vela**     | `PARAMETER_SHA`<br>`GIT_SHA`<br>`VELA_BUILD_COMMIT`                                     |
 | `submodules` | enables fetching of submodules          | `false`  | `false`             | `PARAMETER_SUBMODULES`<br>`GIT_SUBMODULES`                                              |
