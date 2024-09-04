@@ -6,7 +6,10 @@ This plugin enables you to clone repositories in a Vela pipeline to your build w
 
 Source Code: https://github.com/go-vela/vela-git
 
-Registry: https://hub.docker.com/r/target/vela-git
+Registry:
+
+- https://hub.docker.com/r/target/vela-git-slim
+- https://hub.docker.com/r/target/vela-git
 
 ## Usage
 
@@ -21,7 +24,7 @@ Sample of cloning a repository:
 ```yaml
 steps:
   - name: clone_vela-git-test
-    image: target/vela-git:latest
+    image: target/vela-git-slim:latest
     pull: always
     parameters:
       path: vela-git-test
@@ -35,7 +38,7 @@ Sample of cloning a repository with submodules:
 ```diff
 steps:
   - name: clone_vela-git-test
-    image: target/vela-git:latest
+    image: target/vela-git-slim:latest
     pull: always
     parameters:
       path: vela-git-test
@@ -50,7 +53,7 @@ Sample of cloning a repository with tags:
 ```diff
 steps:
   - name: clone_vela-git-test
-    image: target/vela-git:latest
+    image: target/vela-git-slim:latest
     pull: always
     parameters:
       path: vela-git-test
@@ -60,7 +63,7 @@ steps:
 +     tags: true
 ```
 
-Sample of cloning a repository and resolving LFS objects:
+Sample of cloning a repository and resolving LFS objects with the `vela-git` plugin:
 
 ```diff
 steps:
@@ -86,7 +89,7 @@ Users can use [Vela internal secrets](https://go-vela.github.io/docs/tour/secret
 ```diff
 steps:
   - name: clone_vela-git-test
-    image: target/vela-git:latest
+    image: target/vela-git-slim:latest
     pull: always
 +   secrets: [ git_username, git_password ]
     parameters:
@@ -117,7 +120,7 @@ Users can use [Vela external secrets](https://go-vela.github.io/docs/concepts/pi
 ```diff
 steps:
   - name: clone_vela-git-test
-    image: target/vela-git:latest
+    image: target/vela-git-slim:latest
     pull: always
     parameters:
 -     username: octocat
@@ -154,7 +157,9 @@ The following parameters are used to configure the image:
 | `submodules` | enables fetching of submodules          | `false`  | `false`             | `PARAMETER_SUBMODULES`<br>`GIT_SUBMODULES`                                              |
 | `tags`       | enables fetching of tags                | `false`  | `false`             | `PARAMETER_TAGS`<br>`GIT_TAGS`                                                          |
 | `depth`      | enables fetching with a specific depth  | `false`  | `100`               | `PARAMETER_DEPTH`<br>`GIT_DEPTH`                                                        |
-| `lfs`        | enables resolving LFS objects           | `false`  | `false`             | `PARAMETER_LFS`<br>`GIT_LFS`                                                            |
+| `lfs`[^1]        | enables resolving LFS objects           | `false`  | `false`             | `PARAMETER_LFS`<br>`GIT_LFS`                                                            |
+
+[^1]: only functional in the `target/vela-git` plugin.
 
 ## Template
 
@@ -167,7 +172,7 @@ You can start troubleshooting this plugin by tuning the level of logs being disp
 ```diff
 steps:
   - name: clone_vela-git-test
-    image: target/vela-git:latest
+    image: target/vela-git-slim:latest
     pull: always
     parameters:
 +     log_level: trace
