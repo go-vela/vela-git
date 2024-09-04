@@ -159,7 +159,7 @@ The following parameters are used to configure the image:
 | `depth`      | enables fetching with a specific depth  | `false`  | `100`               | `PARAMETER_DEPTH`<br>`GIT_DEPTH`                                                        |
 | `lfs`[^1]        | enables resolving LFS objects           | `false`  | `false`             | `PARAMETER_LFS`<br>`GIT_LFS`                                                            |
 
-[^1] only functional in the `target/vela-git` plugin.
+[^1]: only functional in the `target/vela-git` plugin.
 
 ## Template
 
