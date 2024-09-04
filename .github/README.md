@@ -9,6 +9,12 @@ A Vela plugin designed for cloning repositories into your workspace.
 
 Internally, the plugin is a wrapper around the [git](https://git-scm.com/) CLI.
 
+The plugin comes in two flavors: `vela-git-slim` and `vela-git`
+
+`vela-git-slim` contains basic packages required to perform basic git operations - ideal for regular clone steps.
+
+`vela-git` contains all of `vela-git-slim` and additional utility packages related to git, such as `git-lfs` and `gh` (GitHub CLI).
+
 ## Documentation
 
 For installation and usage, please [visit our user docs](https://go-vela.github.io/docs).
