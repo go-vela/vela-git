@@ -9,8 +9,6 @@
 output:
   # colored-line-number|line-number|json|tab|checkstyle|code-climate, default is "colored-line-number"
   formats:
-    - format: json
-      path: stderr
     - format: colored-line-number
 
   # print lines of code with issue, default is true
@@ -19,12 +17,13 @@ output:
   # print linter name in the end of issue text, default is true
   print-linter-name: true
 
-  # make issues output unique by line, default is true
-  uniq-by-line: true
-
 # This section provides the configuration for each linter
 # we've instructed golangci to execute.
 linters-settings:
+  # https://github.com/karamaru-alpha/copyloopvar
+  copyloopvar:
+    check-alias: true
+
   # https://github.com/mibk/dupl
   dupl:
     threshold: 100
@@ -74,10 +73,10 @@ linters:
     - bidichk # checks for dangerous unicode character sequences
     - bodyclose # checks whether HTTP response body is closed successfully
     - contextcheck # check the function whether use a non-inherited context
+    - copyloopvar # detects places where loop variables are copied
     - dupl # code clone detection
     - errcheck # checks for unchecked errors
     - errorlint # find misuses of errors
-    - exportloopref # check for exported loop vars
     - funlen # detects long functions
     - gci # consistent import ordering
     - goconst # finds repeated strings that could be replaced by a constant
@@ -100,11 +99,11 @@ linters:
     - revive # linter for go
     - staticcheck # applies static analysis checks, go vet on steroids
     - stylecheck # replacement for golint
-    - tenv # analyzer that detects using os.Setenv instead of t.Setenv since Go1.17
     - typecheck # parses and type-checks go code, like the front-end of a go compiler
     - unconvert # remove unnecessary type conversions
     - unparam # reports unused function parameters
     - unused # checks for unused constants, variables, functions and types
+    - usetesting # checks to make sure to use testing specific helpers
     - whitespace # detects leading and trailing whitespace
     - wsl # forces code to use empty lines
 
@@ -157,6 +156,8 @@ linters:
 # This section provides the configuration for how golangci
 # will report the issues it finds.
 issues:
+  # make issues output unique by line, default is true
+  uniq-by-line: true
   # Excluding configuration per-path, per-linter, per-text and per-source
   exclude-rules:
     # prevent linters from running on *_test.go files
@@ -167,3 +168,4 @@ issues:
         - goconst
         - gocyclo
         - wsl
+
