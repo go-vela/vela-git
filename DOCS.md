@@ -11,6 +11,10 @@ Registry:
 - https://hub.docker.com/r/target/vela-git-slim
 - https://hub.docker.com/r/target/vela-git
 
+`vela-git-slim` contains basic packages required to perform basic git operations - ideal for regular clone steps.
+
+`vela-git` contains all of `vela-git-slim` and additional utility packages related to git, such as `git-lfs` and `gh` (GitHub CLI).
+
 ## Usage
 
 > **NOTE:**
