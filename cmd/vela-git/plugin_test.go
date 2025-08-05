@@ -33,7 +33,7 @@ func TestGit_Plugin_Exec(t *testing.T) {
 		},
 	}
 
-	err := p.Exec()
+	err := p.Exec(t.Context())
 	if err != nil {
 		t.Errorf("Exec returned err: %v", err)
 	}
@@ -65,7 +65,7 @@ func TestGit_Plugin_Exec_Submodules(t *testing.T) {
 		},
 	}
 
-	err := p.Exec()
+	err := p.Exec(t.Context())
 	if err != nil {
 		t.Errorf("Exec returned err: %v", err)
 	}
@@ -104,7 +104,7 @@ func TestGit_Plugin_Exec_Tags(t *testing.T) {
 		},
 	}
 
-	err := p.Exec()
+	err := p.Exec(t.Context())
 	if err != nil {
 		t.Errorf("Exec returned err: %v", err)
 	}
@@ -137,7 +137,7 @@ func TestGit_Plugin_Exec_LFS(t *testing.T) {
 		},
 	}
 
-	err := p.Exec()
+	err := p.Exec(t.Context())
 	if err != nil {
 		t.Errorf("Exec returned err: %v", err)
 	}

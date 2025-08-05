@@ -3,19 +3,21 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"net/mail"
 	"os"
-	"time"
 
 	"github.com/sirupsen/logrus"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 
 	_ "github.com/joho/godotenv/autoload"
 
 	"github.com/go-vela/vela-git/version"
 )
 
+//nolint:funlen // extensive CLI flag configuration makes function long but readable
 func main() {
 	// capture application version information
 	v := version.New()
@@ -30,132 +32,183 @@ func main() {
 	fmt.Fprintf(os.Stdout, "%s\n", string(bytes))
 
 	// create new CLI application
-	app := cli.NewApp()
-
-	// Plugin Information
-
-	app.Name = "vela-git"
-	app.HelpName = "vela-git"
-	app.Usage = "Vela Git plugin for cloning repositories"
-	app.Copyright = "Copyright 2019 Target Brands, Inc. All rights reserved."
-	app.Authors = []*cli.Author{
-		{
-			Name:  "Vela Admins",
-			Email: "vela@target.com",
+	cmd := &cli.Command{
+		Name:      "vela-git",
+		Usage:     "Vela Git plugin for cloning repositories",
+		Copyright: "Copyright 2019 Target Brands, Inc. All rights reserved.",
+		Authors: []any{
+			&mail.Address{
+				Name:    "Vela Admins",
+				Address: "vela@target.com",
+			},
 		},
+		// Plugin Metadata
+		Version: v.Semantic(),
+		Action:  run,
 	}
 
-	// Plugin Metadata
-
-	app.Action = run
-	app.Compiled = time.Now()
-	app.Version = v.Semantic()
-
 	// Plugin Flags
-
-	app.Flags = []cli.Flag{
+	cmd.Flags = []cli.Flag{
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_LOG_LEVEL", "GIT_LOG_LEVEL"},
-			FilePath: "/vela/parameters/git/log_level,/vela/secrets/git/log_level",
-			Name:     "log.level",
-			Usage:    "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
-			Value:    "info",
+			Name:  "log.level",
+			Value: "info",
+			Usage: "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_LOG_LEVEL"),
+				cli.EnvVar("GIT_LOG_LEVEL"),
+				cli.File("/vela/parameters/git/log_level"),
+				cli.File("/vela/secrets/git/log_level"),
+			),
 		},
 
 		// Build Flags
-
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_BRANCH", "GIT_BRANCH", "VELA_PULL_REQUEST_SOURCE", "VELA_BUILD_BRANCH"},
-			FilePath: "/vela/parameters/git/branch,/vela/secrets/git/branch",
-			Name:     "build.branch",
-			Usage:    "the repo branch for the build used during git init",
-			Value:    "master",
+			Name:  "build.branch",
+			Value: "main",
+			Usage: "the repo branch for the build used during git init",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_BRANCH"),
+				cli.EnvVar("GIT_BRANCH"),
+				cli.EnvVar("VELA_PULL_REQUEST_SOURCE"),
+				cli.EnvVar("VELA_BUILD_BRANCH"),
+				cli.File("/vela/parameters/git/branch"),
+				cli.File("/vela/secrets/git/branch"),
+			),
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_SHA", "GIT_SHA", "VELA_BUILD_COMMIT"},
-			FilePath: "/vela/parameters/git/sha,/vela/secrets/git/sha",
-			Name:     "build.sha",
-			Usage:    "commit sha to clone from the repo",
+			Name:  "build.sha",
+			Usage: "commit sha to clone from the repo",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_SHA"),
+				cli.EnvVar("GIT_SHA"),
+				cli.EnvVar("VELA_BUILD_COMMIT"),
+				cli.File("/vela/parameters/git/sha"),
+				cli.File("/vela/secrets/git/sha"),
+			),
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_PATH", "GIT_PATH", "VELA_BUILD_WORKSPACE"},
-			FilePath: "/vela/parameters/git/path,/vela/secrets/git/path",
-			Name:     "build.path",
-			Usage:    "local path to clone the repo to",
+			Name:  "build.path",
+			Usage: "local path to clone the repo to",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_PATH"),
+				cli.EnvVar("GIT_PATH"),
+				cli.EnvVar("VELA_BUILD_WORKSPACE"),
+				cli.File("/vela/parameters/git/path"),
+				cli.File("/vela/secrets/git/path"),
+			),
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_REF", "GIT_REF", "VELA_BUILD_REF"},
-			FilePath: "/vela/parameters/git/ref,/vela/secrets/git/ref",
-			Name:     "build.ref",
-			Usage:    "commit reference to clone from the repo",
-			Value:    "refs/heads/master",
+			Name:  "build.ref",
+			Value: "refs/heads/main",
+			Usage: "commit reference to clone from the repo",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_REF"),
+				cli.EnvVar("GIT_REF"),
+				cli.EnvVar("VELA_BUILD_REF"),
+				cli.File("/vela/parameters/git/ref"),
+				cli.File("/vela/secrets/git/ref"),
+			),
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_DEPTH", "GIT_DEPTH"},
-			FilePath: "/vela/parameters/git/depth,/vela/secrets/git/depth",
-			Name:     "build.depth",
-			Usage:    "enables fetching the repository with the specified depth",
-			Value:    "100",
+			Name:  "build.depth",
+			Value: "100",
+			Usage: "enables fetching the repository with the specified depth",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_DEPTH"),
+				cli.EnvVar("GIT_DEPTH"),
+				cli.File("/vela/parameters/git/depth"),
+				cli.File("/vela/secrets/git/depth"),
+			),
 		},
 
 		// Netrc Flags
-
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_MACHINE", "GIT_MACHINE", "VELA_NETRC_MACHINE"},
-			FilePath: "/vela/parameters/git/machine,/vela/secrets/git/machine",
-			Name:     "netrc.machine",
-			Usage:    "remote machine name to communicate with",
-			Value:    "github.com",
+			Name:  "netrc.machine",
+			Value: "github.com",
+			Usage: "remote machine name to communicate with",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_MACHINE"),
+				cli.EnvVar("GIT_MACHINE"),
+				cli.EnvVar("VELA_NETRC_MACHINE"),
+				cli.File("/vela/parameters/git/machine"),
+				cli.File("/vela/secrets/git/machine"),
+			),
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_USERNAME", "GIT_USERNAME", "VELA_NETRC_USERNAME"},
-			FilePath: "/vela/parameters/git/username,/vela/secrets/git/username",
-			Name:     "netrc.username",
-			Usage:    "user name for communication with the remote machine",
+			Name:  "netrc.username",
+			Usage: "user name for communication with the remote machine",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_USERNAME"),
+				cli.EnvVar("GIT_USERNAME"),
+				cli.EnvVar("VELA_NETRC_USERNAME"),
+				cli.File("/vela/parameters/git/username"),
+				cli.File("/vela/secrets/git/username"),
+			),
 		},
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_PASSWORD", "GIT_PASSWORD", "VELA_NETRC_PASSWORD"},
-			FilePath: "/vela/parameters/git/password,/vela/secrets/git/password",
-			Name:     "netrc.password",
-			Usage:    "password for communication with the remote machine",
+			Name:  "netrc.password",
+			Usage: "password for communication with the remote machine",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_PASSWORD"),
+				cli.EnvVar("GIT_PASSWORD"),
+				cli.EnvVar("VELA_NETRC_PASSWORD"),
+				cli.File("/vela/parameters/git/password"),
+				cli.File("/vela/secrets/git/password"),
+			),
 		},
 
 		// Repo Flags
-
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_REMOTE", "GIT_REMOTE", "VELA_REPO_CLONE"},
-			FilePath: "/vela/parameters/git/remote,/vela/secrets/git/remote",
-			Name:     "repo.remote",
-			Usage:    "the remote (clone URL) for the repo being cloned",
+			Name:  "repo.remote",
+			Usage: "the remote (clone URL) for the repo being cloned",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_REMOTE"),
+				cli.EnvVar("GIT_REMOTE"),
+				cli.EnvVar("VELA_REPO_CLONE"),
+				cli.File("/vela/parameters/git/remote"),
+				cli.File("/vela/secrets/git/remote"),
+			),
 		},
 		&cli.BoolFlag{
-			EnvVars:  []string{"PARAMETER_SUBMODULES", "GIT_SUBMODULES"},
-			FilePath: "/vela/parameters/git/submodules,/vela/secrets/git/submodules",
-			Name:     "repo.submodules",
-			Usage:    "enables fetching submodules for the repo being cloned",
+			Name:  "repo.submodules",
+			Usage: "enables fetching submodules for the repo being cloned",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_SUBMODULES"),
+				cli.EnvVar("GIT_SUBMODULES"),
+				cli.File("/vela/parameters/git/submodules"),
+				cli.File("/vela/secrets/git/submodules"),
+			),
 		},
 		&cli.BoolFlag{
-			EnvVars:  []string{"PARAMETER_TAGS", "GIT_TAGS"},
-			FilePath: "/vela/parameters/git/tags,/vela/secrets/git/tags",
-			Name:     "repo.tags",
-			Usage:    "enables fetching tags for the repo being cloned",
+			Name:  "repo.tags",
+			Usage: "enables fetching tags for the repo being cloned",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_TAGS"),
+				cli.EnvVar("GIT_TAGS"),
+				cli.File("/vela/parameters/git/tags"),
+				cli.File("/vela/secrets/git/tags"),
+			),
 		},
 		&cli.BoolFlag{
-			EnvVars:  []string{"PARAMETER_LFS", "GIT_LFS"},
-			FilePath: "/vela/parameters/git/lfs,/vela/secrets/git/lfs",
-			Name:     "repo.lfs",
-			Usage:    "enables resolving LFS objects",
+			Name:  "repo.lfs",
+			Usage: "enables resolving LFS objects",
+			Sources: cli.NewValueSourceChain(
+				cli.EnvVar("PARAMETER_LFS"),
+				cli.EnvVar("GIT_LFS"),
+				cli.File("/vela/parameters/git/lfs"),
+				cli.File("/vela/secrets/git/lfs"),
+			),
 		},
 	}
 
-	err = app.Run(os.Args)
+	err = cmd.Run(context.Background(), os.Args)
 	if err != nil {
 		logrus.Fatal(err)
 	}
 }
 
 // run executes the plugin based off the configuration provided.
-func run(c *cli.Context) error {
+func run(ctx context.Context, c *cli.Command) error {
 	// set the log level for the plugin
 	switch c.String("log.level") {
 	case "t", "trace", "Trace", "TRACE":
@@ -214,5 +267,5 @@ func run(c *cli.Context) error {
 	}
 
 	// execute the plugin
-	return p.Exec()
+	return p.Exec(ctx)
 }

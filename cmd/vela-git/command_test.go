@@ -4,13 +4,13 @@ package main
 
 import (
 	"os/exec"
-	"reflect"
+	"slices"
 	"testing"
 )
 
 func TestGit_execCmd(t *testing.T) {
 	// setup types
-	e := exec.Command("echo", "hello")
+	e := exec.CommandContext(t.Context(), "echo", "hello")
 
 	err := execCmd(e)
 	if err != nil {
@@ -20,7 +20,8 @@ func TestGit_execCmd(t *testing.T) {
 
 func TestGit_fetchCmdWithTags(t *testing.T) {
 	// setup types
-	want := exec.Command(
+	want := exec.CommandContext(
+		t.Context(),
 		"git",
 		"fetch",
 		"--tags",
@@ -30,16 +31,21 @@ func TestGit_fetchCmdWithTags(t *testing.T) {
 		"refs/heads/main",
 	)
 
-	got := fetchCmd("refs/heads/main", true, "10")
+	got := fetchCmd(t.Context(), "refs/heads/main", true, "10")
 
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("fetchTagsCmd is %v, want %v", got, want)
+	if want.Path != got.Path {
+		t.Errorf("fetchCmd Path is %s, want %s", got.Path, want.Path)
+	}
+
+	if !slices.Equal(got.Args, want.Args) {
+		t.Errorf("fetchCmd Args are %v, want %v", got.Args, want.Args)
 	}
 }
 
 func TestGit_fetchCmdNoTags(t *testing.T) {
 	// setup types
-	want := exec.Command(
+	want := exec.CommandContext(
+		t.Context(),
 		"git",
 		"fetch",
 		"--no-tags",
@@ -49,30 +55,40 @@ func TestGit_fetchCmdNoTags(t *testing.T) {
 		"refs/heads/main",
 	)
 
-	got := fetchCmd("refs/heads/main", false, "")
+	got := fetchCmd(t.Context(), "refs/heads/main", false, "")
 
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("fetchNoTagsCmd is %v, want %v", got, want)
+	if want.Path != got.Path {
+		t.Errorf("fetchNoTagsCmd Path is %s, want %s", got.Path, want.Path)
+	}
+
+	if !slices.Equal(got.Args, want.Args) {
+		t.Errorf("fetchNoTagsCmd Args are %v, want %v", got.Args, want.Args)
 	}
 }
 
 func TestGit_initCmd(t *testing.T) {
 	// setup types
-	want := exec.Command(
+	want := exec.CommandContext(
+		t.Context(),
 		"git",
 		"init",
 	)
 
-	got := initCmd()
+	got := initCmd(t.Context())
 
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("initCmd is %v, want %v", got, want)
+	if want.Path != got.Path {
+		t.Errorf("initCmd Path is %s, want %s", got.Path, want.Path)
+	}
+
+	if !slices.Equal(got.Args, want.Args) {
+		t.Errorf("initCmd Args are %v, want %v", got.Args, want.Args)
 	}
 }
 
 func TestGit_defaultBranchCmd(t *testing.T) {
 	// setup types
-	want := exec.Command(
+	want := exec.CommandContext(
+		t.Context(),
 		"git",
 		"config",
 		"--global",
@@ -80,16 +96,21 @@ func TestGit_defaultBranchCmd(t *testing.T) {
 		"main",
 	)
 
-	got := defaultBranchCmd("main")
+	got := defaultBranchCmd(t.Context(), "main")
 
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("defaultBranchCmd is %v, want %v", got, want)
+	if want.Path != got.Path {
+		t.Errorf("defaultBranchCmd Path is %s, want %s", got.Path, want.Path)
+	}
+
+	if !slices.Equal(got.Args, want.Args) {
+		t.Errorf("defaultBranchCmd Args are %v, want %v", got.Args, want.Args)
 	}
 }
 
 func TestGit_remoteAddCmd(t *testing.T) {
 	// setup types
-	want := exec.Command(
+	want := exec.CommandContext(
+		t.Context(),
 		"git",
 		"remote",
 		"add",
@@ -97,31 +118,41 @@ func TestGit_remoteAddCmd(t *testing.T) {
 		"https://github.com/go-vela/vela-git-test.git",
 	)
 
-	got := remoteAddCmd("https://github.com/go-vela/vela-git-test.git")
+	got := remoteAddCmd(t.Context(), "https://github.com/go-vela/vela-git-test.git")
 
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("remoteAddCmd is %v, want %v", got, want)
+	if want.Path != got.Path {
+		t.Errorf("remoteAddCmd Path is %s, want %s", got.Path, want.Path)
+	}
+
+	if !slices.Equal(got.Args, want.Args) {
+		t.Errorf("remoteAddCmd Args are %v, want %v", got.Args, want.Args)
 	}
 }
 
 func TestGit_remoteVerboseCmd(t *testing.T) {
 	// setup types
-	want := exec.Command(
+	want := exec.CommandContext(
+		t.Context(),
 		"git",
 		"remote",
 		"--verbose",
 	)
 
-	got := remoteVerboseCmd()
+	got := remoteVerboseCmd(t.Context())
 
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("remoteVerboseCmd is %v, want %v", got, want)
+	if want.Path != got.Path {
+		t.Errorf("remoteVerboseCmd Path is %s, want %s", got.Path, want.Path)
+	}
+
+	if !slices.Equal(got.Args, want.Args) {
+		t.Errorf("remoteVerboseCmd Args are %v, want %v", got.Args, want.Args)
 	}
 }
 
 func TestGit_resetCmd(t *testing.T) {
 	// setup types
-	want := exec.Command(
+	want := exec.CommandContext(
+		t.Context(),
 		"git",
 		"reset",
 		"--hard",
@@ -129,40 +160,54 @@ func TestGit_resetCmd(t *testing.T) {
 	)
 	want.Env = append(want.Env, "GIT_LFS_SKIP_SMUDGE=1")
 
-	got := resetCmd("ee1e671529ad86a11ed628a04b37829e71783682")
+	got := resetCmd(t.Context(), "ee1e671529ad86a11ed628a04b37829e71783682")
 
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("resetCmd is %v, want %v", got, want)
+	if want.Path != got.Path {
+		t.Errorf("resetCmd Path is %s, want %s", got.Path, want.Path)
+	}
+
+	if !slices.Equal(got.Args, want.Args) {
+		t.Errorf("resetCmd Args are %v, want %v", got.Args, want.Args)
 	}
 }
 
 func TestGit_submoduleCmd(t *testing.T) {
 	// setup types
-	want := exec.Command(
+	want := exec.CommandContext(
+		t.Context(),
 		"git",
 		"submodule",
 		"update",
 		"--init",
 	)
 
-	got := submoduleCmd()
+	got := submoduleCmd(t.Context())
 
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("submoduleCmd is %v, want %v", got, want)
+	if want.Path != got.Path {
+		t.Errorf("submoduleCmd Path is %s, want %s", got.Path, want.Path)
+	}
+
+	if !slices.Equal(got.Args, want.Args) {
+		t.Errorf("submoduleCmd Args are %v, want %v", got.Args, want.Args)
 	}
 }
 
 func TestGit_getLFSCmd(t *testing.T) {
 	// setup types
-	want := exec.Command(
+	want := exec.CommandContext(
+		t.Context(),
 		"git",
 		"lfs",
 		"pull",
 	)
 
-	got := getLFSCmd()
+	got := getLFSCmd(t.Context())
 
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("getLFSCmd is %v, want %v", got, want)
+	if want.Path != got.Path {
+		t.Errorf("getLFSCmd Path is %s, want %s", got.Path, want.Path)
+	}
+
+	if !slices.Equal(got.Args, want.Args) {
+		t.Errorf("getLFSCmd Args are %v, want %v", got.Args, want.Args)
 	}
 }

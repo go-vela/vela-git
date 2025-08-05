@@ -3,6 +3,7 @@
 package main
 
 import (
+	"context"
 	"os"
 
 	"github.com/sirupsen/logrus"
@@ -22,7 +23,7 @@ type Plugin struct {
 }
 
 // Exec formats and runs the commands for cloning a git repository.
-func (p *Plugin) Exec() error {
+func (p *Plugin) Exec(ctx context.Context) error {
 	logrus.Debug("running plugin with provided configuration")
 
 	// check if a build path is provided
@@ -47,43 +48,43 @@ func (p *Plugin) Exec() error {
 	}
 
 	// output the git version for troubleshooting
-	err = execCmd(versionCmd())
+	err = execCmd(versionCmd(ctx))
 	if err != nil {
 		return err
 	}
 
 	// configure default branch for init
-	err = execCmd(defaultBranchCmd(p.Build.Branch))
+	err = execCmd(defaultBranchCmd(ctx, p.Build.Branch))
 	if err != nil {
 		return err
 	}
 
 	// initialize git repo
-	err = execCmd(initCmd())
+	err = execCmd(initCmd(ctx))
 	if err != nil {
 		return err
 	}
 
 	// add remote to git repo
-	err = execCmd(remoteAddCmd(p.Repo.Remote))
+	err = execCmd(remoteAddCmd(ctx, p.Repo.Remote))
 	if err != nil {
 		return err
 	}
 
 	// output remotes for git repo
-	err = execCmd(remoteVerboseCmd())
+	err = execCmd(remoteVerboseCmd(ctx))
 	if err != nil {
 		return err
 	}
 
 	// fetch the repo
-	err = execCmd(fetchCmd(p.Build.Ref, p.Repo.Tags, p.Build.Depth))
+	err = execCmd(fetchCmd(ctx, p.Build.Ref, p.Repo.Tags, p.Build.Depth))
 	if err != nil {
 		return err
 	}
 
 	// hard reset current state to build commit
-	err = execCmd(resetCmd(p.Build.Sha))
+	err = execCmd(resetCmd(ctx, p.Build.Sha))
 	if err != nil {
 		return err
 	}
@@ -91,7 +92,7 @@ func (p *Plugin) Exec() error {
 	// check if repo submodules are enabled
 	if p.Repo.Submodules {
 		// update submodules to expected state
-		err = execCmd(submoduleCmd())
+		err = execCmd(submoduleCmd(ctx))
 		if err != nil {
 			return err
 		}
@@ -99,7 +100,7 @@ func (p *Plugin) Exec() error {
 
 	// if LFS is enabled, get/resolve the LFS objects
 	if p.Repo.LFS {
-		err = execCmd(getLFSCmd())
+		err = execCmd(getLFSCmd(ctx))
 		if err != nil {
 			return err
 		}
