@@ -3,6 +3,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/exec"
@@ -30,7 +31,7 @@ func execCmd(e *exec.Cmd) error {
 // fetchCmd is a helper function to
 // download all objects, including tags,
 // from the ref for a git repo.
-func fetchCmd(ref string, includeTags bool, depth string) *exec.Cmd {
+func fetchCmd(ctx context.Context, ref string, includeTags bool, depth string) *exec.Cmd {
 	logrus.Trace("returning fetchCmd")
 
 	args := []string{"fetch"}
@@ -49,7 +50,8 @@ func fetchCmd(ref string, includeTags bool, depth string) *exec.Cmd {
 
 	args = append(args, "origin", ref)
 
-	return exec.Command(
+	return exec.CommandContext(
+		ctx,
 		"git",
 		args...,
 	)
@@ -58,10 +60,11 @@ func fetchCmd(ref string, includeTags bool, depth string) *exec.Cmd {
 // initCmd is a helper function to
 // create an empty or reinitialize
 // an existing git repo.
-func initCmd() *exec.Cmd {
+func initCmd(ctx context.Context) *exec.Cmd {
 	logrus.Trace("returning initCmd")
 
-	return exec.Command(
+	return exec.CommandContext(
+		ctx,
 		"git",
 		"init",
 	)
@@ -69,10 +72,11 @@ func initCmd() *exec.Cmd {
 
 // remoteAddCmd is a helper function to
 // add a remote for a git repo.
-func remoteAddCmd(remote string) *exec.Cmd {
+func remoteAddCmd(ctx context.Context, remote string) *exec.Cmd {
 	logrus.Trace("returning remoteAddCmd")
 
-	return exec.Command(
+	return exec.CommandContext(
+		ctx,
 		"git",
 		"remote",
 		"add",
@@ -83,10 +87,11 @@ func remoteAddCmd(remote string) *exec.Cmd {
 
 // remoteVerboseCmd is a helper function to
 // output al remotes for a git repo.
-func remoteVerboseCmd() *exec.Cmd {
+func remoteVerboseCmd(ctx context.Context) *exec.Cmd {
 	logrus.Trace("returning remoteVerboseCmd")
 
-	return exec.Command(
+	return exec.CommandContext(
+		ctx,
 		"git",
 		"remote",
 		"--verbose",
@@ -97,10 +102,11 @@ func remoteVerboseCmd() *exec.Cmd {
 // to set init.defaultBranch in git
 // available to override default branch
 // name when initializing a new repo.
-func defaultBranchCmd(branch string) *exec.Cmd {
+func defaultBranchCmd(ctx context.Context, branch string) *exec.Cmd {
 	logrus.Trace("returning defaultBranchCmd")
 
-	return exec.Command(
+	return exec.CommandContext(
+		ctx,
 		"git",
 		"config",
 		"--global",
@@ -112,10 +118,11 @@ func defaultBranchCmd(branch string) *exec.Cmd {
 // resetCmd is a helper function to
 // hard reset the current HEAD to
 // the sha for a git repo.
-func resetCmd(sha string) *exec.Cmd {
+func resetCmd(ctx context.Context, sha string) *exec.Cmd {
 	logrus.Trace("returning resetCmd")
 
-	cmd := exec.Command(
+	cmd := exec.CommandContext(
+		ctx,
 		"git",
 		"reset",
 		"--hard",
@@ -131,10 +138,11 @@ func resetCmd(sha string) *exec.Cmd {
 
 // getLFSCmd is a helper function to
 // resolve LFS objects.
-func getLFSCmd() *exec.Cmd {
+func getLFSCmd(ctx context.Context) *exec.Cmd {
 	logrus.Trace("returning command to pull LFS objects")
 
-	return exec.Command(
+	return exec.CommandContext(
+		ctx,
 		"git",
 		"lfs",
 		"pull",
@@ -144,10 +152,11 @@ func getLFSCmd() *exec.Cmd {
 // submoduleCmd is a helper function to
 // update the registered submodules to
 // the expected states for a git repo.
-func submoduleCmd() *exec.Cmd {
+func submoduleCmd(ctx context.Context) *exec.Cmd {
 	logrus.Trace("returning submoduleCmd")
 
-	return exec.Command(
+	return exec.CommandContext(
+		ctx,
 		"git",
 		"submodule",
 		"update",
@@ -157,7 +166,7 @@ func submoduleCmd() *exec.Cmd {
 
 // versionCmd is a helper function to output
 // the client version information.
-func versionCmd() *exec.Cmd {
+func versionCmd(ctx context.Context) *exec.Cmd {
 	logrus.Trace("creating git version command")
 
 	// variable to store flags for command
@@ -166,5 +175,5 @@ func versionCmd() *exec.Cmd {
 	// add flag for version git command
 	flags = append(flags, "version")
 
-	return exec.Command("git", flags...)
+	return exec.CommandContext(ctx, "git", flags...)
 }
