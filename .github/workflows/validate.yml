@@ -12,24 +12,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: clone
-      uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - name: clone
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-    - name: install go
-      uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
-      with:
-        # use version from go.mod file
-        go-version-file: 'go.mod'
-        cache: true
-        check-latest: true
+      - name: install go
+        uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
+        with:
+          # use version from go.mod file
+          go-version-file: 'go.mod'
+          cache: true
+          check-latest: true
 
-    - name: validate
-      run: |
-        # Check that go mod tidy produces a zero diff; clean up any changes afterwards.
-        go mod tidy && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
-        # Check that go vet ./... produces a zero diff; clean up any changes afterwards.
-        go vet ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
-        # Check that go fmt ./... produces a zero diff; clean up any changes afterwards.
-        go fmt ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
-        # Check that go fix ./... produces a zero diff; clean up any changes afterwards.
-        go fix ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
+      - name: validate
+        run: |
+          # Check that go mod tidy produces a zero diff; clean up any changes afterwards.
+          go mod tidy && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
+          # Check that go vet ./... produces a zero diff; clean up any changes afterwards.
+          go vet ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
+          # Check that go fmt ./... produces a zero diff; clean up any changes afterwards.
+          go fmt ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
+          # Check that go fix ./... produces a zero diff; clean up any changes afterwards.
+          go fix ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)

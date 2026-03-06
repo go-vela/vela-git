@@ -5,7 +5,7 @@ name: prerelease
 on:
   push:
     tags:
-      - "v*"
+      - 'v*'
 
 # pipeline to execute
 jobs:
@@ -14,16 +14,16 @@ jobs:
 
     steps:
       - name: clone
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           # ensures we fetch tag history for the repository
           fetch-depth: 0
 
       - name: install go
-        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
+        uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
         with:
           # use version from go.mod file
-          go-version-file: "go.mod"
+          go-version-file: 'go.mod'
           cache: true
           check-latest: true
 
@@ -35,7 +35,7 @@ jobs:
       - name: build
         env:
           GOOS: linux
-          CGO_ENABLED: "0"
+          CGO_ENABLED: '0'
         run: |
           make build-static-ci
 

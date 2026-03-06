@@ -12,23 +12,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: clone
-      uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - name: clone
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-    - name: install go
-      uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
-      with:
-        # use version from go.mod file
-        go-version-file: 'go.mod'
-        cache: true
-        check-latest: true
+      - name: install go
+        uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
+        with:
+          # use version from go.mod file
+          go-version-file: 'go.mod'
+          cache: true
+          check-latest: true
 
-    - name: test
-      run: |
-        go test -race -covermode=atomic -coverprofile=coverage.out ./...
+      - name: test
+        run: |
+          go test -race -covermode=atomic -coverprofile=coverage.out ./...
 
-    - name: coverage
-      uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: coverage.out
+      - name: coverage
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: coverage.out

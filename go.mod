@@ -1,6 +1,6 @@
 module github.com/go-vela/vela-git
 
-go 1.25.5
+go 1.25.7
 
 require (
 	github.com/Masterminds/semver/v3 v3.4.0
